@@ -14,7 +14,9 @@
 @stop
 
 @section('tab_content_2')
-
+@php
+    $disabled= isset($disabled)?$disabled : null;
+@endphp
 <div class="row">
     
     <div class="col-12">
@@ -28,7 +30,7 @@
                      
                         <div class="form-group">
                             <label for="schedule"> {{ trans('centers/admin_lang.fields.schedule') }}</label>
-                            <input value="{{!empty($center->schedule) ? $center->schedule :null }}" type="text" class="form-control" name="schedule"  placeholder="{{ trans('centers/admin_lang.fields.schedule') }}">
+                            <input value="{{!empty($center->schedule) ? $center->schedule :null }}" type="text" {{ $disabled }}  class="form-control" name="schedule"  placeholder="{{ trans('centers/admin_lang.fields.schedule') }}">
                         </div>
                     </div>                                       
                 </div>
@@ -36,7 +38,7 @@
                     <div class="col-12">                     
                         <div class="form-group">
                             <label for="name"> {{ trans('centers/admin_lang.fields.specialities') }}</label>
-                            <textarea name="specialities" class="form-control" id="" cols="30" rows="10">{{ $center->specialities }}</textarea>
+                            <textarea name="specialities" {{ $disabled }}  class="form-control" id="" cols="30" rows="10">{{ $center->specialities }}</textarea>
                             
                         </div>
                     </div>                                       
@@ -47,7 +49,11 @@
                 <div class="col-12  d-flex justify-content-between">
 
                     <a href="{{ url('admin/centers') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
-                    <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                    
+                    @if (empty( $disabled ))
+                        <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                        
+                    @endif 
                 </div>
             </div>
         </form>

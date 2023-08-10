@@ -9,6 +9,7 @@ return [
     'list' => 'Listado de centros',
     'new' => 'Nuevo centro',
     'edit' => 'Editar centro',
+    'show' => 'Visualizar centro',
     'general_info' => 'Información general',
     'additional_info' => 'Información adicional',
     'centers_management' => 'Gestión de dentros',

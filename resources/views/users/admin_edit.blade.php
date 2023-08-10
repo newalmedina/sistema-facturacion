@@ -14,9 +14,11 @@
 @stop
 
 @section('tab_content_1')
-
+@php
+$disabled= isset($disabled)?$disabled : null;
+@endphp
 <div class="row">
-    
+   
     <div class="col-12">
         <form id="formData" action="@if(empty($user->id)) {{ route("admin.users.store") }} @else {{ route("admin.users.update",$user->id) }} @endif" method="post"  novalidate="false">
             @csrf       
@@ -33,7 +35,7 @@
                      
                         <div class="form-group">
                             <label for="first_name"> {{ trans('users/admin_lang.fields.first_name') }}<span class="text-danger">*</span></label>
-                            <input value="{{!empty($user->userProfile->first_name) ? $user->userProfile->first_name :null }}" type="text" class="form-control" name="user_profile[first_name]"  placeholder="{{ trans('users/admin_lang.fields.first_name_helper') }}">
+                            <input value="{{!empty($user->userProfile->first_name) ? $user->userProfile->first_name :null }}" type="text"  {{ $disabled }} class="form-control" name="user_profile[first_name]"  placeholder="{{ trans('users/admin_lang.fields.first_name_helper') }}">
                         </div>
                     </div>    
                     
@@ -41,7 +43,7 @@
                      
                         <div class="form-group">
                             <label for="last_name"> {{ trans('users/admin_lang.fields.last_name') }}<span class="text-danger">*</span></label>
-                            <input value="{{!empty($user->userProfile->last_name) ? $user->userProfile->last_name :null }}" type="text" class="form-control" name="user_profile[last_name]"  placeholder="{{ trans('users/admin_lang.fields.last_name_helper') }}">
+                            <input value="{{!empty($user->userProfile->last_name) ? $user->userProfile->last_name :null }}" type="text"  {{ $disabled }} class="form-control" name="user_profile[last_name]"  placeholder="{{ trans('users/admin_lang.fields.last_name_helper') }}">
                         </div>
                     </div>     
                 </div>
@@ -51,7 +53,7 @@
                      
                         <div class="form-group">
                             <label for="email"> {{ trans('users/admin_lang.fields.email') }}<span class="text-danger">*</span></label>
-                            <input value="{{ $user->email }}" type="text" class="form-control" name="email"  placeholder="{{ trans('users/admin_lang.fields.email_helper') }}">
+                            <input value="{{ $user->email }}" type="text"  {{ $disabled }} class="form-control" name="email"  placeholder="{{ trans('users/admin_lang.fields.email_helper') }}">
                         </div>
                     </div>                    
                 </div>
@@ -60,29 +62,34 @@
                      
                         <div class="form-group">
                             <label for="password"> {{ trans('users/admin_lang.fields.password') }}<span class="text-danger">*</span></label>
-                            <input value="" type="text" class="form-control" id="password" name="password"  placeholder="{{ trans('users/admin_lang.fields.password_helper') }}">
+                            <input value="" type="text"  {{ $disabled }} class="form-control" id="password" name="password"  placeholder="{{ trans('users/admin_lang.fields.password_helper') }}">
                         </div>
                     </div>  
                     <div class="col-12 col-md-6">
                      
                         <div class="form-group">
                             <label for="password_confirm"> {{ trans('users/admin_lang.fields.password_confirm') }}<span class="text-danger">*</span></label>
-                            <input value="" type="text" class="form-control" id="password_confirm" name="password_confirm"  placeholder="{{ trans('users/admin_lang.fields.password_confirm_helper') }}">
+                            <input value="" type="text"  {{ $disabled }} class="form-control" id="password_confirm" name="password_confirm"  placeholder="{{ trans('users/admin_lang.fields.password_confirm_helper') }}">
                         </div>
                     </div>                    
                 </div>
-                <div class="row form-group mb-3">
-                    <div class="col-12 col-md-6">
-                        <button onclick="generatePassword(8)" type="button" class="btn btn-info">{{ trans('users/admin_lang.generate_password') }}</button>                        
-                    </div>                    
-                </div>
+                @if (empty($disabled))
+                    <div class="row form-group mb-3">
+                        <div class="col-12 col-md-6">
+                            <button onclick="generatePassword(8)" type="button" class="btn btn-info">{{ trans('users/admin_lang.generate_password') }}</button>                        
+                        </div>                    
+                    </div>
+                                      
+                @endif           
+               
+
                 <div class="row form-group mb-3">
                     <div class="col-12">
                      
                         <div class="form-group">
                             <label for="active"> {{ trans('users/admin_lang.fields.active') }}</label>
                             <div class="form-check form-switch">
-                                <input class="form-check-input toggle-switch" @if($user->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
+                                <input  {{ $disabled }} class="form-check-input toggle-switch" @if($user->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
                             </div>                           
                         </div>
                     </div>                    
@@ -95,7 +102,9 @@
                 <div class="col-12  d-flex justify-content-between">
 
                     <a href="{{ url('admin/users') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
-                    <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                    @if (empty($disabled))
+                     <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>  
+                     @endif    
                 </div>
             </div>
         </form>

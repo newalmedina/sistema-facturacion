@@ -14,6 +14,9 @@
 @stop
 
 @section('tab_content_2')
+@php
+    $disabled= isset($disabled)?$disabled : null;
+@endphp
 
 <div class="row">
     
@@ -30,17 +33,19 @@
                      
                         <div class="form-group">
                             <label for="price"> {{ trans('services/admin_lang.fields.general_price') }}</label>
-                            <input value="{{!empty($service->price) ? $service->price :null }}" disabled type="text" class="form-control" name="realPrice"  placeholder="{{ trans('services/admin_lang.fields.price') }}">
+                            <input value="{{!empty($service->price) ? $service->price :null }}" disabled type="text" {{ $disabled }} class="form-control" name="realPrice"  placeholder="{{ trans('services/admin_lang.fields.price') }}">
                         </div>
                     </div>                                       
                 </div>
                 <div class="row form-group mb-3">
+                    @if (empty( $disabled ))
                     <div class="col-12">
                      
                         <div class="form-group">
                             <button type="button" id="addInsurance" class="btn btn-xs btn-primary">{{ trans('services/admin_lang.add_insurance') }}</button>
                         </div>
                     </div>                                       
+                    @endif
                 </div> 
                 <div id="insuranceContainer">
                     @php
@@ -51,7 +56,7 @@
                         <div class="row form-group mb-3">
                             <div class="col-12 col-md-8 mt-2">                             
                                 <div class="form-group">
-                                    <select class="form-control select2 required-field" name="insurance[{{ $cont }}]][]" id="">
+                                    <select {{ $disabled }} class="form-control select2 required-field" name="insurance[{{ $cont }}]][]" id="">
                                         <option value="">{{ trans('services/admin_lang.fields.insurance_id_helper') }}</option>   
                                         @foreach ($insuranceList as $item)
                                             <option value="{{ $item->id }}" @if( $item->id==$insurance->id)  selected @endif >{{ $item->name }}</option>
@@ -61,14 +66,16 @@
                             </div>                                       
                             <div class="col-12 col-md-2 mt-2">                             
                                 <div class="form-group">
-                                    <input value="{{ $insurance->pivot->price  }}"  type="number" class="form-control required-field" name="price[{{ $cont }}]][]"  placeholder="{{ trans('services/admin_lang.fields.price') }}">
+                                    <input value="{{ $insurance->pivot->price  }}"  type="number" {{ $disabled }} class="form-control required-field" name="price[{{ $cont }}]][]"  placeholder="{{ trans('services/admin_lang.fields.price') }}">
                                 </div>
-                            </div>                                       
-                            <div class="col-12 col-md-2 mt-2">                             
-                                <div class="form-group">
-                                    <button type="button"  class="btn btn-danger remove"> <i class="fa fa-trash" aria-hidden="true"></i></button>
-                                </div>
-                            </div>                                       
+                            </div>    
+                            @if (empty( $disabled ))                                   
+                                <div class="col-12 col-md-2 mt-2">                             
+                                    <div class="form-group">
+                                        <button type="button"  class="btn btn-danger remove"> <i class="fa fa-trash" aria-hidden="true"></i></button>
+                                    </div>
+                                </div>     
+                            @endif                                  
                         </div>
                         @php
                             $cont++;
@@ -81,7 +88,10 @@
                 <div class="col-12  d-flex justify-content-between">
 
                     <a href="{{ url('admin/services') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
-                    <button type="button" id="saveData" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                    @if (empty( $disabled ))
+                        <button type="button" id="saveData" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                        
+                    @endif
                 </div>
             </div>
         </form>
@@ -101,7 +111,7 @@
             <div class="row form-group mb-3">
                 <div class="col-12 col-md-8 mt-2">                             
                     <div class="form-group">
-                        <select class="form-control select2 required-field" name="insurance[${cont }]" id="">
+                        <select {{ $disabled }} class="form-control select2 required-field" name="insurance[${cont }]" id="">
                             <option value="">{{ trans('services/admin_lang.fields.insurance_id_helper') }}</option>   
                             @foreach ($insuranceList as $item)
                                 <option value="{{ $item->id }}"  >{{ $item->name }}</option>
@@ -111,7 +121,7 @@
                 </div>                                       
                 <div class="col-12 col-md-2 mt-2">                             
                     <div class="form-group">
-                        <input value=""  type="number" class="form-control required-field" name="price[${cont }]"  placeholder="{{ trans('services/admin_lang.fields.price') }}">
+                        <input value=""  type="number" {{ $disabled }} class="form-control required-field" name="price[${cont }]"  placeholder="{{ trans('services/admin_lang.fields.price') }}">
                     </div>
                 </div>                                       
                 <div class="col-12 col-md-2 mt-2">                             

@@ -20,7 +20,7 @@ class AdminRoleController extends Controller
             app()->abort(403);
         }
 
-        
+
         $pageTitle = trans('roles/admin_lang.roles');
         $title = trans('roles/admin_lang.list');
         $roles = Role::orderBy('id', 'asc')->get();
@@ -188,13 +188,13 @@ class AdminRoleController extends Controller
         $table->editColumn('actions', function ($data) {
             $actions = '';
             if (auth()->user()->isAbleTo("admin-roles-update")) {
-                $actions .= '<a  class="btn btn-info btn-sm" href="' . route('admin.roles.edit', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.roles.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-roles-delete") && $data->can_delete) {
 
-                $actions .= '<button class="btn btn-danger btn-sm" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
                     url('admin/roles/' . $data->id) . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';

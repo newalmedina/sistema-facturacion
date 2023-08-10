@@ -70,6 +70,26 @@ class AdminServiceController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-services-read')) {
+            app()->abort(403);
+        }
+        $service = Service::find($id);
+
+        if (empty($service)) {
+            app()->abort(404);
+        }
+
+        $pageTitle = trans('services/admin_lang.show');
+        $title = trans('services/admin_lang.list');
+        $tab = 'tab_1';
+        $disabled = "disabled";
+
+        return view('services.admin_edit', compact('pageTitle', 'title', "service", "disabled"))
+            ->with('tab', $tab);
+    }
+
     public function edit($id)
     {
         if (!auth()->user()->isAbleTo('admin-services-update')) {
@@ -148,14 +168,18 @@ class AdminServiceController extends Controller
 
         $table->editColumn('actions', function ($data) {
             $actions = '';
+            if (auth()->user()->isAbleTo("admin-services-read")) {
+                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.services.show', $data->id) . '" ><i
+                class="fa fa-eye fa-lg"></i></a> ';
+            }
             if (auth()->user()->isAbleTo("admin-services-update")) {
-                $actions .= '<a  class="btn btn-info btn-sm" href="' . route('admin.services.edit', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.services.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-services-delete")) {
 
-                $actions .= '<button class="btn btn-danger btn-sm" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
                     url('admin/services/' . $data->id) . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';
@@ -202,6 +226,34 @@ class AdminServiceController extends Controller
         }
 
         return 0;
+    }
+
+    public function showAditionalInfo($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-services-update')) {
+            app()->abort(403);
+        }
+
+        $service = Service::find($id);
+        if (is_null($service)) {
+            app()->abort(500);
+        }
+        $insuranceList = InsuranceCarrier::active()->get();
+        $pageTitle = trans('services/admin_lang.edit');
+        $title = trans('services/admin_lang.list');
+
+
+        $tab = "tab_2";
+
+        $disabled = "disabled";
+        return view('services.admin_edit_aditional_info', compact(
+            'pageTitle',
+            'title',
+            "service",
+            'insuranceList',
+            'disabled',
+        ))
+            ->with('tab', $tab);
     }
 
     public function editAditionalInfo($id)

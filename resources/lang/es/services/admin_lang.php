@@ -9,6 +9,7 @@ return [
     'list' => 'Listado de servicios',
     'new' => 'Nuevo servicio',
     'edit' => 'Editar servicio',
+    'show' => 'Visualizar servicio',
     'general_info' => 'Información general',
     'additional_info' => 'Información adicional',
     'services_management' => 'Gestión de dentros',

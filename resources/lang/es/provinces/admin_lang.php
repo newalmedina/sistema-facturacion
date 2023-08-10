@@ -9,8 +9,7 @@ return [
     'list' => 'Listado de provincias',
     'new' => 'Nueva provincia',
     'edit' => 'Editar provincia',
-
-
+    'show' => 'Visualizar provincia',
 
     'fields' => [
         'id' => 'Id',

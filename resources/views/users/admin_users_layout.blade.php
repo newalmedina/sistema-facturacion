@@ -13,7 +13,9 @@
 @stop
 
 @section('content')
-    
+@php
+$disabled= isset($disabled)?$disabled : null;
+@endphp
 <section role="main" class="content-body card-margin">      
     <div class="mt-2">
        
@@ -60,42 +62,80 @@
                 <ul class="nav nav-tabs" id="custom-tabs">
             
                     <li class="nav-item @if ($tab == 'tab_1') active @endif">
-                        <a id="tab_1" class="nav-link" data-bs-target="#tab_1-1" data-bs-toggle="tabajax"
-                            href="{{ !empty($user->id) ? url('admin/users/' . $user->id . '/edit') : '#' }}"
+                        @if (empty($disabled))
+                            <a id="tab_1" class="nav-link" data-bs-target="#tab_1-1" data-bs-toggle="tabajax"
+                                href="{{ !empty($user->id) ? url('admin/users/' . $user->id . '/edit') : '#' }}"
+                                data-target="#tab_1-1" aria-controls="tab_1-1" aria-selected="true">
+                                {{ $pageTitle }}
+                            </a>
+                        @else
+                            <a id="tab_1" class="nav-link" data-bs-target="#tab_1-1" data-bs-toggle="tabajax"
+                            href="{{ !empty($user->id) ? url('admin/users/' . $user->id . '/show    ') : '#' }}"
                             data-target="#tab_1-1" aria-controls="tab_1-1" aria-selected="true">
                             {{ $pageTitle }}
                         </a>
+                        @endif
                     </li>
             
                     @if (!empty($user->id) &&  Auth::user()->isAbleTo("admin-users-update") )
                         <li class="nav-item @if ($tab == 'tab_4') active @endif">
-                            <a id="tab_4" class="nav-link" data-bs-target="#tab_4-4"
-                            data-bs-toggle="tabajax" href="{{ url('admin/users/personal-info/'.$user->id) }}" data-target="#tab_4-4"
-                            aria-controls="tab_4-4" aria-selected="true" >
-                                {{ trans('users/admin_lang.personal_info') }}
-                            </a>
+                            @if (empty($disabled))
+                                <a id="tab_4" class="nav-link" data-bs-target="#tab_4-4"
+                                data-bs-toggle="tabajax" href="{{ url('admin/users/personal-info/'.$user->id) }}" data-target="#tab_4-4"
+                                aria-controls="tab_4-4" aria-selected="true" >
+                                    {{ trans('users/admin_lang.personal_info') }}
+                                </a>
+                                                           
+                            @else
+                                <a id="tab_4" class="nav-link" data-bs-target="#tab_4-4"
+                                data-bs-toggle="tabajax" href="{{ url('admin/users/personal-info/'.$user->id.'/show') }}" data-target="#tab_4-4"
+                                aria-controls="tab_4-4" aria-selected="true" >
+                                    {{ trans('users/admin_lang.personal_info') }}
+                                </a>
+                            @endif
+                           
                         </li>
                     
                     @endif
 
                     @if (!empty($user->id) &&  Auth::user()->isAbleTo("admin-users-update") )
                         <li class="nav-item @if ($tab == 'tab_3') active @endif">
-                            <a id="tab_3" class="nav-link" data-bs-target="#tab_3-3"
-                            data-bs-toggle="tabajax" href="{{ url('admin/users/centers/'.$user->id) }}" data-target="#tab_3-3"
-                            aria-controls="tab_3-3" aria-selected="true" >
-                                {{ trans('users/admin_lang.centers') }}
-                            </a>
+                            @if (empty($disabled))
+                                <a id="tab_3" class="nav-link" data-bs-target="#tab_3-3"
+                                data-bs-toggle="tabajax" href="{{ url('admin/users/centers/'.$user->id) }}" data-target="#tab_3-3"
+                                aria-controls="tab_3-3" aria-selected="true" >
+                                    {{ trans('users/admin_lang.centers') }}
+                                </a>
+                                                           
+                            @else
+                                <a id="tab_3" class="nav-link" data-bs-target="#tab_3-3"
+                                data-bs-toggle="tabajax" href="{{ url('admin/users/centers/'.$user->id.'/show') }}" data-target="#tab_3-3"
+                                aria-controls="tab_3-3" aria-selected="true" >
+                                    {{ trans('users/admin_lang.centers') }}
+                                </a>
+                            @endif
+                           
                         </li>
                     
                     @endif
                     
                     @if (!empty($user->id) &&  Auth::user()->isAbleTo("admin-users-update") )
                         <li class="nav-item @if ($tab == 'tab_2') active @endif">
+                            @if (empty($disabled))
                             <a id="tab_2" class="nav-link" data-bs-target="#tab_2-2"
                             data-bs-toggle="tabajax" href="{{ url('admin/users/roles/'.$user->id) }}" data-target="#tab_2-2"
                             aria-controls="tab_2-2" aria-selected="true" >
                                 {{ trans('users/admin_lang.roles') }}
                             </a>
+                                                        
+                            @else
+                            <a id="tab_2" class="nav-link" data-bs-target="#tab_2-2"
+                            data-bs-toggle="tabajax" href="{{ url('admin/users/roles/'.$user->id.'/show') }}" data-target="#tab_2-2"
+                            aria-controls="tab_2-2" aria-selected="true" >
+                                {{ trans('users/admin_lang.roles') }}
+                            </a>
+                        @endif
+                            
                         </li>
                     
                     @endif

@@ -13,7 +13,9 @@
 @stop
 
 @section('tab_content_3')
-
+@php
+$disabled= isset($disabled)?$disabled : null;
+@endphp
 <div class="row">
     <div class="col-12">
         <form id="frm_Permission_Role" action="{{ route("admin.users.updateCenters",$user->id) }}" method="post" novalidate="false">
@@ -24,7 +26,7 @@
                 <div class="col-12 ">                     
                     <div class="form-group">
                         <label for="center_id" class="col-12"> {{ trans('users/admin_lang.centers_asigned') }}</label>
-                        <select class="col-12 form-control select2" style="width:100%" multiple name="center_id[]" id="center_id">
+                        <select {{ $disabled }} class="col-12 form-control select2" style="width:100%" multiple name="center_id[]" id="center_id">
                             <option value="">{{ trans('users/admin_lang.centers_helper') }}</option>   
                             @foreach ($centers as $center)
                                 <option value="{{ $center->id }}" @if(in_array($center->id,$selected_center)) selected @endif >{{ $center->name }} 
@@ -39,8 +41,14 @@
                 </div>                    
             </div>
 
-            <div class="card-footer text-end mt-2">
-                <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>
+            <div class="card-footer row">
+                <div class="col-12  d-flex justify-content-between">
+
+                    <a href="{{ url('admin/users') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
+                    @if (empty($disabled))
+                     <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>  
+                     @endif    
+                </div>
             </div>
         </form>
     </div>

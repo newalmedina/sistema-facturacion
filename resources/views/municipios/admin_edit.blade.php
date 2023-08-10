@@ -12,7 +12,9 @@
 @stop
 
 @section('content')
-    
+@php
+$disabled= isset($disabled)?$disabled : null;
+@endphp
 <section role="main" class="content-body card-margin">      
     <div class="mt-2">
          @include('layouts.admin.includes.modals')
@@ -48,13 +50,13 @@
                                  
                                     <div class="form-group">
                                         <label for="name"> {{ trans('municipios/admin_lang.fields.name') }} <span class="text-danger">*</span> </label>
-                                        <input value="{{!empty($municipio->name) ? $municipio->name :null }}" type="text" class="form-control" name="name"  placeholder="{{ trans('municipios/admin_lang.fields.name_helper') }}">
+                                        <input value="{{!empty($municipio->name) ? $municipio->name :null }}" type="text" {{ $disabled }} class="form-control" name="name"  placeholder="{{ trans('municipios/admin_lang.fields.name_helper') }}">
                                     </div>
                                 </div>   
                                 <div class="col-12 col-md-6">                     
                                     <div class="form-group">
                                         <label for="province_id" class=" col-12"> {{ trans('centers/admin_lang.fields.province_id') }}<span class="text-danger">*</span></label>
-                                        <select class="form-control select2 col-12" style="width:100%" name="province_id" id="province_id">
+                                        <select {{ $disabled }} class="form-control select2 col-12" style="width:100%" name="province_id" id="province_id">
                                             <option value="">{{ trans('centers/admin_lang.fields.province_id_helper') }}</option>   
                                             @foreach ($provincesList as $province)
                                                 <option value="{{ $province->id }}" @if($municipio->province_id ==$province->id) selected @endif>{{ $province->name }}</option>
@@ -70,7 +72,7 @@
                                     <div class="form-group">
                                         <label for="active"> {{ trans('municipios/admin_lang.fields.active') }}</label>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input toggle-switch" @if($municipio->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
+                                            <input  {{ $disabled }} class="form-check-input toggle-switch" @if($municipio->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
                                         </div>                           
                                     </div>
                                 </div>                    
@@ -81,7 +83,10 @@
                             <div class="col-12  d-flex justify-content-between">
             
                                 <a href="{{ url('admin/municipios') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
-                                <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                                @if (empty( $disabled ))
+                                    <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                                    
+                                @endif
                             </div>
                         </div>
                     </form>                     

@@ -9,6 +9,7 @@ return [
     'list' => 'Listado de municipio',
     'new' => 'Nuevo municipio',
     'edit' => 'Editar municipio',
+    'show' => 'Visualizar municipio',
 
 
 

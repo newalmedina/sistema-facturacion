@@ -64,6 +64,23 @@ class AdminMedicalSpecializationController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-medical-specializations-read')) {
+            app()->abort(403);
+        }
+        $medicalSpecialization = MedicalSpecialization::find($id);
+
+        if (empty($medicalSpecialization)) {
+            app()->abort(404);
+        }
+
+        $pageTitle = trans('medical-specializations/admin_lang.show');
+        $title = trans('medical-specializations/admin_lang.list');
+        $disabled = "disabled";
+
+        return view('medical-specializations.admin_edit', compact('pageTitle', 'title', "medicalSpecialization", "disabled"));
+    }
     public function edit($id)
     {
         if (!auth()->user()->isAbleTo('admin-medical-specializations-update')) {
@@ -138,14 +155,18 @@ class AdminMedicalSpecializationController extends Controller
 
         $table->editColumn('actions', function ($data) {
             $actions = '';
+            if (auth()->user()->isAbleTo("admin-medical-specializations-read")) {
+                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.medical-specializations.show', $data->id) . '" ><i
+                class="fa fa-eye fa-lg"></i></a> ';
+            }
             if (auth()->user()->isAbleTo("admin-medical-specializations-update")) {
-                $actions .= '<a  class="btn btn-info btn-sm" href="' . route('admin.medical-specializations.edit', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.medical-specializations.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-medical-specializations-delete")) {
 
-                $actions .= '<button class="btn btn-danger btn-sm" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
                     url('admin/medical-specializations/' . $data->id) . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';

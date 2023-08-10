@@ -13,7 +13,9 @@
 @stop
 
 @section('content')
-    
+@php
+$disabled= isset($disabled)?$disabled : null;
+@endphp
 <section role="main" class="content-body card-margin">      
     <div class="mt-2">
          @include('layouts.admin.includes.modals')
@@ -61,21 +63,39 @@
                 <ul class="nav nav-tabs" id="custom-tabs">
             
                     <li class="nav-item @if ($tab == 'tab_1') active @endif">
-                        <a id="tab_1" class="nav-link" data-bs-target="#tab_1-1" data-bs-toggle="tabajax"
+                        @if (empty($disabled))
+                            <a id="tab_1" class="nav-link" data-bs-target="#tab_1-1" data-bs-toggle="tabajax"
                             href="{{ !empty($center->id) ? url('admin/centers/' . $center->id . '/edit') : '#' }}"
                             data-target="#tab_1-1" aria-controls="tab_1-1" aria-selected="true">
                             {{ trans('centers/admin_lang.general_info') }}
+                             </a>                         
+                        @else
+                        <a id="tab_1" class="nav-link" data-bs-target="#tab_1-1" data-bs-toggle="tabajax"
+                            href="{{ !empty($center->id) ? url('admin/centers/' . $center->id . '/show') : '#' }}"
+                            data-target="#tab_1-1" aria-controls="tab_1-1" aria-selected="true">
+                            {{ trans('centers/admin_lang.general_info') }}
                         </a>
+                    @endif
+                        
                     </li>
             
                 
                     @if (!empty($center->id) &&  Auth::user()->isAbleTo("admin-centers-update") )
                         <li class="nav-item @if ($tab == 'tab_2') active @endif">
-                            <a id="tab_2" class="nav-link" data-bs-target="#tab_2-2"
-                            data-bs-toggle="tabajax" href="{{ url('admin/centers/aditional-info/'.$center->id) }}" data-target="#tab_2-2"
-                            aria-controls="tab_2-2" aria-selected="true" >
-                                {{ trans('centers/admin_lang.additional_info') }}
-                            </a>
+                            @if (empty($disabled))
+                                <a id="tab_2" class="nav-link" data-bs-target="#tab_2-2"
+                                data-bs-toggle="tabajax" href="{{ url('admin/centers/aditional-info/'.$center->id) }}" data-target="#tab_2-2"
+                                aria-controls="tab_2-2" aria-selected="true" >
+                                    {{ trans('centers/admin_lang.additional_info') }}
+                                </a>                     
+                            @else
+                                <a id="tab_2" class="nav-link" data-bs-target="#tab_2-2"
+                                data-bs-toggle="tabajax" href="{{ url('admin/centers/aditional-info/'.$center->id.'/show') }}" data-target="#tab_2-2"
+                                aria-controls="tab_2-2" aria-selected="true" >
+                                    {{ trans('centers/admin_lang.additional_info') }}
+                                </a>
+                            @endif
+                           
                         </li>
                     
                     @endif

@@ -9,6 +9,7 @@ return [
     'list' => 'Listado de especializaciones médicas',
     'new' => 'Nueva especialización médica',
     'edit' => 'Editar especialización médica',
+    'show' => 'Visualizar especialización médica',
 
 
 

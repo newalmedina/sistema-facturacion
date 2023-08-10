@@ -97,6 +97,28 @@ class AdminCenterController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-centers-read')) {
+            app()->abort(403);
+        }
+        $center = Center::find($id);
+
+        if (empty($center)) {
+            app()->abort(404);
+        }
+
+        $pageTitle = trans('centers/admin_lang.show');
+        $title = trans('centers/admin_lang.list');
+        $tab = 'tab_1';
+        $provincesList = Province::active()->get();
+        $municipiosList = Municipio::active()->where("province_id", $center->province_id)->get();
+        $disabled = "disabled";
+
+        return view('centers.admin_edit', compact('pageTitle', 'title', "center", 'provincesList', 'municipiosList', 'disabled'))
+            ->with('tab', $tab);
+    }
+
     public function edit($id)
     {
         if (!auth()->user()->isAbleTo('admin-centers-update')) {
@@ -230,14 +252,18 @@ class AdminCenterController extends Controller
 
         $table->editColumn('actions', function ($data) {
             $actions = '';
+            if (auth()->user()->isAbleTo("admin-centers-read")) {
+                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.centers.show', $data->id) . '" ><i
+                class="fa fa-eye fa-lg"></i></a> ';
+            }
             if (auth()->user()->isAbleTo("admin-centers-update")) {
-                $actions .= '<a  class="btn btn-info btn-sm" href="' . route('admin.centers.edit', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.centers.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-centers-delete")) {
 
-                $actions .= '<button class="btn btn-danger btn-sm" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
                     url('admin/centers/' . $data->id) . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';
@@ -289,6 +315,31 @@ class AdminCenterController extends Controller
         }
 
         return 0;
+    }
+
+    public function showAditionalInfo($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-centers-update')) {
+            app()->abort(403);
+        }
+
+        $center = Center::find($id);
+        if (is_null($center)) {
+            app()->abort(500);
+        }
+        $pageTitle = trans('centers/admin_lang.show');
+        $title = trans('centers/admin_lang.list');
+
+
+        $tab = "tab_2";
+        $disabled = "disabled";
+        return view('centers.admin_edit_aditional_info', compact(
+            'pageTitle',
+            'title',
+            'disabled',
+            "center"
+        ))
+            ->with('tab', $tab);
     }
 
     public function editAditionalInfo($id)

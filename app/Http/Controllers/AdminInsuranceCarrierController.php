@@ -99,6 +99,27 @@ class AdminInsuranceCarrierController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-insurance-carriers-read')) {
+            app()->abort(403);
+        }
+        $insuranceCarrier = InsuranceCarrier::find($id);
+
+        if (empty($insuranceCarrier)) {
+            app()->abort(404);
+        }
+
+        $pageTitle = trans('insurance-carriers/admin_lang.show');
+        $title = trans('insurance-carriers/admin_lang.list');
+        $tab = 'tab_1';
+        $provincesList = Province::active()->get();
+        $municipiosList = Municipio::active()->where("province_id", $insuranceCarrier->province_id)->get();
+
+        $disabled = "disabled";
+        return view('insurance-carriers.admin_edit', compact('pageTitle', 'title', "insuranceCarrier", 'provincesList', 'municipiosList', 'disabled'))
+            ->with('tab', $tab);
+    }
     public function edit($id)
     {
         if (!auth()->user()->isAbleTo('admin-insurance-carriers-update')) {
@@ -225,14 +246,18 @@ class AdminInsuranceCarrierController extends Controller
 
         $table->editColumn('actions', function ($data) {
             $actions = '';
+            if (auth()->user()->isAbleTo("admin-insurance-carriers-read")) {
+                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.insurance-carriers.show', $data->id) . '" ><i
+                class="fa fa-eye fa-lg"></i></a> ';
+            }
             if (auth()->user()->isAbleTo("admin-insurance-carriers-update")) {
-                $actions .= '<a  class="btn btn-info btn-sm" href="' . route('admin.insurance-carriers.edit', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.insurance-carriers.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-insurance-carriers-delete")) {
 
-                $actions .= '<button class="btn btn-danger btn-sm" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
                     url('admin/insurance-carriers/' . $data->id) . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';

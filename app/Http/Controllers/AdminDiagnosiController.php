@@ -66,6 +66,23 @@ class AdminDiagnosiController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-diagnosis-read')) {
+            app()->abort(403);
+        }
+        $diagnosi = Diagnosi::find($id);
+
+        if (empty($diagnosi)) {
+            app()->abort(404);
+        }
+
+        $pageTitle = trans('diagnosis/admin_lang.show');
+        $title = trans('diagnosis/admin_lang.list');
+
+        $disabled = "disabled";
+        return view('diagnosis.admin_edit', compact('pageTitle', 'title', "diagnosi", "disabled"));
+    }
     public function edit($id)
     {
         if (!auth()->user()->isAbleTo('admin-diagnosis-update')) {
@@ -140,14 +157,18 @@ class AdminDiagnosiController extends Controller
 
         $table->editColumn('actions', function ($data) {
             $actions = '';
+            if (auth()->user()->isAbleTo("admin-diagnosis-read")) {
+                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.diagnosis.show', $data->id) . '" ><i
+                class="fa fa-eye fa-lg"></i></a> ';
+            }
             if (auth()->user()->isAbleTo("admin-diagnosis-update")) {
-                $actions .= '<a  class="btn btn-info btn-sm" href="' . route('admin.diagnosis.edit', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.diagnosis.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-diagnosis-delete")) {
 
-                $actions .= '<button class="btn btn-danger btn-sm" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
                     url('admin/diagnosis/' . $data->id) . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';

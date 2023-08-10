@@ -14,7 +14,9 @@
 @stop
 
 @section('tab_content_2')
-
+@php
+$disabled= isset($disabled)?$disabled : null;
+@endphp
 <div class="row">
     
     <div class="col-12">
@@ -45,8 +47,10 @@
             <div class="card-footer row">
                 <div class="col-12  d-flex justify-content-between">
 
-                    <a href="{{ url('admin/roles') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
-                    <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                    <a href="{{ url('admin/users') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
+                    @if (empty($disabled))
+                     <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>  
+                     @endif    
                 </div>
             </div>
         </form>

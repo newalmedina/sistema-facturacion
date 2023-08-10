@@ -9,6 +9,7 @@ return [
     'list' => 'Listado de diagnósticos',
     'new' => 'Nueva diagnóstico',
     'edit' => 'Editar diagnóstico',
+    'show' => 'Visualizar diagnóstico',
 
     'fields' => [
         'id' => 'Id',

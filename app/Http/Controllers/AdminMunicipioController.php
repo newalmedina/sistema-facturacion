@@ -78,6 +78,25 @@ class AdminMunicipioController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-municipios-update')) {
+            app()->abort(403);
+        }
+        $municipio = Municipio::find($id);
+
+        if (empty($municipio)) {
+            app()->abort(404);
+        }
+
+        $pageTitle = trans('municipios/admin_lang.show');
+        $title = trans('municipios/admin_lang.list');
+
+        $provincesList = Province::active()->get();
+        $disabled = "disabled";
+        return view('municipios.admin_edit', compact('pageTitle', 'title', "municipio", 'provincesList', 'disabled'));
+    }
+
     public function edit($id)
     {
         if (!auth()->user()->isAbleTo('admin-municipios-update')) {
@@ -155,14 +174,18 @@ class AdminMunicipioController extends Controller
 
         $table->editColumn('actions', function ($data) {
             $actions = '';
+            if (auth()->user()->isAbleTo("admin-municipios-read")) {
+                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.municipios.show', $data->id) . '" ><i
+                class="fa fa-eye fa-lg"></i></a> ';
+            }
             if (auth()->user()->isAbleTo("admin-municipios-update")) {
-                $actions .= '<a  class="btn btn-info btn-sm" href="' . route('admin.municipios.edit', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.municipios.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-municipios-delete")) {
 
-                $actions .= '<button class="btn btn-danger btn-sm" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
                     url('admin/municipios/' . $data->id) . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';

@@ -14,6 +14,9 @@
 @stop
 
 @section('tab_content_1')
+@php
+    $disabled= isset($disabled)?$disabled : null;
+@endphp
 
 <div class="row">
     
@@ -32,13 +35,13 @@
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
                             <label for="name"> {{ trans('services/admin_lang.fields.name') }}<span class="text-danger">*</span></label>
-                            <input value="{{!empty($service->name) ? $service->name :null }}" type="text" class="form-control" name="name"  placeholder="{{ trans('services/admin_lang.fields.name_helper') }}">
+                            <input value="{{!empty($service->name) ? $service->name :null }}" type="text"  {{ $disabled }} class="form-control" name="name"  placeholder="{{ trans('services/admin_lang.fields.name_helper') }}">
                         </div>
                     </div>      
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
                             <label for="price"> {{ trans('services/admin_lang.fields.price') }}<span class="text-danger">*</span></label>
-                            <input value="{{!empty($service->price) ? $service->price :null }}" type="number" min = "0" class="form-control" name="price"  placeholder="{{ trans('services/admin_lang.fields.price_helper') }}">
+                            <input value="{{!empty($service->price) ? $service->price :null }}" type="number" min = "0"  {{ $disabled }} class="form-control" name="price"  placeholder="{{ trans('services/admin_lang.fields.price_helper') }}">
                         </div>
                     </div>      
                 </div>
@@ -47,7 +50,7 @@
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="description"> {{ trans('services/admin_lang.fields.description') }}</label>
-                            <textarea placeholder="{{ trans('services/admin_lang.fields.description_helper') }}" class="form-control" name="description" id="description"  cols="30" rows="10">{{ !empty($service->description)?$service->description:null }}</textarea>
+                            <textarea placeholder="{{ trans('services/admin_lang.fields.description_helper') }}"  {{ $disabled }} class="form-control" name="description" id="description"  cols="30" rows="10">{{ !empty($service->description)?$service->description:null }}</textarea>
                          </div>
                     </div>               
                 </div>
@@ -58,7 +61,7 @@
                         <div class="form-group">
                             <label for="active"> {{ trans('services/admin_lang.fields.active') }}</label>
                             <div class="form-check form-switch">
-                                <input class="form-check-input toggle-switch" @if($service->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
+                                <input class="form-check-input toggle-switch" {{ $disabled }} @if($service->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
                             </div>                           
                         </div>
                     </div>                    
@@ -69,7 +72,9 @@
                 <div class="col-12  d-flex justify-content-between">
 
                     <a href="{{ url('admin/services') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
-                    <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                    @if (empty( $disabled ))
+                        <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>                           
+                    @endif
                 </div>
             </div>
         </form>

@@ -9,6 +9,7 @@ return [
     'list' => 'Listado de aseguradoras',
     'new' => 'Nueva aseguradora',
     'edit' => 'Editar aseguradora',
+    'show' => 'Visualizar aseguradora',
     'general_info' => 'Información general',
     'additional_info' => 'Información adicional',
     'insurance-carriers_management' => 'Gestión de aseguradoras',

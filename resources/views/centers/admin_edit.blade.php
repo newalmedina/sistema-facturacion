@@ -16,7 +16,9 @@
 @section('tab_content_1')
 
 <div class="row">
-    
+    @php
+    $disabled= isset($disabled)?$disabled : null;
+@endphp
     <div class="col-12">
         <form id="formData" enctype="multipart/form-data" action="@if(empty($center->id)) {{ route("admin.centers.store") }} @else {{ route("admin.centers.update",$center->id) }} @endif" method="post"  novalidate="false">
             @csrf       
@@ -33,7 +35,7 @@
                      
                         <div class="form-group">
                             <label for="name"> {{ trans('centers/admin_lang.fields.name') }}<span class="text-danger">*</span></label>
-                            <input value="{{!empty($center->name) ? $center->name :null }}" type="text" class="form-control" name="name"  placeholder="{{ trans('centers/admin_lang.fields.name_helper') }}">
+                            <input value="{{!empty($center->name) ? $center->name :null }}" type="text"  {{ $disabled }} class="form-control" name="name"  placeholder="{{ trans('centers/admin_lang.fields.name_helper') }}">
                         </div>
                     </div>      
                 </div>
@@ -43,7 +45,7 @@
                             <label for="image"> {{ trans('centers/admin_lang.fields.image') }}</label>
                             <input type="file" accept="image/*" class="form-control d-none" name="image" id="center_image" style="opacity: 0; width: 0;">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="nombrefichero" readonly>
+                                <input type="text"  {{ $disabled }} class="form-control" id="nombrefichero" readonly>
                                 <span class="input-group-append">
                                     <button id="btnSelectImage" class="btn btn-primary" type="button">{{ trans('profile/admin_lang.fields.search_image') }}</button>
                                 </span>
@@ -55,13 +57,13 @@
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
                             <label for="phone"> {{ trans('centers/admin_lang.fields.phone') }}<span class="text-danger">*</span></label>
-                            <input value="{{!empty($center->phone) ? $center->phone :null }}" type="text" class="form-control" name="phone"  placeholder="{{ trans('centers/admin_lang.fields.phone_helper') }}">
+                            <input value="{{!empty($center->phone) ? $center->phone :null }}" type="text"  {{ $disabled }} class="form-control" name="phone"  placeholder="{{ trans('centers/admin_lang.fields.phone_helper') }}">
                         </div>
                     </div>    
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
                             <label for="email"> {{ trans('centers/admin_lang.fields.email') }}<span class="text-danger">*</span></label>
-                            <input value="{{!empty($center->email) ? $center->email :null }}" type="text" class="form-control" name="email"  placeholder="{{ trans('centers/admin_lang.fields.email_helper') }}">
+                            <input value="{{!empty($center->email) ? $center->email :null }}" type="text"  {{ $disabled }} class="form-control" name="email"  placeholder="{{ trans('centers/admin_lang.fields.email_helper') }}">
                         </div>
                     </div>                        
                 </div>
@@ -72,7 +74,7 @@
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
                             <label for="province_id" class="col-12"> {{ trans('centers/admin_lang.fields.province_id') }}<span class="text-danger">*</span></label>
-                            <select class="form-control select2" name="province_id" id="province_id">
+                            <select  {{ $disabled }}  class="form-control select2" name="province_id" id="province_id">
                                 <option value="">{{ trans('centers/admin_lang.fields.province_id_helper') }}</option>   
                                 @foreach ($provincesList as $province)
                                     <option value="{{ $province->id }}" @if($center->province_id ==$province->id) selected @endif>{{ $province->name }}</option>
@@ -84,7 +86,7 @@
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
                             <label for="municipio_id" class="col-12"> {{ trans('centers/admin_lang.fields.municipio_id') }} <span class="text-danger">*</span> </label>
-                            <select class="form-control select2" name="municipio_id" id="municipio_id">
+                            <select  {{ $disabled }}  class="form-control select2" name="municipio_id" id="municipio_id">
                                 <option value="">{{ trans('centers/admin_lang.fields.municipio_id_helper') }}</option>   
                                 @foreach ($municipiosList as $municipio)
                                     <option value="{{ $municipio->id }}" @if($center->municipio_id ==$municipio->id) selected @endif>{{ $municipio->name }}</option>
@@ -97,7 +99,7 @@
                     <div class="col-12">                     
                         <div class="form-group">
                             <label for="address"> {{ trans('centers/admin_lang.fields.address') }}<span class="text-danger">*</span></label>
-                            <input value="{{!empty($center->address) ? $center->address :null }}" type="text" class="form-control" name="address"  placeholder="{{ trans('centers/admin_lang.fields.address_helper') }}">
+                            <input value="{{!empty($center->address) ? $center->address :null }}" type="text"  {{ $disabled }} class="form-control" name="address"  placeholder="{{ trans('centers/admin_lang.fields.address_helper') }}">
                         </div>
                     </div>                      
                 </div>
@@ -106,7 +108,7 @@
                         <div class="form-group">
                             <label for="active"> {{ trans('centers/admin_lang.fields.active') }}</label>
                             <div class="form-check form-switch">
-                                <input class="form-check-input toggle-switch" @if($center->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
+                                <input {{ $disabled }}  class="form-check-input toggle-switch" @if($center->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
                             </div>                           
                         </div>
                     </div>                    
@@ -114,7 +116,7 @@
                         <div class="form-group">
                             <label for="default"> {{ trans('centers/admin_lang.fields.default') }}</label>
                             <div class="form-check form-switch">
-                                <input class="form-check-input toggle-switch" @if($center->default==1) checked @endif value="1" name="default" type="checkbox" id="default">
+                                <input {{ $disabled }}  class="form-check-input toggle-switch" @if($center->default==1) checked @endif value="1" name="default" type="checkbox" id="default">
                             </div>                           
                         </div>
                     </div>                    
@@ -124,7 +126,10 @@
                 <div class="col-12  d-flex justify-content-between">
 
                     <a href="{{ url('admin/centers') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
-                    <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                    @if (empty( $disabled ))
+                        <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                        
+                    @endif
                 </div>
             </div>
         </form>

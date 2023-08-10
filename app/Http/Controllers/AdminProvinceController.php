@@ -64,11 +64,33 @@ class AdminProvinceController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-provinces-read')) {
+            app()->abort(403);
+        }
+
+
+        $province = Province::find($id);
+
+        if (empty($province)) {
+            app()->abort(404);
+        }
+
+        $pageTitle = trans('provinces/admin_lang.show');
+        $title = trans('provinces/admin_lang.list');
+
+        $disabled = "disabled";
+        return view('provinces.admin_edit', compact('pageTitle', 'title', "province", "disabled"));
+    }
+
     public function edit($id)
     {
         if (!auth()->user()->isAbleTo('admin-provinces-update')) {
             app()->abort(403);
         }
+
+
         $province = Province::find($id);
 
         if (empty($province)) {
@@ -138,14 +160,18 @@ class AdminProvinceController extends Controller
 
         $table->editColumn('actions', function ($data) {
             $actions = '';
+            if (auth()->user()->isAbleTo("admin-provinces-read")) {
+                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.provinces.show', $data->id) . '" ><i
+                class="fa fa-eye fa-lg"></i></a> ';
+            }
             if (auth()->user()->isAbleTo("admin-provinces-update")) {
-                $actions .= '<a  class="btn btn-info btn-sm" href="' . route('admin.provinces.edit', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.provinces.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-provinces-delete")) {
 
-                $actions .= '<button class="btn btn-danger btn-sm" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
                     url('admin/provinces/' . $data->id) . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';

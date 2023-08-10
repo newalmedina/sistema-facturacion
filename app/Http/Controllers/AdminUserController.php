@@ -68,6 +68,25 @@ class AdminUserController extends Controller
             ->with('tab', $tab);
     }
 
+    public function show($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-users-update')) {
+            app()->abort(403);
+        }
+        $user = User::with('userProfile')->find($id);
+
+        if (empty($user)) {
+            app()->abort(404);
+        }
+
+        $pageTitle = trans('users/admin_lang.edit');
+        $title = trans('users/admin_lang.list');
+        $tab = 'tab_1';
+        $disabled = "disabled";
+        return view('users.admin_edit', compact('pageTitle', 'title', "user", "disabled"))
+            ->with('tab', $tab);
+    }
+
     public function update(AdminUserRequest $request, $id)
     {
         if (!auth()->user()->isAbleTo('admin-users-update')) {
@@ -178,14 +197,18 @@ class AdminUserController extends Controller
 
         $table->editColumn('actions', function ($data) {
             $actions = '';
+            if (auth()->user()->isAbleTo("admin-users-read")) {
+                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.users.show', $data->id) . '" ><i
+                class="fa fa-eye fa-lg"></i></a> ';
+            }
             if (auth()->user()->isAbleTo("admin-users-update")) {
-                $actions .= '<a  class="btn btn-info btn-sm" href="' . route('admin.users.edit', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.users.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-users-delete")) {
 
-                $actions .= '<button class="btn btn-danger btn-sm" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
                     url('admin/users/' . $data->id) . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';
@@ -263,6 +286,33 @@ class AdminUserController extends Controller
             ->with('tab', $tab);
     }
 
+    public function showRoles($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-users-read')) {
+            app()->abort(403);
+        }
+        $user = User::find($id);
+        if (is_null($user)) {
+            app()->abort(500);
+        }
+        $pageTitle = trans('users/admin_lang.users');
+        $title = trans('users/admin_lang.list');
+
+
+        $roles = Role::active()->get();
+        $tab = "tab_2";
+
+        $disabled = "disabled";
+        return view('users.admin_edit_roles', compact(
+            'pageTitle',
+            'title',
+            "user",
+            "disabled",
+            'roles'
+        ))
+            ->with('tab', $tab);
+    }
+
     public function updateRoles(Request $request, $id)
     {
 
@@ -321,8 +371,70 @@ class AdminUserController extends Controller
         ))
             ->with('tab', $tab);
     }
+    public function showCenters($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-users-read')) {
+            app()->abort(403);
+        }
+        $user = User::find($id);
+        if (is_null($user)) {
+            app()->abort(500);
+        }
+        $pageTitle = trans('users/admin_lang.users');
+        $title = trans('users/admin_lang.list');
+        $selected_center = [];
+        foreach ($user->centers as $center) {
+            $selected_center[] = $center->id;
+        }
+        $centers = Center::active()->get();
+
+        $tab = "tab_3";
+        $disabled = "disabled";
+        return view('users.admin_centers', compact(
+            'pageTitle',
+            'title',
+            "user",
+            'centers',
+            'disabled',
+            'selected_center'
+        ))
+            ->with('tab', $tab);
+    }
 
 
+    public function ShowPersonalInfo($id)
+    {
+        if (!auth()->user()->isAbleTo('admin-users-read')) {
+            app()->abort(403);
+        }
+        //Obtengo la información del usuario para pasarsela al formulario
+        $user = User::with('userProfile')->find($id);
+        $tab = 'tab_4';
+        $pageTitle =  trans('profile/admin_lang.my_profile');
+        $title =  trans('profile/admin_lang.personal_information');
+
+        $genders = [
+            "male" => trans("general/admin_lang.male"),
+            "female" => trans("general/admin_lang.female")
+        ];
+
+        $provincesList = Province::active()->get();
+        $municipiosList = Municipio::active()->where("province_id", $user->userProfile->province_id)->get();
+
+        $disabled = "disabled";
+        return view(
+            'users.admin_edit_personal_info',
+            compact(
+                'pageTitle',
+                'title',
+                'user',
+                'provincesList',
+                'municipiosList',
+                'disabled',
+                'genders'
+            )
+        )->with('tab', $tab);
+    }
     public function personalInfo($id)
     {
         if (!auth()->user()->isAbleTo('admin-users-update')) {

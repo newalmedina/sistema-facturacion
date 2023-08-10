@@ -14,7 +14,9 @@
 @stop
 
 @section('tab_content_4')
-
+@php
+$disabled= isset($disabled)?$disabled : null;
+@endphp
 <div class="row">
     
     <div class="col-12">
@@ -28,13 +30,13 @@
                      
                         <div class="form-group">
                             <label for="birthday"> {{ trans('users/admin_lang.fields.birthday') }}</label>
-                            <input value="{{ $user->userProfile->birthdayFormatted }}" type="text" class="form-control" id="birthday" name="user_profile[birthday]"  placeholder="{{ trans('users/admin_lang.fields.birthday_helper') }}">
+                            <input value="{{ $user->userProfile->birthdayFormatted }}" type="text" {{ $disabled }} class="form-control" id="birthday" name="user_profile[birthday]"  placeholder="{{ trans('users/admin_lang.fields.birthday_helper') }}">
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="identification"> {{ trans('users/admin_lang.fields.identification') }}</label>
-                            <input  value="{{ $user->userProfile->identification }}" maxlength="15" type="text" class="form-control" name="user_profile[identification]"  id="identification" placeholder="{{ trans('users/admin_lang.fields.identification_helper') }}">
+                            <input  value="{{ $user->userProfile->identification }}" maxlength="15" type="text" {{ $disabled }} class="form-control" name="user_profile[identification]"  id="identification" placeholder="{{ trans('users/admin_lang.fields.identification_helper') }}">
                         </div>
                     </div>
                 </div>
@@ -43,13 +45,13 @@
                      
                         <div class="form-group">
                             <label for="phone"> {{ trans('users/admin_lang.fields.phone') }}</label>
-                            <input value="{{ $user->userProfile->phone }}" type="text"  maxlength="15" class="form-control" name="user_profile[phone]"  placeholder="{{ trans('users/admin_lang.fields.phone_helper') }}">
+                            <input value="{{ $user->userProfile->phone }}" type="text"  maxlength="15" {{ $disabled }} class="form-control" name="user_profile[phone]"  placeholder="{{ trans('users/admin_lang.fields.phone_helper') }}">
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="mobile"> {{ trans('users/admin_lang.fields.mobile') }}</label>
-                            <input  value="{{ $user->userProfile->mobile }}"  type="text"  maxlength="15" class="form-control" name="user_profile[mobile]"  id="mobile" placeholder="{{ trans('users/admin_lang.fields.mobile_helper') }}">
+                            <input  value="{{ $user->userProfile->mobile }}"  type="text"  maxlength="15" {{ $disabled }} class="form-control" name="user_profile[mobile]"  id="mobile" placeholder="{{ trans('users/admin_lang.fields.mobile_helper') }}">
                         </div>
                     </div>
                 </div>
@@ -59,7 +61,7 @@
                      
                         <div class="form-group">
                             <label for="gender" class="col-12"> {{ trans('users/admin_lang.fields.gender') }}</label>
-                            <select class="form-control select2" name="user_profile[gender]" id="gender"> 
+                            <select {{ $disabled }} class="form-control select2" name="user_profile[gender]" id="gender"> 
                                 @foreach ($genders as $key=>$value)
                                     <option value="{{ $key }}" @if($user->userProfile->gender ==$key) selected @endif>{{ $value }}</option>
                                 @endforeach 
@@ -71,7 +73,7 @@
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
                             <label for="province_id" class="col-12"> {{ trans('users/admin_lang.fields.province_id') }}</label>
-                            <select class="form-control select2" name="user_profile[province_id]" id="province_id">
+                            <select {{ $disabled }} class="form-control select2" name="user_profile[province_id]" id="province_id">
                                 <option value="">{{ trans('users/admin_lang.fields.province_id_helper') }}</option>   
                                 @foreach ($provincesList as $province)
                                     <option value="{{ $province->id }}" @if($user->userProfile->province_id ==$province->id) selected @endif>{{ $province->name }}</option>
@@ -83,7 +85,7 @@
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
                             <label for="municipio_id" class="col-12"> {{ trans('users/admin_lang.fields.municipio_id') }}  </label>
-                            <select class="form-control select2" name="user_profile[municipio_id]" id="municipio_id">
+                            <select {{ $disabled }} class="form-control select2" name="user_profile[municipio_id]" id="municipio_id">
                                 <option value="">{{ trans('users/admin_lang.fields.municipio_id_helper') }}</option>   
                                 @foreach ($municipiosList as $municipio)
                                     <option value="{{ $municipio->id }}" @if($user->userProfile->municipio_id ==$municipio->id) selected @endif>{{ $municipio->name }}</option>
@@ -97,14 +99,20 @@
                      
                         <div class="form-group">
                             <label for="address"> {{ trans('users/admin_lang.fields.address') }}</label>
-                            <input value="{{ $user->userProfile->address }}" type="text" class="form-control" name="user_profile[address]"  placeholder="{{ trans('users/admin_lang.fields.address_helper') }}">
+                            <input value="{{ $user->userProfile->address }}" type="text" {{ $disabled }} class="form-control" name="user_profile[address]"  placeholder="{{ trans('users/admin_lang.fields.address_helper') }}">
                         </div>
                     </div>
                     
                 </div>
             </div>
-            <div class="card-footer text-end">
-                <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+            <div class="card-footer row">
+                <div class="col-12  d-flex justify-content-between">
+
+                    <a href="{{ url('admin/users') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
+                    @if (empty($disabled))
+                     <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>  
+                     @endif    
+                </div>
             </div>
         </form>
     </div>
