@@ -157,7 +157,7 @@
                         orderable: true,
                         searchable: true,
                         data: 'name',
-                        name: 'medical-specializations.name',
+                        name: 'medical_specializations.name',
                         sWidth: ''
                     },
                    

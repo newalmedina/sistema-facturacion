@@ -37,7 +37,7 @@ class MedicalSpecializationDataSeeder extends Seeder
 
                 foreach ($dataObject as $data) {
                     $specialization = new MedicalSpecialization();
-                    $specialization->name = $data->name;
+                    $specialization->name = ucfirst($data->name);
                     $specialization->active = 1;
                     $specialization->save();
                 }
