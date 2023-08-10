@@ -6,7 +6,17 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">	
 
-		<title>Demo Cleaning Services | Porto - Responsive HTML5 Template</title>	
+		<title>
+            @php
+                    $setting =\App\Services\SettingsServices::getGeneral();
+            @endphp
+            @if(!empty($setting->site_name))
+                {{ $setting->site_name }} ::
+            @else
+            {{ config('app.name', '') }} ::
+                
+            @endif
+		</title>	
 
 		<meta name="keywords" content="HTML5 Template" />
 		<meta name="description" content="Porto - Responsive HTML5 Template">

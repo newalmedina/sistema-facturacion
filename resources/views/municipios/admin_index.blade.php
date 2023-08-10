@@ -216,7 +216,7 @@
                         "title": "{!! trans('municipios/admin_lang.fields.province_id') !!}",
                         orderable: true,
                         searchable: true,
-                        data: 'name',
+                        data: 'provincia',
                         name: 'provinces.name',
                         sWidth: ''
                     },

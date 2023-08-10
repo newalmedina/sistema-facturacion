@@ -5,7 +5,15 @@
 
     <title>
         @section('title')
+            @php
+                    $setting =\App\Services\SettingsServices::getGeneral();
+            @endphp
+            @if(!empty($setting->site_name))
+                {{ $setting->site_name }} ::
+            @else
             {{ config('app.name', '') }} ::
+                
+            @endif
         @show
     </title>
     <meta name="keywords" content="HTML5 Admin Template">

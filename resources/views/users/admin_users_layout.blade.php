@@ -63,7 +63,7 @@
                         <a id="tab_1" class="nav-link" data-bs-target="#tab_1-1" data-bs-toggle="tabajax"
                             href="{{ !empty($user->id) ? url('admin/users/' . $user->id . '/edit') : '#' }}"
                             data-target="#tab_1-1" aria-controls="tab_1-1" aria-selected="true">
-                            {{ trans('users/admin_lang.edit') }}
+                            {{ $pageTitle }}
                         </a>
                     </li>
             

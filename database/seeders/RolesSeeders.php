@@ -33,6 +33,15 @@ class RolesSeeders extends Seeder
 
 
 
+        $userRole = new Role;
+        $userRole->display_name = 'Doctor';
+        $userRole->name = Str::slug('doctor');
+        $userRole->description = 'Doctor';
+        $userRole->can_delete = false;
+
+        $userRole->active = true;
+        $userRole->save();
+
         // $userRole = new Role;
         // $userRole->display_name = 'Usuario front';
         // $userRole->name = Str::slug('usuario-front');

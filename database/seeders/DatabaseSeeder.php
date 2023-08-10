@@ -36,5 +36,6 @@ class DatabaseSeeder extends Seeder
         $this->call(GeneralSettingSeeders::class);
         $this->call(MedicalSpecializationDataSeeder::class);
         $this->call(DiagnosisDataSeeder::class);
+        $this->call(InsuranceCarriersDataSeeder::class);
     }
 }

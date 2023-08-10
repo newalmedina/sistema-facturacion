@@ -247,9 +247,9 @@ class AdminServiceController extends Controller
 
             $service->insuranceCarriers()->detach();
             if (!empty($request->insurance)) {
-                for ($i = 0; $i < count($request->insurance); $i++) {
+                foreach ($request->insurance as $key => $value) {
                     $segurosData = [];
-                    $segurosData[$request->insurance[$i]] = ["price" => $request->price[$i]];
+                    $segurosData[$value] = ["price" => $request->price[$key]];
                     $service->insuranceCarriers()->attach($segurosData);
                 }
             }
