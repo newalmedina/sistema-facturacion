@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminCenterController;
+use App\Http\Controllers\AdminClinicPersonalController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminDiagnosiController;
 use App\Http\Controllers\AdminInsuranceCarrierController;
@@ -66,13 +67,16 @@ Route::group(array('prefix' => 'front', 'middleware' => []), function () {
 Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active', 'avaible.site']), function () {
 
     Route::get('/profile/personal-info', [AdminUserProfileController::class, 'personalInfo']);
-    Route::post('/profile/personal-info/store', [AdminUserProfileController::class, 'updatePersonalInfo'])->name("admin.updateProfilePersonalInfo");
+    Route::post('/profile/personal-info/update', [AdminUserProfileController::class, 'updatePersonalInfo'])->name("admin.updateProfilePersonalInfo");
+    Route::get('/profile/clinic-training', [AdminUserProfileController::class, 'clinicTraining']);
+    Route::post('/profile/clinic-training/update', [AdminUserProfileController::class, 'updateClinicTraining'])->name("admin.updateProfileClinicTraining");
     Route::get('/profile/getphoto/{photo}', [AdminUserProfileController::class, 'getPhoto'])->name("admin.getPhoto");
 
     Route::get('/settings/get-image/{image}', [AdminSettingsController::class, 'getImage'])->name("admin.settings-get-image");
 
     Route::get('/municipios/municipios-list/{id?}', [AdminMunicipioController::class, 'getMunicipioListByProvince']);
 });
+
 
 Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active', 'profile.complete', 'avaible.site'/* , 'selected.center' */]), function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name("admin.dashboard");
@@ -207,17 +211,14 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/insurance-carriers/change-state/{id}', [AdminInsuranceCarrierController::class, 'changeState'])->name('admin.insurance-carriers.changeState');
     Route::get('/insurance-carriers/remove-filter', [AdminInsuranceCarrierController::class, 'removeFilter'])->name('admin.insurance-carriers.removeFilter');
     Route::patch('/insurance-carriers/{id}', [AdminInsuranceCarrierController::class, 'update'])->name('admin.insurance-carriers.update');
-    Route::post('/insurance-carriers/change-center', [AdminInsuranceCarrierController::class, 'changeCenter'])->name('admin.insurance-carriers.changeCenterUpdate');
     Route::post('/insurance-carriers', [AdminInsuranceCarrierController::class, 'store'])->name('admin.insurance-carriers.store');
     Route::post('/insurance-carriers/save-filter', [AdminInsuranceCarrierController::class, 'saveFilter'])->name('admin.insurance-carriers.saveFilter');
     Route::post('/insurance-carriers/list', [AdminInsuranceCarrierController::class, 'getData'])->name('admin.insurance-carriers.getData');
     Route::delete('/insurance-carriers/{id}', [AdminInsuranceCarrierController::class, 'destroy'])->name('admin.insurance-carriers.destroy');
-
-    Route::get('/insurance-carriers/aditional-info/{id}', [AdminInsuranceCarrierController::class, 'editAditionalInfo'])->name('admin.insurance-carriers.editAditionalInfo');
-    Route::patch('/insurance-carriers/aditional-info/{id}', [AdminInsuranceCarrierController::class, 'updateAditionalInfo'])->name('admin.insurance-carriers.updateAditionalInfo');
     Route::get('/insurance-carriers/get-image/{photo}', [AdminInsuranceCarrierController::class, 'getimage'])->name("admin.insurance-carriers.getimage");
     Route::get('/insurance-carriers/export-excel', [AdminInsuranceCarrierController::class, 'exportExcel'])->name("admin.insurance-carriers.exportExcel");
     Route::delete('/insurance-carriers/delete-image/{photo}', [AdminInsuranceCarrierController::class, 'deleteImage'])->name("admin.insurance-carriers.deleteImage");
+
 
 
     //admin services
@@ -235,4 +236,32 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/services/aditional-info/{id}/show', [AdminServiceController::class, 'showAditionalInfo'])->name('admin.services.showAditionalInfo');
     Route::patch('/services/aditional-info/{id}', [AdminServiceController::class, 'updateAditionalInfo'])->name('admin.services.updateAditionalInfo');
     Route::get('/services/export-excel', [AdminServiceController::class, 'exportExcel'])->name("admin.services.exportExcel");
+});
+
+Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active', 'profile.complete', 'avaible.site', 'selected.center']), function () {
+    //admin clinic-personal
+    Route::get('/clinic-personal', [AdminClinicPersonalController::class, 'index']);
+    Route::get('/clinic-personal/create', [AdminClinicPersonalController::class, 'create'])->name('admin.clinic-personal.create');
+    Route::get('/clinic-personal/{id}/edit', [AdminClinicPersonalController::class, 'edit'])->name('admin.clinic-personal.edit');
+    Route::get('/clinic-personal/{id}/show', [AdminClinicPersonalController::class, 'show'])->name('admin.clinic-personal.show');
+    Route::get('/clinic-personal/remove-filter', [AdminClinicPersonalController::class, 'removeFilter'])->name('admin.clinic-personal.removeFilter');
+    Route::patch('/clinic-personal/{id}', [AdminClinicPersonalController::class, 'update'])->name('admin.clinic-personal.update');
+    Route::post('/clinic-personal/save-filter', [AdminClinicPersonalController::class, 'saveFilter'])->name('admin.clinic-personal.saveFilter');
+    Route::post('/clinic-personal/list', [AdminClinicPersonalController::class, 'getData'])->name('admin.clinic-personal.getData');
+
+    Route::get('/clinic-personal/get-image/{photo}', [AdminClinicPersonalController::class, 'getimage'])->name("admin.clinic-personal.getimage");
+    Route::get('/clinic-personal/export-excel', [AdminClinicPersonalController::class, 'exportExcel'])->name("admin.clinic-personal.exportExcel");
+
+    //admin patients
+    Route::get('/patients', [AdminClinicPersonalController::class, 'index']);
+    Route::get('/patients/create', [AdminClinicPersonalController::class, 'create'])->name('admin.patients.create');
+    Route::get('/patients/{id}/edit', [AdminClinicPersonalController::class, 'edit'])->name('admin.patients.edit');
+    Route::get('/patients/{id}/show', [AdminClinicPersonalController::class, 'show'])->name('admin.patients.show');
+    Route::get('/patients/remove-filter', [AdminClinicPersonalController::class, 'removeFilter'])->name('admin.patients.removeFilter');
+    Route::patch('/patients/{id}', [AdminClinicPersonalController::class, 'update'])->name('admin.patients.update');
+    Route::post('/patients/save-filter', [AdminClinicPersonalController::class, 'saveFilter'])->name('admin.patients.saveFilter');
+    Route::post('/patients/list', [AdminClinicPersonalController::class, 'getData'])->name('admin.patients.getData');
+
+    Route::get('/patients/get-image/{photo}', [AdminClinicPersonalController::class, 'getimage'])->name("admin.patients.getimage");
+    Route::get('/patients/export-excel', [AdminClinicPersonalController::class, 'exportExcel'])->name("admin.patients.exportExcel");
 });

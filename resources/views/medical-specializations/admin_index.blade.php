@@ -132,6 +132,7 @@
                 "processing": true,
                 "serverSide": true,
                 "pageLength": 50,
+                "responsive": true,
                 ajax: {
                     "headers": {
                         "X-CSRF-TOKEN": "{{ csrf_token() }}"

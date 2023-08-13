@@ -9,6 +9,7 @@ return [
     'quit_image' => 'Quitar imagen',
     'general_information' => 'Información general',
     'personal_information' => 'Información personal',
+    'clinic_training' => 'Formación clínica',
     'perfil_usuario_desc' => 'Aquí puede modificar sus datos, así como cambiar su usuario y contraseña de acceso a la herrramienta.',
     'fields' => [
         'active' => 'Activo',

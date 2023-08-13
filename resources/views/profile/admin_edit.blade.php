@@ -52,7 +52,7 @@
             
 
                 <div class="row form-group mb-3">                         
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <div class="form-group">
                             <label for="profile_image"> {{ trans('profile/admin_lang.fields.profile_image') }}</label>
                             <input type="file" class="form-control d-none"  accept="image/*"name="profile_image" id="profile_image" style="opacity: 0; width: 0;">

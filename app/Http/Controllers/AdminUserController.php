@@ -190,7 +190,7 @@ class AdminUserController extends Controller
         });
         $table->editColumn('centers', function ($data) {
 
-            $centers = DB::table("user_centers")->join("centers", "centers.id", "=", "user_centers.center_id")->where("user_centers.user_id", 1)->pluck("centers.name")->toArray();
+            $centers = DB::table("user_centers")->join("centers", "centers.id", "=", "user_centers.center_id")->where("user_centers.user_id", $data->id)->pluck("centers.name")->toArray();
 
             return implode(", ", $centers);
         });
@@ -274,8 +274,7 @@ class AdminUserController extends Controller
         $pageTitle = trans('users/admin_lang.users');
         $title = trans('users/admin_lang.list');
 
-
-        $roles = Role::active()->get();
+        $roles = Role::active()->where("roles.can_show", 1)->get();
         $tab = "tab_2";
         return view('users.admin_edit_roles', compact(
             'pageTitle',
@@ -299,7 +298,7 @@ class AdminUserController extends Controller
         $title = trans('users/admin_lang.list');
 
 
-        $roles = Role::active()->get();
+        $roles = Role::active()->where("roles.can_show", 1)->get();
         $tab = "tab_2";
 
         $disabled = "disabled";

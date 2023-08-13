@@ -75,6 +75,16 @@
                             {{ trans('profile/admin_lang.general_information') }}
                         </a>
                     </li>                
+                    @if (Auth::user()->isDoctor() )
+                        
+                        <li class="nav-item @if ($tab == 'tab_3') active @endif">
+                            <a id="tab_3" class="nav-link" data-bs-target="#tab_3-3"
+                            data-bs-toggle="tabajax" href="{{ url('admin/profile/clinic-training/') }}" data-target="#tab_3-3"
+                            aria-controls="tab_3-3" aria-selected="true" >
+                                {{ trans('profile/admin_lang.clinic_training') }} 
+                            </a>
+                        </li>
+                    @endif
                     <li class="nav-item @if ($tab == 'tab_2') active @endif">
                         <a id="tab_2" class="nav-link" data-bs-target="#tab_2-2"
                         data-bs-toggle="tabajax" href="{{ url('admin/profile/personal-info/') }}" data-target="#tab_2-2"
@@ -91,6 +101,10 @@
             
                         <div id="tab_2-2" class="tab-pane  @if ($tab == 'tab_2') active @endif">
                             @yield('tab_content_2')
+                        </div>
+
+                        <div id="tab_3-3" class="tab-pane  @if ($tab == 'tab_3') active @endif">
+                            @yield('tab_content_3')
                         </div>
                     
             

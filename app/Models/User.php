@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Laratrust\Traits\LaratrustUserTrait;
 
@@ -52,6 +53,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne('App\Models\UserProfile', 'user_id');
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function doctorProfile()
+    {
+        return $this->hasOne('App\Models\DoctorProfile', 'user_id');
+    }
 
     public function hasSelectedCenter()
     {
@@ -63,7 +71,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function centers()
     {
-        return $this->belongsToMany(Center::class, 'user_centers', 'user_id', 'center_id');
+        return $this->belongsToMany(Center::class, 'user_centers', 'user_id', 'center_id')->withTimestamps();
+    }
+
+    public function specializations()
+    {
+        return $this->belongsToMany(MedicalSpecialization::class, 'doctor_specializations', 'user_id', 'specialization_id')->withTimestamps();
     }
 
     public function getCreatedAtFormattedAttribute()
@@ -76,5 +89,27 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return "";
+    }
+
+    public function scopeClinicPersonal($query)
+    {
+
+        return $query->join("role_user", "users.id", "=", "role_user.user_id")
+            ->join("roles", "role_user.role_id", "=", "roles.id")
+            ->whereIn("roles.name", ["doctor"]);
+    }
+
+    public function isDoctor()
+    {
+
+        $roles = $this->roles->where('name', "doctor");
+        return  count($roles);
+    }
+
+
+    public function scopeClinicPersonalSelectedCenter($query)
+    {
+        return $query->join("user_centers", "users.id", "=", "user_centers.user_id")
+            ->where("user_centers.center_id", Auth::user()->hasSelectedCenter());
     }
 }

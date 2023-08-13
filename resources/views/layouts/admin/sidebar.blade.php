@@ -1,4 +1,4 @@
- @php
+ç @php
      $activeColor="#0088CC";
      
  @endphp
@@ -137,7 +137,6 @@
                             </ul>
                         </li>
                     @endif
-                    
                     @if(Auth::user()->isAbleTo("admin-centers")  )
                         <li class="@if (Request::is('admin/centers*') ) nav-active @endif">
                             <a class="nav-link" @if (Request::is('admin/centers*')) style="color:{{ $activeColor }}" @endif  href="{{ url('/admin/centers') }}">
@@ -146,6 +145,24 @@
                             </a>                        
                         </li>
                     @endif
+                    @if(Auth::user()->isAbleTo("admin-clinic-personal") && Auth::user()->hasSelectedCenter()  )
+                        <li class="@if (Request::is('admin/clinic-personal*') ) nav-active @endif">
+                            <a class="nav-link" @if (Request::is('admin/clinic-personal*')) style="color:{{ $activeColor }}" @endif  href="{{ url('/admin/clinic-personal') }}">
+                                <i class="fas fa-user-md" aria-hidden="true"></i>
+                                <span>{{ trans('clinic-personal/admin_lang.clinic-personal') }}</span>
+                            </a>                        
+                        </li>
+                    @endif
+                    
+                    @if(Auth::user()->isAbleTo("admin-patients") && Auth::user()->hasSelectedCenter()  )
+                        <li class="@if (Request::is('admin/clinic-personal*') ) nav-active @endif">
+                            <a class="nav-link" @if (Request::is('admin/clinic-personal*')) style="color:{{ $activeColor }}" @endif  href="{{ url('/admin/clinic-personal') }}">
+                                <i class="fas fa-user-md" aria-hidden="true"></i>
+                                <span>{{ trans('clinic-personal/admin_lang.clinic-personal') }}</span>
+                            </a>                        
+                        </li>
+                    @endif
+                    
                     @if(Auth::user()->isAbleTo("admin-settings")  )
                         <li class="@if (Request::is('admin/settings*') ) nav-active @endif">
                             <a class="nav-link" @if (Request::is('admin/settings*')) style="color:{{ $activeColor }}" @endif  href="{{ url('/admin/settings') }}">

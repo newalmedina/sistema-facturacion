@@ -18,4 +18,8 @@ class MedicalSpecialization extends Model
     {
         return $query->where('active', 1);
     }
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'doctor_specializations', 'specialization_id', 'user_id')->withTimestamps();
+    }
 }

@@ -441,6 +441,8 @@ class AdminCenterController extends Controller
         ])
             ->leftJoin("provinces", "centers.province_id", "=", "provinces.id")
             ->leftJoin("municipios", "centers.municipio_id", "=", "municipios.id");
+        $this->addFilter($query);
+
         return Excel::download(new AdminCentersExport($query), strtolower(trans('centers/admin_lang.centers')) . '_' . Carbon::now()->format("dmYHis") . '.xlsx');
     }
 

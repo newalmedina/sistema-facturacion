@@ -23,8 +23,59 @@
  
         @include('layouts.admin.includes.errors')        
     </div>
-    <!-- start: page -->  
-       
+    <!-- start: page -->
+   
+    <div class="row">
+        <div class="col">
+            <form id="formData" enctype="multipart/form-data" action=" {{ route("admin.clinic-personal.saveFilter") }}" method="post"  novalidate="false">
+                @csrf
+                @method("post")
+            <section class="card card-featured-top card-featured-primary">
+                <header class="card-header">
+                    <div class="card-actions">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle=""></a>
+                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss=""></a>
+                    </div>
+                    <h2 class="card-title">{!! trans('general/admin_lang.filters_exports') !!}</h2>
+                </header>
+            
+                <div class="card-body py-4">  
+                    <div class="row">
+                        <div class="col-12 ">                     
+                            <div class="form-group">
+                                <label for="specialization_id" class="col-12" > {{ trans('clinic-personal/admin_lang.fields.specialization_id') }}</label>
+                                <select class="form-control select2 col-12" style="width: 100%" name="specialization_id[]" multiple id="specialization_id">
+                                    @foreach ($specializations as $specialization)
+                                        <option value="{{ $specialization->id }}" @if (in_array($specialization->id,$filtSpecializationId)) selected @endif >{{ $specialization->name }}</option>
+                                    @endforeach 
+                                </select>    
+                            
+                            </div>
+                        </div>   
+                       
+                    </div>                       
+                </div>
+                <div class="card-footer">  
+                    <div class="row ">
+                        <div class="col-12 col-md-6 d-flex justify-content-start">
+                            <button class="btn btn-success btn-xs " type="submit"> {!! trans('general/admin_lang.filter') !!}</button>
+                            <a href="{{ url('admin/clinic-personal/remove-filter') }}" class="ms-2 btn btn-danger btn-xs">
+                                {!! trans('general/admin_lang.clean_filter') !!}
+                            </a>
+                        </div>
+                        @if ( Auth::user()->isAbleTo("admin-clinic-personal-list") ) 
+                        <div class="col-12 col-md-6 d-flex justify-content-end">
+                            <a href="{{ url('admin/clinic-personal/export-excel') }}" class="text-success">
+                                <i class="far fa-file-excel fa-2x"></i>
+                            </a>
+                        </div>
+                        @endif
+                    </div>                       
+                </div>
+            </section>
+            </form>
+        </div>
+    </div>
 
         <div class="row">
             <div class="col">
@@ -37,36 +88,38 @@
 
                         <h2 class="card-title">{{ $title }}</h2>
                     </header>
-                    <div class="card-body">  
+                    {{-- <div class="card-body">  
                         <div class="text-end">
-                            @if(Auth::user()->isAbleTo("admin-provinces-create"))
-                              <a href="{{ url('admin/provinces/create') }}" class="btn btn-outline-success">
-                                {{ trans('provinces/admin_lang.new') }}
+                            @if(Auth::user()->isAbleTo("admin-clinic-personal-create"))
+                              <a href="{{ url('admin/clinic-personal/create') }}" class="btn btn-outline-success">
+                                {{ trans('clinic-personal/admin_lang.new') }}
                               </a>
                             @endif
                           </div>
-                    </div>
+                    </div> --}}
 
                     <div class="card-body">  
                         <div class="row">
                             <div class="col-12 table-responsive">
-                                @if ( Auth::user()->isAbleTo("admin-provinces-list") ) 
-                                <table id="table_users" class="table table-bordered table-striped" style="width: 100%" aria-hidden="true">
+                                @if ( Auth::user()->isAbleTo("admin-clinic-personal-list") ) 
+                                <table id="table_clinic-personal" class="table table-bordered table-striped" style="width: 100%" aria-hidden="true">
                                     <thead>
                                         <tr>
-                                            {{-- <th scope="col"> --}}
                                             <th scope="col">
                                             <th scope="col">
                                             <th scope="col">
-                                          
+                                            <th scope="col">
+                                            <th scope="col">
+                                            <th scope="col">
                                         </tr>
                                     </thead>
                                     <tbody>
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            {{-- <th scope="col"> --}}
-                                          
+                                            <th scope="col">
+                                            <th scope="col">
+                                            <th scope="col">
                                             <th scope="col">
                                             <th scope="col">
                                             <th scope="col">
@@ -82,7 +135,7 @@
                 </section>
             </div>
         </div>
-        @if ( Auth::user()->isAbleTo("admin-provinces-list") ) 
+        {{-- @if ( Auth::user()->isAbleTo("admin-clinic-personal-list") ) 
             <div class="row">
                 <div class="col">
                     <section class="card card-featured-top card-featured-primary">
@@ -98,7 +151,7 @@
                         <div class="card-body">  
                             <div class="row">
                                 <div class="col-12 ">
-                                    <a href="{{ url('admin/provinces/export-excel') }}" class="text-success">
+                                    <a href="{{ url('admin/clinic-personal/export-excel') }}" class="text-success">
                                         <i class="far fa-file-excel fa-4x"></i>
                                     </a>
                                 </div>
@@ -107,7 +160,7 @@
                     </section>
                 </div>
             </div>
-        @endif
+        @endif --}}
     <!-- end: page -->
 </section>   
 @endsection
@@ -124,9 +177,9 @@
       
     });
     var oTable = '';
-    @if ( Auth::user()->isAbleTo("admin-provinces-list") )    
+    @if ( Auth::user()->isAbleTo("admin-clinic-personal-list") )    
         $(function() {
-            oTable = $('#table_users').DataTable({
+            oTable = $('#table_clinic-personal').DataTable({
                 "stateSave": true,
                 "stateDuration": 60,
                 "processing": true,
@@ -137,31 +190,55 @@
                     "headers": {
                         "X-CSRF-TOKEN": "{{ csrf_token() }}"
                     },
-                    url: "{{ url('admin/provinces/list') }}",
+                    url: "{{ url('admin/clinic-personal/list') }}",
                     type: "POST"
                 },
             /* order: [
                     [2, "asc"]
                 ],*/
                 columns: [
+                  
                     {
-                        "title": "{!! trans('general/admin_lang.active') !!}",
+                        "title": "{!! trans('clinic-personal/admin_lang.fields.photo') !!}",
                         orderable: false,
                         searchable: false,
-                        data: 'active',
-                        name: 'active',
+                        data: 'photo',
+                        name: 'photo',
                         sWidth: '80px'
                     },
-                   
                     {
-                        "title": "{!! trans('provinces/admin_lang.fields.name') !!}",
+                        "title": "{!! trans('clinic-personal/admin_lang.fields.name') !!}",
                         orderable: true,
                         searchable: true,
-                        data: 'name',
-                        name: 'provinces.name',
+                        data: 'first_name',
+                        name: 'user_profiles.first_name',
                         sWidth: ''
                     },
-                   
+                    {
+                        "title": "{!! trans('clinic-personal/admin_lang.fields.phone') !!}",
+                        orderable: true,
+                        searchable: true,
+                        data: 'phone',
+                        name: 'user_profiles.phone',
+                        sWidth: ''
+                    },
+                    {
+                        "title": "{!! trans('clinic-personal/admin_lang.fields.email') !!}",
+                        orderable: true,
+                        searchable: true,
+                        data: 'email',
+                        name: 'users.email',
+                        sWidth: ''
+                    },
+                    {
+                        "title": "{!! trans('clinic-personal/admin_lang.fields.specialization_id') !!}",
+                        orderable: false,
+                        searchable: false,
+                        data: 'specializations',
+                        name: 'specializations',
+                        sWidth: ''
+                    },
+                    
                     {
                         "title": "{!! trans('general/admin_lang.actions') !!}",
                         orderable: false,
@@ -185,8 +262,8 @@
             });
 
             var state = oTable.state.loaded();
-            $('tfoot th', $('#table_users')).each(function(colIdx) {
-                var title = $('tfoot th', $('#table_users')).eq($(this).index()).text();
+            $('tfoot th', $('#table_clinic-personal')).each(function(colIdx) {
+                var title = $('tfoot th', $('#table_clinic-personal')).eq($(this).index()).text();
                 if (oTable.settings()[0]['aoColumns'][$(this).index()]['bSearchable']) {
                     var defecto = "";
                     if (state) defecto = state.columns[colIdx].search.search;
@@ -198,66 +275,19 @@
                 }
             });
 
-            $('#table_users').on('keyup change', 'tfoot input', function(e) {
+            $('#table_clinic-personal').on('keyup change', 'tfoot input', function(e) {
                 oTable
                     .column($(this).parent().index() + ':visible')
                     .search(this.value)
                     .draw();
             });
 
-        });
-        function changeState(id){
-            $.ajax({
-                url     : "{{ url('admin/provinces/change-state/') }}/"+id,
-                type    : 'GET',
-                success : function(data) {
-                    console.log("estado actalizado");           
-                },
-                error : function(data) {
-                    console.log("Error al actualizar "+error);           
-                }
-            });
-        }
-
+        });    
    
     @endif 
-    function deleteElement(url) {
-        var strBtn = "";
-
-        $("#confirmModalLabel").html("{{ trans('general/admin_lang.delete') }}");
-        $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
-        strBtn+= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('general/admin_lang.close') }}</button>';
-        strBtn+= '<button type="button" class="btn btn-primary" onclick="javascript:deleteinfo(\''+url+'\');">{{ trans('general/admin_lang.yes_delete') }}</button>';
-        $("#confirmModalFooter").html(strBtn);
-        $('#modal_confirm').modal('toggle');
-    }
-
-    function deleteinfo(url) {
-        $.ajax({
-            url     : url,
-            type    : 'POST',
-            "headers": {"X-CSRF-TOKEN": "{{ csrf_token() }}"},
-            data: {_method: 'delete'},
-            success : function(data) {
-                $('#modal_confirm').modal('hide');
-                if(data) {
-                    // $("#modal_alert").addClass('modal-success');
-                    // $("#alertModalHeader").html("{{ trans('general/admin_lang.warning') }}");
-                    // $("#alertModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-check-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i> <label style='font-size: 18px'>" + data.msg+"</label></div>");
-                    // $("#modal_alert").modal('toggle');
-                    toastr.success( data.msg)
-                    oTable.ajax.reload(null, false);
-                } else {
-                    $("#modal_alert").addClass('modal-danger');
-                    $("#alertModalBody").html("<i class='fas fa-bug text-danger' style='font-size: 64px; float: left; margin-right:15px;'></i> {{ trans('general/admin_lang.errorajax') }}");
-                    $("#modal_alert").modal('toggle');
-                }
-                return false;
-            }
-
-        });
-        return false;
-    }   
+   
+   
+   
 </script>
 
 @stop

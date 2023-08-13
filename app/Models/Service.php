@@ -19,6 +19,6 @@ class Service extends Model
     }
     public function insuranceCarriers()
     {
-        return $this->belongsToMany(InsuranceCarrier::class, 'service_insurance_carriers', 'service_id', 'insurance_carrier_id')->withPivot(['price']);
+        return $this->belongsToMany(InsuranceCarrier::class, 'service_insurance_carriers', 'service_id', 'insurance_carrier_id')->withPivot(['price'])->withTimestamps();
     }
 }

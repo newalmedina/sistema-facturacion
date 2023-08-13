@@ -2,25 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\AdminCentersExport;
 use App\Exports\AdminInsuranceCarrierExport;
 use App\Http\Requests\AdminInsuranceCarrierRequest;
-use App\Http\Requests\AdminChangeCenterRequest;
-use App\Models\Center;
 use App\Models\InsuranceCarrier;
 use App\Models\Municipio;
-use App\Models\PermissionsTree;
 use App\Models\Province;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\UserProfile;
 use App\Services\StoragePathWork;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
-use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 
 use Maatwebsite\Excel\Facades\Excel;
@@ -312,60 +302,6 @@ class AdminInsuranceCarrierController extends Controller
         return 0;
     }
 
-    public function editAditionalInfo($id)
-    {
-        if (!auth()->user()->isAbleTo('admin-insurance-carriers-update')) {
-            app()->abort(403);
-        }
-
-        $insuranceCarrier = InsuranceCarrier::find($id);
-        if (is_null($insuranceCarrier)) {
-            app()->abort(500);
-        }
-        $pageTitle = trans('insurance-carriers/admin_lang.edit');
-        $title = trans('insurance-carriers/admin_lang.list');
-
-
-        $tab = "tab_2";
-        return view('insurance-carriers.admin_edit_aditional_info', compact(
-            'pageTitle',
-            'title',
-            "center"
-        ))
-            ->with('tab', $tab);
-    }
-
-    public function updateAditionalInfo(Request $request, $id)
-    {
-
-        if (!auth()->user()->isAbleTo('admin-insurance-carriers-update')) {
-            app()->abort(403);
-        }
-
-        $insuranceCarrier = InsuranceCarrier::find($id);
-
-        if (is_null($insuranceCarrier)) {
-            app()->abort(500);
-        }
-
-        try {
-            DB::beginTransaction();
-            $insuranceCarrier->specialities = $request->input('specialities');
-            $insuranceCarrier->schedule = $request->input('schedule');
-
-            $insuranceCarrier->save();
-            DB::commit();
-            // Y Devolvemos una redirección a la acción show para mostrar el usuario
-
-            return redirect()->to('/admin/insurance-carriers/aditional-info/' . $insuranceCarrier->id)->with('success', trans('general/admin_lang.save_ok'));
-        } catch (\PDOException $e) {
-            DB::rollBack();
-            dd($e);
-
-            return redirect()->to('/admin/insurance-carriers/aditional-info/' . $insuranceCarrier->id);
-            // ->with('error', trans('general/admin_lang.save_ko'));
-        }
-    }
 
     public function getImage($photo)
     {
@@ -409,6 +345,8 @@ class AdminInsuranceCarrierController extends Controller
         ])
             ->leftJoin("provinces", "insurance_carriers.province_id", "=", "provinces.id")
             ->leftJoin("municipios", "insurance_carriers.municipio_id", "=", "municipios.id");
+        $this->addFilter($query);
+
         return Excel::download(new AdminInsuranceCarrierExport($query), strtolower(trans('insurance-carriers/admin_lang.insurance-carriers')) . '_' . Carbon::now()->format("dmYHis") . '.xlsx');
     }
 

@@ -28,6 +28,7 @@ class RolesSeeders extends Seeder
 
         $adminRole->active = true;
         $adminRole->can_delete = false;
+        $adminRole->can_show = true;
         $adminRole->save();
         $rolAdmin = $adminRole->id;
 
@@ -39,6 +40,17 @@ class RolesSeeders extends Seeder
         $userRole->description = 'Doctor';
         $userRole->can_delete = false;
 
+        $userRole->can_show = true;
+        $userRole->active = true;
+        $userRole->save();
+
+        $userRole = new Role;
+        $userRole->display_name = 'Paciente';
+        $userRole->name = Str::slug('patient');
+        $userRole->description = 'Paciente';
+        $userRole->can_delete = false;
+
+        $userRole->can_show = false;
         $userRole->active = true;
         $userRole->save();
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AdminProfilePersonalInfoRequest;
 use App\Http\Requests\AdminProfileRequest;
+use App\Models\DoctorProfile;
+use App\Models\MedicalSpecialization;
 use App\Models\Municipio;
 use App\Models\Province;
 use App\Models\User;
@@ -161,6 +163,88 @@ class AdminUserProfileController extends Controller
 
             // Y Devolvemos una redirección a la acción show para mostrar el usuario
             return redirect('admin/profile/personal-info')->with('success', trans('general/admin_lang.save_ok'));
+        } catch (\PDOException $e) {
+            // Woopsy
+            dd($e);
+            DB::rollBack();
+
+            return redirect('profile'); // ->with('error-alert', trans('general/admin_lang.save_ko') . ' - ' . $e->getMessage());
+        }
+    }
+
+    public function clinicTraining()
+    {
+
+        //Obtengo la información del usuario para pasarsela al formulario
+        $user = User::with('userProfile')->find(auth()->user()->id);
+
+        if (!$user->isDoctor()) {
+            app()->abort(404);
+        }
+
+        $tab = 'tab_3';
+        $pageTitle =  trans('profile/admin_lang.my_profile');
+        $title =  trans('profile/admin_lang.clinic_training');
+
+        $specializations = MedicalSpecialization::active()->get();
+        $specializationsSeledted = [];
+
+        if (!empty($user->doctorProfile)) {
+            foreach ($user->specializations as $specialization) {
+                $specializationsSeledted[] = $specialization->id;
+            }
+        }
+
+        return view(
+            'profile.admin_edit_clinic_training',
+            compact(
+                'pageTitle',
+                'title',
+                'user',
+                'specializations',
+                'specializationsSeledted'
+            )
+        )->with('tab', $tab);
+    }
+
+    public function updateClinicTraining(Request $request)
+    {
+
+        // Id actual
+        $idprofile = auth()->user()->id;
+        // Creamos un nuevo objeto para nuestro nuevo usuario
+        $user = User::with('doctorProfile')->find($idprofile);
+
+        if (!$user->isDoctor()) {
+            app()->abort(404);
+        }
+        // Si el usuario no existe entonces lanzamos un error 404 :(
+        if (is_null($user)) {
+            app()->abort(404);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            if (empty($user->doctorProfile)) {
+                $newDoctorProfile = new DoctorProfile();
+                $newDoctorProfile->user_id = $idprofile;
+                $newDoctorProfile->save();
+                $user = User::with('doctorProfile')->find($idprofile);
+            }
+
+            $user->doctorProfile->exequatur = $request->input('doctor_profile.exequatur');
+
+            $specializations = $request->input('doctor_profile.specialization_id');
+            $user->doctorProfile->save();
+
+            $user->specializations()->sync($specializations);
+            // Redirect to the new user page
+            DB::commit();
+
+
+            // Y Devolvemos una redirección a la acción show para mostrar el usuario
+            return redirect('admin/profile/clinic-training')->with('success', trans('general/admin_lang.save_ok'));
         } catch (\PDOException $e) {
             // Woopsy
             dd($e);

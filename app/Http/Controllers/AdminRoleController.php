@@ -50,6 +50,7 @@ class AdminRoleController extends Controller
         $role = new Role();
         $role->name = Str::slug($request->display_name);
         $role->can_delete = 1;
+        $role->can_show = 1;
 
         $this->saveRole($role, $request);
 
@@ -167,7 +168,7 @@ class AdminRoleController extends Controller
             'roles.can_delete',
             'roles.description',
 
-        ]);
+        ])->where("roles.can_show", 1);
 
         $table = DataTables::of($query);
 

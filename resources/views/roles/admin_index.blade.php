@@ -140,6 +140,7 @@
                 "processing": true,
                 "serverSide": true,
                 "pageLength": 50,
+                "responsive": true,
                 ajax: {
                     "headers": {
                         "X-CSRF-TOKEN": "{{ csrf_token() }}"
@@ -151,14 +152,7 @@
                     [2, "asc"]
                 ],*/
                 columns: [
-                    {
-                        "title": "{!! trans('general/admin_lang.active') !!}",
-                        orderable: false,
-                        searchable: false,
-                        data: 'active',
-                        name: 'active',
-                        sWidth: '80px'
-                    },
+                  
                    
                     {
                         "title": "{!! trans('roles/admin_lang.fields.display_name') !!}",
@@ -176,7 +170,14 @@
                         name: 'roles.description',
                         sWidth: ''
                     },
-                   
+                    {
+                        "title": "{!! trans('general/admin_lang.active') !!}",
+                        orderable: false,
+                        searchable: false,
+                        data: 'active',
+                        name: 'active',
+                        sWidth: '80px'
+                    },
                     {
                         "title": "{!! trans('general/admin_lang.actions') !!}",
                         orderable: false,

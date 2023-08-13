@@ -203,6 +203,7 @@
                 "processing": true,
                 "serverSide": true,
                 "pageLength": 50,
+                "responsive": true,
                 ajax: {
                     "headers": {
                         "X-CSRF-TOKEN": "{{ csrf_token() }}"
@@ -214,14 +215,7 @@
                     [2, "asc"]
                 ],*/
                 columns: [
-                    {
-                        "title": "{!! trans('general/admin_lang.active') !!}",
-                        orderable: false,
-                        searchable: false,
-                        data: 'active',
-                        name: 'active',
-                        sWidth: '80px'
-                    },
+                   
                     // {
                     //     "title": "{!! trans('centers/admin_lang.fields.image2') !!}",
                     //     orderable: false,
@@ -276,6 +270,14 @@
                         searchable: false,
                         sWidth: '50px',
                         data: 'default'
+                    },
+                    {
+                        "title": "{!! trans('general/admin_lang.active') !!}",
+                        orderable: false,
+                        searchable: false,
+                        data: 'active',
+                        name: 'active',
+                        sWidth: '80px'
                     },
                     {
                         "title": "{!! trans('general/admin_lang.actions') !!}",
