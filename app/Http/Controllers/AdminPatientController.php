@@ -240,6 +240,7 @@ class AdminPatientController extends Controller
                 'patient_profiles.email',
                 'user_profiles.phone',
                 'user_profiles.first_name',
+                DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as patient'),
                 'user_profiles.photo',
                 'provinces.name as province',
                 'municipios.name as municipio',
@@ -257,6 +258,9 @@ class AdminPatientController extends Controller
 
         $table = DataTables::of($query);
 
+        $table->filterColumn('patient', function ($query, $keyword) {
+            $query->whereRaw("CONCAT(user_profiles.first_name,' ',user_profiles.last_name) like ?", ["%{$keyword}%"]);
+        });
 
 
         $table->editColumn('photo', function ($data) {

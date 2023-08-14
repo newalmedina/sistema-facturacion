@@ -128,18 +128,11 @@
                     "title": "{!! trans('users/admin_lang.fields.first_name') !!}",
                     orderable: true,
                     searchable: true,
-                    data: 'first_name',
-                    name: 'user_profiles.first_name',
+                    data: 'fullname',
+                    name: 'fullname',
                     sWidth: ''
                 },
-                {
-                    "title": "{!! trans('users/admin_lang.fields.last_name') !!}",
-                    orderable: true,
-                    searchable: true,
-                    data: 'last_name',
-                    name: 'user_profiles.last_name',
-                    sWidth: ''
-                },
+                
                 {
                     "title": "{!! trans('users/admin_lang.fields.email') !!}",
                     orderable: true,
@@ -153,6 +146,14 @@
                     orderable: false,
                     searchable: false,
                     data: 'centers'
+                },
+                {
+                    "title": "{!! trans('users/admin_lang.fields.roles') !!}",
+                    orderable: false,
+                    searchable: false,
+                    data: 'roles',
+                    name: 'roles',
+                    sWidth: ''
                 },
                 {
                     "title": "{!! trans('general/admin_lang.actions') !!}",

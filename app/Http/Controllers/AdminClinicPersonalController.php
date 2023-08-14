@@ -176,6 +176,7 @@ class AdminClinicPersonalController extends Controller
                 'user_profiles.phone',
                 'user_profiles.first_name',
                 'user_profiles.photo',
+                DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as fullname'),
             ]
         )
             ->clinicPersonal()->clinicPersonalSelectedCenter()
@@ -189,7 +190,9 @@ class AdminClinicPersonalController extends Controller
 
         $table = DataTables::of($query);
 
-
+        $table->filterColumn('fullname', function ($query, $keyword) {
+            $query->whereRaw("CONCAT(user_profiles.first_name,' ',user_profiles.last_name) like ?", ["%{$keyword}%"]);
+        });
 
         $table->editColumn('photo', function ($data) {
             if (empty($data->photo)) {

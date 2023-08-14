@@ -226,8 +226,8 @@
                         "title": "{!! trans('patients/admin_lang.fields.first_name') !!}",
                         orderable: true,
                         searchable: true,
-                        data: 'first_name',
-                        name: 'user_profiles.first_name',
+                        data: 'patient',
+                        name: 'patient',
                         sWidth: ''
                     },
                     {
@@ -259,7 +259,7 @@
                         orderable: true,
                         searchable: true,
                         data: 'municipio',
-                        name: 'municipio.name',
+                        name: 'municipios.name',
                         sWidth: ''
                     },
                     {

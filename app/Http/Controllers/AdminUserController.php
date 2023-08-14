@@ -171,12 +171,18 @@ class AdminUserController extends Controller
             'users.active',
             'user_profiles.first_name',
             'user_profiles.last_name',
+            DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as fullname'),
+
         ])
             ->notPatients()
             ->distinct()
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id");
 
         $table = DataTables::of($query);
+
+        $table->filterColumn('fullname', function ($query, $keyword) {
+            $query->whereRaw("CONCAT(user_profiles.first_name,' ',user_profiles.last_name) like ?", ["%{$keyword}%"]);
+        });
 
         $table->editColumn('active', function ($data) {
             $permision = "";
@@ -195,6 +201,12 @@ class AdminUserController extends Controller
             $centers = DB::table("user_centers")->join("centers", "centers.id", "=", "user_centers.center_id")->where("user_centers.user_id", $data->id)->pluck("centers.name")->toArray();
 
             return implode(", ", $centers);
+        });
+
+        $table->editColumn('roles', function ($data) {
+
+            $user = User::find($data->id);
+            return implode(", ", $user->roles->pluck('display_name')->toArray());
         });
 
         $table->editColumn('actions', function ($data) {

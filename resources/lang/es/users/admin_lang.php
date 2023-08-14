@@ -19,6 +19,7 @@ return [
     'complete_personal_information' => 'Complete toda la información personal para poder continuar',
 
     'fields' => [
+        'roles' => 'Roles',
         'id' => 'Id',
 
         'first_name' => 'Nombre',
