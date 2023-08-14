@@ -39,6 +39,7 @@ return [
     'dont_permissions' => 'No tienes Permisos para ver esta sección',
     'errorajax' => 'Error al intentar ejecutar petición',
     'exports' => 'Exportaciones',
+    'filters' => 'Filtros',
     'filters_exports' => 'Filtros y exportaciones',
     'filter' => 'Filtrar',
     'clean_filter' => 'Limpiar filtros',

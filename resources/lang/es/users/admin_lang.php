@@ -19,7 +19,6 @@ return [
     'complete_personal_information' => 'Complete toda la información personal para poder continuar',
 
     'fields' => [
-        'roles' => 'Roles',
         'id' => 'Id',
 
         'first_name' => 'Nombre',
@@ -80,6 +79,8 @@ return [
         'mobile_helper' => 'Introduce segundo teléfono',
         'mobile_required' => 'El campo segundo teléfono es obligatorio',
 
+        'centers' => 'Centros',
+        'roles' => 'Roles',
     ],
 
 ];

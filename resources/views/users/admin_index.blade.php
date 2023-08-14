@@ -24,7 +24,66 @@
         @include('layouts.admin.includes.errors')        
     </div>
     <!-- start: page -->
-   
+    <div class="row">
+        <div class="col">
+            <form id="formData" enctype="multipart/form-data" action=" {{ route("admin.users.saveFilter") }}" method="post"  novalidate="false">
+                @csrf
+                @method("post")
+            <section class="card card-featured-top card-featured-primary">
+                <header class="card-header">
+                    <div class="card-actions">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle=""></a>
+                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss=""></a>
+                    </div>
+                    <h2 class="card-title">{!! trans('general/admin_lang.filters') !!}</h2>
+                </header>
+            
+                <div class="card-body py-4">  
+                    <div class="row">
+                        <div class="col-12  col-md-6">                     
+                            <div class="form-group">
+                                <label for="role_id" class="col-12" > {{ trans('users/admin_lang.fields.roles') }}</label>
+                                <select class="form-control select2 col-12" style="width: 100%" name="role_id[]" multiple id="role_id">
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->id }}"         @if (in_array($role->id,$filtRoleId)) selected @endif >{{ $role->name }}</option>
+                                    @endforeach 
+                                </select>    
+                            </div>
+                        </div>   
+                        <div class="col-12  col-md-6">                     
+                            <div class="form-group">
+                                <label for="center_id" class="col-12" > {{ trans('users/admin_lang.fields.centers') }}</label>
+                                <select class="form-control select2 col-12" style="width: 100%" name="center_id[]" multiple id="center_id">
+                                    @foreach ($centers as $center)
+                                        <option value="{{ $center->id }}"         @if (in_array($center->id,$filtCenterId)) selected @endif >{{ $center->name }}</option>
+                                    @endforeach 
+                                </select>    
+                            </div>
+                        </div>   
+                       
+                    </div>                       
+                </div>
+                <div class="card-footer">  
+                    <div class="row ">
+                        <div class="col-12 col-md-6 d-flex justify-content-start">
+                            <button class="btn btn-success btn-xs " type="submit"> {!! trans('general/admin_lang.filter') !!}</button>
+                            <a href="{{ url('admin/users/remove-filter') }}" class="ms-2 btn btn-danger btn-xs">
+                                {!! trans('general/admin_lang.clean_filter') !!}
+                            </a>
+                        </div>
+                        {{-- @if ( Auth::user()->isAbleTo("admin-clinic-personal-list") ) 
+                        <div class="col-12 col-md-6 d-flex justify-content-end">
+                            <a href="{{ url('admin/clinic-personal/export-excel') }}" class="text-success">
+                                <i class="far fa-file-excel fa-2x"></i>
+                            </a>
+                        </div>
+                        @endif --}}
+                    </div>                       
+                </div>
+            </section>
+            </form>
+        </div>
+    </div>
         <div class="row">
             <div class="col">
                 <section class="card card-featured-top card-featured-primary">
@@ -95,7 +154,10 @@
     <script src="{{ asset('/assets/admin/vendor/datatables.net/js/responsive.bootstrap4.min.js') }}"></script>
 
 <script>
-
+    $(document).ready(function() {
+        $('.select2').select2();
+      
+    });
     var oTable = '';
         
     $(function() {
