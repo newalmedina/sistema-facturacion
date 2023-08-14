@@ -155,10 +155,10 @@
                     @endif
                     
                     @if(Auth::user()->isAbleTo("admin-patients") && Auth::user()->hasSelectedCenter()  )
-                        <li class="@if (Request::is('admin/clinic-personal*') ) nav-active @endif">
-                            <a class="nav-link" @if (Request::is('admin/clinic-personal*')) style="color:{{ $activeColor }}" @endif  href="{{ url('/admin/clinic-personal') }}">
-                                <i class="fas fa-user-md" aria-hidden="true"></i>
-                                <span>{{ trans('clinic-personal/admin_lang.clinic-personal') }}</span>
+                        <li class="@if (Request::is('admin/patients*') ) nav-active @endif">
+                            <a class="nav-link" @if (Request::is('admin/patients*')) style="color:{{ $activeColor }}" @endif  href="{{ url('/admin/patients') }}">
+                                <i class="fas fa-user-injured" aria-hidden="true"></i>
+                                <span>{{ trans('patients/admin_lang.patients') }}</span>
                             </a>                        
                         </li>
                     @endif

@@ -172,6 +172,8 @@ class AdminUserController extends Controller
             'user_profiles.first_name',
             'user_profiles.last_name',
         ])
+            ->notPatients()
+            ->distinct()
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id");
 
         $table = DataTables::of($query);

@@ -2,15 +2,21 @@
 
 
 return [
-    'my_profile' => 'Mi perfil',
-    'registered_at' => 'Miembro desde el ',
-    'acerca_de' => 'Acerca de',
-    'access_data' => 'Datos de accesso',
+    'patients' => 'Pacientes',
+
+    'todos' => 'Todos los pacientes',
+    'patient' => 'Paciente',
+    'list' => 'Listado de pacientes',
+    'new' => 'Nuevo paciente',
+    'edit' => 'Editar paciente',
+    'show' => 'Visualizar paciente',
+    'general_info' => 'Información general',
+    'additional_info' => 'Información adicional',
+    'patient_management' => 'Gestión de pacientes',
+    'created_at' => 'Creado el:',
+
+    'changed' => 'Centro Cambiado Correctamente',
     'quit_image' => 'Quitar imagen',
-    'general_information' => 'Información general',
-    'personal_information' => 'Información personal',
-    'clinic_training' => 'Formación clínica',
-    'perfil_usuario_desc' => 'Aquí puede modificar sus datos, así como cambiar su usuario y contraseña de acceso a la herrramienta.',
     'fields' => [
         'active' => 'Activo',
         'first_name' => 'Nombre',
@@ -71,6 +77,11 @@ return [
         'mobile' => 'Segundo teléfono',
         'mobile_helper' => 'Introduce segundo teléfono',
         'mobile_required' => 'El campo segundo teléfono es obligatorio',
+
+        'photo' => 'Imagen',
+        'photo_helper' => 'Introduce imagen',
+        'photo_required' => 'El campo imagen es obligatorio',
+
     ],
 
 

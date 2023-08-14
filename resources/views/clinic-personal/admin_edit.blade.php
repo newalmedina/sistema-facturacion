@@ -1,4 +1,4 @@
-@extends('clinic-personal.admin_patient_layout')
+@extends('clinic-personal.admin_clinic_personal_layout')
 
 
 @section('tab_head')

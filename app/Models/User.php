@@ -60,6 +60,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne('App\Models\DoctorProfile', 'user_id');
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function patientProfile()
+    {
+        return $this->hasOne('App\Models\PatientProfile', 'user_id');
+    }
 
     public function hasSelectedCenter()
     {
@@ -91,12 +98,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return "";
     }
 
-    public function scopeClinicPersonal($query)
+    public function scopePatients($query)
     {
 
         return $query->join("role_user", "users.id", "=", "role_user.user_id")
             ->join("roles", "role_user.role_id", "=", "roles.id")
-            ->whereIn("roles.name", ["doctor"]);
+            ->whereIn("roles.name", ["patient"]);
+    }
+    public function scopeNotPatients($query)
+    {
+
+        return $query->join("role_user", "users.id", "=", "role_user.user_id")
+            ->join("roles", "role_user.role_id", "=", "roles.id")
+            ->whereNotIn("roles.name", ["patient"]);
     }
 
     public function isDoctor()

@@ -56,11 +56,11 @@ return [
         'birthday_required' => 'El campo fecha nacimiento es obligatorio',
 
         'province_id' => 'Provincia',
-        'province_id_helper' => 'Introduce provincia ',
+        'province_id_helper' => 'Seleccione provincia ',
         'province_id_required' => 'El campo provincia  es obligatorio',
 
         'municipio_id' => 'Municipio',
-        'municipio_id_helper' => 'Introduce municipio',
+        'municipio_id_helper' => 'Seleccione municipio',
         'municipio_id_required' => 'El campo municipio es obligatorio',
 
         'address' => 'Dirección',
