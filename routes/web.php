@@ -265,6 +265,9 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/patients/{id}/show', [AdminPatientController::class, 'show'])->name('admin.patients.show');
     Route::get('/patients/remove-filter', [AdminPatientController::class, 'removeFilter'])->name('admin.patients.removeFilter');
     Route::get('/patients/change-state/{id}', [AdminPatientController::class, 'changeState'])->name('admin.patients.changeState');
+    Route::get('/patients/clinical-record/{id}/edit', [AdminPatientController::class, 'clinicalRecord'])->name('admin.patients.clinicalRecord');
+    Route::patch('/patients/clinical-record/{id}', [AdminPatientController::class, 'clinicalRecordUpdate'])->name('admin.patients.clinicalRecordUpdate');
+
     Route::post('/patients', [AdminPatientController::class, 'store'])->name('admin.patients.store');
     Route::patch('/patients/{id}', [AdminPatientController::class, 'update'])->name('admin.patients.update');
     Route::post('/patients/save-filter', [AdminPatientController::class, 'saveFilter'])->name('admin.patients.saveFilter');

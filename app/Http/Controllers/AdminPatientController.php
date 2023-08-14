@@ -192,6 +192,79 @@ class AdminPatientController extends Controller
         }
     }
 
+    public function clinicalRecord($id)
+    {
+        $disabled = null;
+        if (!auth()->user()->isAbleTo('admin-patients-clinic-record-update') && !auth()->user()->isAbleTo('admin-patients-clinic-record-read')) {
+            app()->abort(403);
+        }
+        if (!auth()->user()->isAbleTo('admin-patients-clinic-record-update') && auth()->user()->isAbleTo('admin-patients-clinic-record-read')) {
+            $disabled = "disabled";
+        }
+
+        $patient = User::where("users.id", $id)->patients()->first();
+
+        if (empty($patient)) {
+            app()->abort(404);
+        }
+
+        $patient = User::find($id);
+        $pageTitle = trans('patients/admin_lang.patients');
+        $title = trans('patients/admin_lang.list');
+        $provincesList = Province::active()->get();
+        // $municipiosList = Municipio::active()->where("province_id", $center->province_id)->get();
+        $municipiosList = Municipio::active()->where("province_id", $patient->userProfile->province_id)->get();
+
+        $tab = 'tab_2';
+
+
+        $genders = [
+            "male" => trans("general/admin_lang.male"),
+            "female" => trans("general/admin_lang.female")
+        ];
+        return view('patients.admin_clinic_record_edit', compact('pageTitle', 'title', 'provincesList', 'municipiosList', 'patient', 'genders', 'disabled'))
+            ->with('tab', $tab);
+    }
+
+    public function clinicalRecordUpdate(Request $request, $id)
+    {
+        if (!auth()->user()->isAbleTo('admin-patients-clinic-record-update')) {
+            app()->abort(403);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $patient = User::where("users.id", $id)->patients()->first();
+
+            if (empty($patient)) {
+                app()->abort(404);
+            }
+
+            $patient = User::find($id);
+            if (empty($patient->patientProfile)) {
+                $patientProfile = new PatientProfile();
+                $patientProfile->user_id = $patient->id;
+            } else {
+                $patientProfile = PatientProfile::where('user_id', $patient->id)->first();
+            }
+
+            $patientProfile->allergies = $request->input('patient_profile.allergies');
+            $patientProfile->pathological_diseases = $request->input('patient_profile.pathological_diseases');
+            $patientProfile->surgical_diseases = $request->input('patient_profile.surgical_diseases');
+            $patientProfile->family_history = $request->input('patient_profile.family_history');
+            $patientProfile->gynecological_history = $request->input('patient_profile.gynecological_history');
+            $patientProfile->others = $request->input('patient_profile.others');
+            $patientProfile->save();
+
+
+            DB::commit();
+            return redirect()->route('admin.patients.clinicalRecord', [$patient->id])->with('success', trans('general/admin_lang.save_ok'));
+        } catch (\Exception $e) {
+            dd($e);
+        }
+    }
+
     public function saveFilter(Request $request)
     {
         $this->clearSesions($request);
@@ -286,13 +359,21 @@ class AdminPatientController extends Controller
 
         $table->editColumn('actions', function ($data) {
             $actions = '';
-            if (auth()->user()->isAbleTo("admin-patients-read")) {
-                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.patients.show', $data->id) . '" ><i
-                class="fa fa-eye fa-lg"></i></a> ';
-            }
+            // if (auth()->user()->isAbleTo("admin-patients-read")) {
+            //     $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.patients.show', $data->id) . '" ><i
+            //     class="fa fa-eye fa-lg"></i></a> ';
+            // }
             if (auth()->user()->isAbleTo("admin-patients-update")) {
                 $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.patients.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
+            } elseif (auth()->user()->isAbleTo("admin-patients-read")) {
+                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.patients.show', $data->id) . '" ><i
+                    class="fa fa-eye fa-lg"></i></a> ';
+            }
+
+            if (auth()->user()->isAbleTo("admin-patients-clinic-record-update") || auth()->user()->isAbleTo("admin-patients-clinic-record-read")) {
+                $actions .= '<a  class="btn btn-tertiary btn-xs" href="' . route('admin.patients.clinicalRecord', $data->id) . '" ><i
+                class="fa fa-notes-medical fa-lg"></i></a> ';
             }
             if (auth()->user()->isAbleTo("admin-patients-delete")) {
 

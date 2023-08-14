@@ -53,8 +53,8 @@ $disabled= isset($disabled)?$disabled : null;
                             </div>                         
                         </div>
 
-                        @if (!$disabled)                            
-                            <div id="remove" onclick="deleteElement()" class="text-danger" style="@if($patient->userProfile->photo=='') display: none; @endif cursor: pointer; text-align: center;"><i class="fa fa-times" aria-hidden="true"></i> {{ trans('profile/admin_lang.quit_image') }} </div>
+                        @if (!$disabled && Auth::user()->isAbleTo("admin-patients-update") )                                
+                                <div id="remove" onclick="deleteElement()" class="text-danger" style="@if($patient->userProfile->photo=='') display: none; @endif cursor: pointer; text-align: center;"><i class="fa fa-times" aria-hidden="true"></i> {{ trans('profile/admin_lang.quit_image') }} </div>                                          
                         @endif
 
 
@@ -74,17 +74,39 @@ $disabled= isset($disabled)?$disabled : null;
                 <ul class="nav nav-tabs" id="custom-tabs">
             
                     <li class="nav-item @if ($tab == 'tab_1') active @endif">
-                        <a id="tab_1" class="nav-link" data-bs-target="#tab_1-1" data-bs-toggle="tabajax"
-                            href="{{ !empty($patient->id) ? url('admin/patients/' . $patient->id . '/edit') : '#' }}"
-                            data-target="#tab_1-1" aria-controls="tab_1-1" aria-selected="true">
-                            {{ trans('patients/admin_lang.general_info') }}
-                        </a>
+                        @if(Auth::user()->isAbleTo("admin-patients-update"))
+                            <a id="tab_1" class="nav-link" data-bs-target="#tab_1-1" data-bs-toggle="tabajax"
+                                href="{{ !empty($patient->id) ? url('admin/patients/' . $patient->id . '/edit') : '#' }}"
+                                data-target="#tab_1-1" aria-controls="tab_1-1" aria-selected="true">
+                                {{ trans('patients/admin_lang.general_info') }}
+                            </a>  
+                        @elseif(Auth::user()->isAbleTo("admin-patients-read"))
+                            <a id="tab_1" class="nav-link" data-bs-target="#tab_1-1" data-bs-toggle="tabajax"
+                                href="{{ !empty($patient->id) ? url('admin/patients/' . $patient->id . '/show') : '#' }}"
+                                data-target="#tab_1-1" aria-controls="tab_1-1" aria-selected="true">
+                                {{ trans('patients/admin_lang.general_info') }}
+                            </a>  
+                        @endif
                     </li>
+                    @if(!empty($patient->id) && Auth::user()->isAbleTo("admin-patients-clinic-record-update") || Auth::user()->isAbleTo("admin-patients-clinic-record-read"))
+                        <li class="nav-item @if ($tab == 'tab_2') active @endif">
+                            <a id="tab_2" class="nav-link" data-bs-target="#tab_2-2"
+                            data-bs-toggle="tabajax" href="{{ url('admin/patients/clinical-record/'.$patient->id.'/edit') }}" data-target="#tab_2-2"
+                            aria-controls="tab_2-2" aria-selected="true" >
+                            {{ trans('patients/admin_lang.clinic_record') }}
+                            </a>
+                        
+                        </li>
+                    @endif                   
                 </ul>
                 <div class="tab-content" id="tab_tabContent">
                     <div id="tab_1-1" class="tab-pane @if ($tab == 'tab_1') active @endif">
             
                         @yield('tab_content_1')
+                    </div>
+                    <div id="tab_2-2" class="tab-pane @if ($tab == 'tab_2') active @endif">
+            
+                        @yield('tab_content_2')
                     </div>
             
                  

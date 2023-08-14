@@ -17,6 +17,8 @@ return [
 
     'changed' => 'Centro Cambiado Correctamente',
     'quit_image' => 'Quitar imagen',
+    'quit_image' => 'Quitar imagen',
+    'clinic_record' => 'Historial clínico',
     'fields' => [
         'active' => 'Activo',
         'first_name' => 'Nombre',
@@ -81,6 +83,31 @@ return [
         'photo' => 'Imagen',
         'photo_helper' => 'Introduce imagen',
         'photo_required' => 'El campo imagen es obligatorio',
+
+        //perfil del paciente
+        'allergies' => 'Alergias',
+        'allergies_helper' => 'Introduce alergias',
+        'allergies_required' => 'El campo alergias es obligatorio',
+
+        'pathological_diseases' => 'Antecedentes patológicas',
+        'pathological_diseases_helper' => 'Introduce antecedentes patológicas',
+        'pathological_diseases_required' => 'El campo antecedentes patológicas es obligatorio',
+
+        'surgical_diseases' => 'Antecedentes alérgicos y quirúrgicos',
+        'surgical_diseases_helper' => 'Introduce antecedentes alérgicos y quirúrgicos',
+        'surgical_diseases_required' => 'El campo antecedentes alérgicos y quirúrgicos es obligatorio',
+
+        'family_history' => 'Antecedentes familiares',
+        'family_history_helper' => 'Introduce antecedentes familiares',
+        'family_history_required' => 'El campo antecedentes familiares es obligatorio',
+
+        'gynecological_history' => 'Antecedentes ginecológicos',
+        'gynecological_history_helper' => 'Introduce antecedentes ginecológicos',
+        'gynecological_history_required' => 'El campo antecedentes ginecológicos es obligatorio',
+
+        'others' => 'Otros (medicamentos, traumatismos, etc.)',
+        'others_helper' => 'Introduce otros',
+        'others_required' => 'El campo otros es obligatorio',
 
     ],
 
