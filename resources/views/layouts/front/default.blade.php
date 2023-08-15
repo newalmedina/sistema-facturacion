@@ -107,7 +107,12 @@
 
     <!-- Theme Initialization Files -->
     <script src="{{ asset('assets/front/js/theme.init.js')}}"></script>
-
+	<script>
+		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+		return new bootstrap.Tooltip(tooltipTriggerEl)
+		})
+	</script>
     @yield('foot_page')
   </body>
 </html>

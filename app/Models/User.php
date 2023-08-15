@@ -81,6 +81,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Center::class, 'user_centers', 'user_id', 'center_id')->withTimestamps();
     }
 
+    public function insuranceCarriers()
+    {
+        return $this->belongsToMany(InsuranceCarrier::class, 'patient_insurance_carriers', 'user_id', 'insurance_carrier_id')->withPivot(['poliza'])->withTimestamps();
+    }
+
     public function specializations()
     {
         return $this->belongsToMany(MedicalSpecialization::class, 'doctor_specializations', 'user_id', 'specialization_id')->withTimestamps();
@@ -104,6 +109,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $query->join("role_user", "users.id", "=", "role_user.user_id")
             ->join("roles", "role_user.role_id", "=", "roles.id")
             ->whereIn("roles.name", ["patient"]);
+    }
+    public function scopeClinicPersonal($query)
+    {
+
+        return $query->join("role_user", "users.id", "=", "role_user.user_id")
+            ->join("roles", "role_user.role_id", "=", "roles.id")
+            ->whereIn("roles.name", ["doctor"]);
     }
     public function scopeNotPatients($query)
     {

@@ -19,7 +19,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AdminUserController extends Controller
 {
-
+    public $filtRoleId;
+    public $filtCenterId;
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->filtRoleId = ($request->session()->has('users_filter_role_id')) ? ($request->session()->get('users_filter_role_id')) : [];
+            $this->filtCenterId = ($request->session()->has('users_filter_center_id')) ? ($request->session()->get('users_filter_center_id')) : [];
+            return $next($request);
+        });
+    }
 
     public function index()
     {
@@ -27,12 +36,16 @@ class AdminUserController extends Controller
             app()->abort(403);
         }
 
-
+        $roles = Role::active()->where("roles.can_show", 1)->get();
         $pageTitle = trans('users/admin_lang.users');
         $title = trans('users/admin_lang.list');
         $users = User::orderBy('id', 'asc')->get();
+        $centers = Center::active()->orderBy('id', 'asc')->get();
 
-        return view('users.admin_index', compact('pageTitle', 'title', "users"));
+        return view('users.admin_index', compact('pageTitle', 'title', "users", "roles", 'centers'))->with([
+            'filtRoleId' => $this->filtRoleId,
+            'filtCenterId' => $this->filtCenterId,
+        ]);
     }
 
     public function create()
@@ -171,12 +184,21 @@ class AdminUserController extends Controller
             'users.active',
             'user_profiles.first_name',
             'user_profiles.last_name',
+            DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as fullname'),
+
         ])
             ->notPatients()
             ->distinct()
-            ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id");
+            ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
+            ->leftJoin("user_centers", "user_centers.user_id", "=", "users.id");
+
+        $this->addFilter($query);
 
         $table = DataTables::of($query);
+
+        $table->filterColumn('fullname', function ($query, $keyword) {
+            $query->whereRaw("CONCAT(user_profiles.first_name,' ',user_profiles.last_name) like ?", ["%{$keyword}%"]);
+        });
 
         $table->editColumn('active', function ($data) {
             $permision = "";
@@ -195,6 +217,12 @@ class AdminUserController extends Controller
             $centers = DB::table("user_centers")->join("centers", "centers.id", "=", "user_centers.center_id")->where("user_centers.user_id", $data->id)->pluck("centers.name")->toArray();
 
             return implode(", ", $centers);
+        });
+
+        $table->editColumn('roles', function ($data) {
+
+            $user = User::find($data->id);
+            return implode(", ", $user->roles->pluck('display_name')->toArray());
         });
 
         $table->editColumn('actions', function ($data) {
@@ -227,6 +255,42 @@ class AdminUserController extends Controller
         $table->removeColumn('id');
         $table->rawColumns(['actions', 'active', 'centers']);
         return $table->make();
+    }
+
+    public function saveFilter(Request $request)
+    {
+        $this->clearSesions($request);
+
+        if (!empty($request->role_id) > 0)
+            $request->session()->put('users_filter_role_id', $request->role_id);
+        if (!empty($request->center_id) > 0)
+            $request->session()->put('users_filter_center_id', $request->center_id);
+
+
+
+        return redirect('admin/users');
+    }
+    private function clearSesions($request)
+    {
+        $request->session()->forget('users_filter_role_id');
+        $request->session()->forget('users_filter_center_id');
+    }
+
+    public function removeFilter(Request $request)
+    {
+        $this->clearSesions($request);
+        return redirect('admin/users');
+    }
+
+    private function addFilter(&$query)
+    {
+
+        if (!empty($this->filtRoleId)) {
+            $query->whereIn("roles.id", $this->filtRoleId);
+        }
+        if (!empty($this->filtCenterId)) {
+            $query->whereIn("user_centers.center_id", $this->filtCenterId);
+        }
     }
 
     public function destroy($id)

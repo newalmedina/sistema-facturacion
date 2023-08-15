@@ -141,8 +141,15 @@
     <script src="{{ asset('assets/admin/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{ asset('assets/admin/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js')}}"></script>
     <script src="{{ asset('assets/admin/vendor/toast/toast.min.js')}}"></script>
+    <script>
+        // alert(123);
+		// var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+		// var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+		// return new bootstrap.Tooltip(tooltipTriggerEl)
+		// })
+	</script>
     @include('centers.admin_change_center')
     @include('layouts.admin.includes.success')
-
+   
     @yield('foot_page')
 </body></html>

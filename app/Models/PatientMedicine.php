@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PatientProfile extends Model
+class PatientMedicine extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
-    protected $table = "patient_profiles";
+    protected $table = "patient_medicines";
 
     public function user()
     {
@@ -19,5 +20,10 @@ class PatientProfile extends Model
     public function createdBy()
     {
         return $this->belongsTo('App\Models\User', 'created_by', "id");
+    }
+
+    public function details()
+    {
+        return $this->belongsTo('App\Models\PatientMedicineDetail', 'patient_medicine_id', "id");
     }
 }

@@ -29,4 +29,8 @@ class InsuranceCarrier extends Model
     {
         return $this->belongsToMany(Service::class, 'service_insurance_carriers', 'insurance_carrier_id', 'service_id')->withTimestamps();
     }
+    public function patients()
+    {
+        return $this->belongsToMany(User::class, 'service_insurance_carriers', 'patient_insurance_carriers', 'user_id')->withTimestamps();
+    }
 }

@@ -210,8 +210,8 @@
                         "title": "{!! trans('clinic-personal/admin_lang.fields.name') !!}",
                         orderable: true,
                         searchable: true,
-                        data: 'first_name',
-                        name: 'user_profiles.first_name',
+                        data: 'fullname',
+                        name: 'fullname',
                         sWidth: ''
                     },
                     {

@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminInsuranceCarrierController;
 use App\Http\Controllers\AdminMedicalSpecializationController;
 use App\Http\Controllers\AdminMunicipioController;
 use App\Http\Controllers\AdminPatientController;
+use App\Http\Controllers\AdminPatientMedicineController;
 use App\Http\Controllers\AdminProvinceController;
 use App\Http\Controllers\AdminRoleController;
 use App\Http\Controllers\AdminServiceController;
@@ -118,6 +119,11 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::post('/users', [AdminUserController::class, 'store'])->name('admin.users.store');
     Route::post('/users/list', [AdminUserController::class, 'getData'])->name('admin.users.getData');
     Route::delete('/users/{id}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
+
+
+    Route::post('/users/save-filter', [AdminUserController::class, 'saveFilter'])->name('admin.users.saveFilter');
+    Route::get('/users/remove-filter', [AdminUserController::class, 'removeFilter'])->name('admin.users.removeFilter');
+
     Route::get('/users/roles/{id}', [AdminUserController::class, 'editRoles'])->name('admin.users.editRoles');
     Route::get('/users/roles/{id}/show', [AdminUserController::class, 'showRoles'])->name('admin.users.showRoles');
     Route::patch('/users/roles/{id}', [AdminUserController::class, 'updateRoles'])->name('admin.users.updateRoles');
@@ -134,8 +140,8 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/centers/{id}/edit', [AdminCenterController::class, 'edit'])->name('admin.centers.edit');
     Route::get('/centers/{id}/show', [AdminCenterController::class, 'show'])->name('admin.centers.show');
     Route::get('/centers/change-state/{id}', [AdminCenterController::class, 'changeState'])->name('admin.centers.changeState');
-    Route::get('/centers/remove-filter', [AdminCenterController::class, 'removeFilter'])->name('admin.centers.removeFilter');
     Route::patch('/centers/{id}', [AdminCenterController::class, 'update'])->name('admin.centers.update');
+    Route::get('/centers/remove-filter', [AdminCenterController::class, 'removeFilter'])->name('admin.centers.removeFilter');
     Route::post('/centers/change-center', [AdminCenterController::class, 'changeCenter'])->name('admin.centers.changeCenterUpdate');
     Route::post('/centers', [AdminCenterController::class, 'store'])->name('admin.centers.store');
     Route::post('/centers/save-filter', [AdminCenterController::class, 'saveFilter'])->name('admin.centers.saveFilter');
@@ -260,6 +266,7 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/patients/{id}/show', [AdminPatientController::class, 'show'])->name('admin.patients.show');
     Route::get('/patients/remove-filter', [AdminPatientController::class, 'removeFilter'])->name('admin.patients.removeFilter');
     Route::get('/patients/change-state/{id}', [AdminPatientController::class, 'changeState'])->name('admin.patients.changeState');
+
     Route::post('/patients', [AdminPatientController::class, 'store'])->name('admin.patients.store');
     Route::patch('/patients/{id}', [AdminPatientController::class, 'update'])->name('admin.patients.update');
     Route::post('/patients/save-filter', [AdminPatientController::class, 'saveFilter'])->name('admin.patients.saveFilter');
@@ -269,4 +276,25 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/patients/export-excel', [AdminPatientController::class, 'exportExcel'])->name("admin.patients.exportExcel");
     Route::delete('/patients/delete-image/{photo}', [AdminPatientController::class, 'deleteImage'])->name("admin.patients.deleteImage");
     Route::delete('/patients/{id}', [AdminPatientController::class, 'destroy'])->name('admin.patients.destroy');
+
+    Route::get('/patients/clinical-record/{id}/edit', [AdminPatientController::class, 'clinicalRecord'])->name('admin.patients.clinicalRecord');
+    Route::patch('/patients/clinical-record/{id}', [AdminPatientController::class, 'clinicalRecordUpdate'])->name('admin.patients.clinicalRecordUpdate');
+
+    Route::get('/patients/insurance-carriers/{id}/edit', [AdminPatientController::class, 'insuranceCarrier'])->name('admin.patients.insuranceCarrier');
+    Route::patch('/patients/insurance-carriers/{id}', [AdminPatientController::class, 'insuranceCarrierUpdate'])->name('admin.patients.insuranceCarrierUpdate');
+
+    //medicines patients
+
+    //admin patients
+    Route::get('/patients/{patient_id}/medicines', [AdminPatientMedicineController::class, 'index'])->name('admin.patients.medicines');
+    Route::get('/patients/{patient_id}/medicines/create', [AdminPatientMedicineController::class, 'create'])->name('admin.patients.medicines.create');
+    Route::get('/patients/{patient_id}/medicines/{id}/edit', [AdminPatientMedicineController::class, 'edit'])->name('admin.patients.medicines.edit');
+    Route::get('/patients/{patient_id}/medicines/{id}/show', [AdminPatientMedicineController::class, 'show'])->name('admin.patients.medicines.show');
+    Route::get('/patients/{patient_id}/medicines/remove-filter', [AdminPatientMedicineController::class, 'removeFilter'])->name('admin.patients.medicines.removeFilter');
+    Route::get('/patients/{patient_id}/medicines/change-state/{id}', [AdminPatientMedicineController::class, 'changeState'])->name('admin.patients.medicines.changeState');
+
+    Route::post('/patients/{patient_id}/medicines', [AdminPatientMedicineController::class, 'store'])->name('admin.patients.medicines.store');
+    Route::patch('/patients/{patient_id}/medicines/{id}', [AdminPatientMedicineController::class, 'update'])->name('admin.patients.medicines.update');
+    Route::post('/patients/{patient_id}/medicines/save-filter', [AdminPatientMedicineController::class, 'saveFilter'])->name('admin.patients.medicines.saveFilter');
+    Route::post('/patients/{patient_id}/medicines/list', [AdminPatientMedicineController::class, 'getData'])->name('admin.patients.medicines.getData');
 });

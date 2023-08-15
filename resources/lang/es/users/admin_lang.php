@@ -16,6 +16,7 @@ return [
     'generate_password' => 'Generar contraseña',
     'user_not_selected_center' => 'Debes de seleccionar un centro para poder utilizar la mayoria de funcionalidades del sistema.',
     'personal_info' => 'Información personal',
+
     'complete_personal_information' => 'Complete toda la información personal para poder continuar',
 
     'fields' => [
@@ -79,6 +80,8 @@ return [
         'mobile_helper' => 'Introduce segundo teléfono',
         'mobile_required' => 'El campo segundo teléfono es obligatorio',
 
+        'centers' => 'Centros',
+        'roles' => 'Roles',
     ],
 
 ];
