@@ -25,10 +25,11 @@ WORKDIR /var/www/html
 COPY .env.example .env
 
 # Genera una clave de aplicación única
-RUN php artisan cache:clear
-RUN php artisan view:clear
+RUN docker-compose run app bash
+
 RUN php artisan config:clear
-RUN php artisan key:generate
+RUN php artisan route:clear
+RUN php artisan view:clear
 
 # Instala las dependencias de Composer
 RUN composer install --no-interaction --no-scripts --no-progress
