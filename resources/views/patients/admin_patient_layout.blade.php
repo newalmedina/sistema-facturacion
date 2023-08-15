@@ -33,7 +33,7 @@ $disabled= isset($disabled)?$disabled : null;
     @endif
 
     <div class="row mt-2">
-        @if (!empty( $patient->id))
+        @if (!empty( $patient->id) && !isset($notImage))
             <div class="col-12 col-md-3 mb-3">
                 <section class="card">
                 
@@ -69,7 +69,7 @@ $disabled= isset($disabled)?$disabled : null;
                 </section>
             </div>
         @endif
-        <div class="col-12   @if (!empty( $patient->id))col-md-9 @endif">
+        <div class="col-12   @if (!empty( $patient->id)  && !isset($notImage))col-md-9 @endif">
             <div class="tabs tabs-primary">
                 <ul class="nav nav-tabs" id="custom-tabs">
             
@@ -108,6 +108,16 @@ $disabled= isset($disabled)?$disabled : null;
                         
                         </li>
                     @endif                   
+                    @if(!empty($patient->id) && Auth::user()->isAbleTo("admin-patients-medicines-update") || Auth::user()->isAbleTo("admin-patients-medicines-read"))
+                        <li class="nav-item @if ($tab == 'tab_4') active @endif">
+                            <a id="tab_4" class="nav-link" data-bs-target="#tab_4-4"
+                            data-bs-toggle="tabajax" href="{{ url('admin/patients/'.$patient->id.'/medicines') }}" data-target="#tab_4-4"
+                            aria-controls="tab_4-4" aria-selected="true" >
+                            {{ trans('patient-medicines/admin_lang.patient-medicines') }}
+                            </a>
+                        
+                        </li>
+                    @endif                   
                 </ul>
                 <div class="tab-content" id="tab_tabContent">
                     <div id="tab_1-1" class="tab-pane @if ($tab == 'tab_1') active @endif">
@@ -121,6 +131,10 @@ $disabled= isset($disabled)?$disabled : null;
                     <div id="tab_3-3" class="tab-pane @if ($tab == 'tab_3') active @endif">
             
                         @yield('tab_content_3')
+                    </div>
+                    <div id="tab_4-4" class="tab-pane @if ($tab == 'tab_4') active @endif">
+            
+                        @yield('tab_content_4')
                     </div>
             
                  

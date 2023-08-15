@@ -7,6 +7,8 @@ return [
     'save_ko' => 'Error al intentar guardar registro',
     'cancel' => 'Cancelar',
     'edit' => 'Editar',
+    'show' => 'Visualizar',
+    'delete' => 'Eliminar',
     'save' => 'Guardar',
     'close' => 'Cerrar',
     'update' => 'Actualizar',
