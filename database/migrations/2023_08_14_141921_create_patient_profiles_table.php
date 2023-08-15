@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('patient_profiles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
+            $table->unsignedBigInteger('created_by');
             $table->string("email")->nullable();
             $table->text("allergies")->nullable();
             $table->text("pathological_diseases")->nullable();
@@ -26,6 +27,9 @@ return new class extends Migration
 
 
             $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->foreign('created_by')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\AdminClinicPersonalExport;
 use App\Http\Requests\AdminPatientsRequest;
-
+use App\Models\InsuranceCarrier;
 use App\Models\Municipio;
 use App\Models\PatientProfile;
 use App\Models\Province;
@@ -14,6 +14,7 @@ use App\Models\UserProfile;
 use App\Services\StoragePathWork;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
@@ -134,7 +135,10 @@ class AdminPatientController extends Controller
             "male" => trans("general/admin_lang.male"),
             "female" => trans("general/admin_lang.female")
         ];
-        return view('patients.admin_edit', compact('pageTitle', 'title', 'provincesList', 'municipiosList', 'patient', 'genders'))
+
+        $deleteImage = true;
+
+        return view('patients.admin_edit', compact('pageTitle', 'title', 'provincesList', 'municipiosList', 'patient', 'genders', 'deleteImage'))
             ->with('tab', $tab);
     }
 
@@ -260,6 +264,67 @@ class AdminPatientController extends Controller
 
             DB::commit();
             return redirect()->route('admin.patients.clinicalRecord', [$patient->id])->with('success', trans('general/admin_lang.save_ok'));
+        } catch (\Exception $e) {
+            dd($e);
+        }
+    }
+    public function insuranceCarrier($id)
+    {
+        $disabled = null;
+        if (!auth()->user()->isAbleTo('admin-patients-insurance-carriers-update') && !auth()->user()->isAbleTo('admin-patients-insurance-carriers-read')) {
+            app()->abort(403);
+        }
+        if (!auth()->user()->isAbleTo('admin-patients-insurance-carriers-update') && auth()->user()->isAbleTo('admin-patients-insurance-carriers-read')) {
+
+            $disabled = "disabled";
+        }
+
+        $patient = User::where("users.id", $id)->patients()->first();
+
+        if (empty($patient)) {
+            app()->abort(404);
+        }
+        $patient = User::find($id);
+        $pageTitle = trans('patients/admin_lang.patients');
+        $title = trans('patients/admin_lang.list');
+
+        $insuranceList = InsuranceCarrier::active()->get();
+        $patient = User::find($id);
+        $tab = 'tab_3';
+
+        return view('patients.admin_insurance_carrier', compact('pageTitle', 'title', 'insuranceList', 'patient', 'disabled'))
+            ->with('tab', $tab);
+    }
+
+    public function insuranceCarrierUpdate(Request $request, $id)
+    {
+        if (!auth()->user()->isAbleTo('admin-patients-insurance-carriers-update')) {
+            app()->abort(403);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $patient = User::where("users.id", $id)->patients()->first();
+
+            if (empty($patient)) {
+                app()->abort(404);
+            }
+
+            $patient = User::find($id);
+            $patient->insuranceCarriers()->detach();
+            if (!empty($request->insurance)) {
+                foreach ($request->insurance as $key => $value) {
+                    $segurosData = [];
+                    $segurosData[$value] = ["poliza" => $request->poliza[$key]];
+                    $patient->insuranceCarriers()->attach($segurosData);
+                }
+            }
+
+            $patient->save();
+
+            DB::commit();
+            return redirect()->route('admin.patients.insuranceCarrier', [$patient->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
             dd($e);
         }
@@ -531,6 +596,7 @@ class AdminPatientController extends Controller
         if (empty($patient->patientProfile)) {
             $patientProfile = new PatientProfile();
             $patientProfile->user_id = $patient->id;
+            $patientProfile->created_by = Auth::user()->id;
         } else {
             $patientProfile = PatientProfile::where('user_id', $patient->id)->first();
         }

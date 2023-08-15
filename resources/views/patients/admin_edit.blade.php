@@ -40,6 +40,14 @@
                             </div>                           
                         </div>
                     </div>   
+                    @if (!empty($patient->patientProfile))
+                        <div class="col-12 col-md-6">                     
+                            <div class="form-group">
+                                <label for="email"> {{ trans('patients/admin_lang.fields.created_by') }}</label>
+                                <input value="{{ !empty($patient->patientProfile)?$patient->patientProfile->createdBy->userProfile->fullname :null}}" type="text" disabled class="form-control" >
+                            </div>
+                        </div>                       
+                    @endif
                 </div>
 
                 <div class="row form-group mb-3">                   

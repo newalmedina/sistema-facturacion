@@ -19,8 +19,18 @@ return [
     'quit_image' => 'Quitar imagen',
     'quit_image' => 'Quitar imagen',
     'clinic_record' => 'Historial clínico',
+    'insurance_carriers' => 'Seguros médicos',
+    'add_insurance' => 'Añadir seguro',
     'fields' => [
         'active' => 'Activo',
+        'id' => 'Id',
+        'id_helper' => 'Introduce id',
+        'id_required' => 'El campo id es obligatorio',
+
+        'created_by' => 'Creado por',
+        'created_by_helper' => 'Introduce creado por',
+        'created_by_required' => 'El campo creado por es obligatorio',
+
         'first_name' => 'Nombre',
         'first_name_helper' => 'Introduce nombre',
         'first_name_required' => 'El campo nombre es obligatorio',
@@ -108,6 +118,15 @@ return [
         'others' => 'Otros (medicamentos, traumatismos, etc.)',
         'others_helper' => 'Introduce otros',
         'others_required' => 'El campo otros es obligatorio',
+
+        //seguros
+        'insurance_id' => 'Seguros',
+        'insurance_id_helper' => 'Seleccione seguro',
+        'insurance_id_required' => 'El campo Seguro es obligatorio',
+
+        'poliza' => 'Póliza',
+        'poliza_helper' => 'Introduce poliza',
+        'poliza_required' => 'El campo póliza es obligatorio',
 
     ],
 

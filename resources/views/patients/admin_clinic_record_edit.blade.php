@@ -161,5 +161,5 @@
   
   
 </script>
-{!! JsValidator::formRequest('App\Http\Requests\AdminPatientsRequest')->selector('#formData') !!}
+{{-- {!! JsValidator::formRequest('App\Http\Requests\AdminPatientsRequest')->selector('#formData') !!} --}}
 @stop

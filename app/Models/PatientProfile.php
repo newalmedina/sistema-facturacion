@@ -16,4 +16,8 @@ class PatientProfile extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+    public function createdBy()
+    {
+        return $this->belongsTo('App\Models\User', 'created_by', "id");
+    }
 }

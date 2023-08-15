@@ -265,8 +265,6 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/patients/{id}/show', [AdminPatientController::class, 'show'])->name('admin.patients.show');
     Route::get('/patients/remove-filter', [AdminPatientController::class, 'removeFilter'])->name('admin.patients.removeFilter');
     Route::get('/patients/change-state/{id}', [AdminPatientController::class, 'changeState'])->name('admin.patients.changeState');
-    Route::get('/patients/clinical-record/{id}/edit', [AdminPatientController::class, 'clinicalRecord'])->name('admin.patients.clinicalRecord');
-    Route::patch('/patients/clinical-record/{id}', [AdminPatientController::class, 'clinicalRecordUpdate'])->name('admin.patients.clinicalRecordUpdate');
 
     Route::post('/patients', [AdminPatientController::class, 'store'])->name('admin.patients.store');
     Route::patch('/patients/{id}', [AdminPatientController::class, 'update'])->name('admin.patients.update');
@@ -277,4 +275,10 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/patients/export-excel', [AdminPatientController::class, 'exportExcel'])->name("admin.patients.exportExcel");
     Route::delete('/patients/delete-image/{photo}', [AdminPatientController::class, 'deleteImage'])->name("admin.patients.deleteImage");
     Route::delete('/patients/{id}', [AdminPatientController::class, 'destroy'])->name('admin.patients.destroy');
+
+    Route::get('/patients/clinical-record/{id}/edit', [AdminPatientController::class, 'clinicalRecord'])->name('admin.patients.clinicalRecord');
+    Route::patch('/patients/clinical-record/{id}', [AdminPatientController::class, 'clinicalRecordUpdate'])->name('admin.patients.clinicalRecordUpdate');
+
+    Route::get('/patients/insurance-carriers/{id}/edit', [AdminPatientController::class, 'insuranceCarrier'])->name('admin.patients.insuranceCarrier');
+    Route::patch('/patients/insurance-carriers/{id}', [AdminPatientController::class, 'insuranceCarrierUpdate'])->name('admin.patients.insuranceCarrierUpdate');
 });

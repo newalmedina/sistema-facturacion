@@ -34,7 +34,7 @@ $disabled= isset($disabled)?$disabled : null;
 
     <div class="row mt-2">
         @if (!empty( $patient->id))
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-3 mb-3">
                 <section class="card">
                 
                     <div class="card-body">
@@ -53,7 +53,7 @@ $disabled= isset($disabled)?$disabled : null;
                             </div>                         
                         </div>
 
-                        @if (!$disabled && Auth::user()->isAbleTo("admin-patients-update") )                                
+                        @if (!$disabled && Auth::user()->isAbleTo("admin-patients-update")  && isset($deleteImage))                                
                                 <div id="remove" onclick="deleteElement()" class="text-danger" style="@if($patient->userProfile->photo=='') display: none; @endif cursor: pointer; text-align: center;"><i class="fa fa-times" aria-hidden="true"></i> {{ trans('profile/admin_lang.quit_image') }} </div>                                          
                         @endif
 
@@ -98,6 +98,16 @@ $disabled= isset($disabled)?$disabled : null;
                         
                         </li>
                     @endif                   
+                    @if(!empty($patient->id) && Auth::user()->isAbleTo("admin-patients-insurance-carriers-update") || Auth::user()->isAbleTo("admin-patients-insurance-carriers-read"))
+                        <li class="nav-item @if ($tab == 'tab_3') active @endif">
+                            <a id="tab_3" class="nav-link" data-bs-target="#tab_3-3"
+                            data-bs-toggle="tabajax" href="{{ url('admin/patients/insurance-carriers/'.$patient->id.'/edit') }}" data-target="#tab_3-3"
+                            aria-controls="tab_3-3" aria-selected="true" >
+                            {{ trans('patients/admin_lang.insurance_carriers') }}
+                            </a>
+                        
+                        </li>
+                    @endif                   
                 </ul>
                 <div class="tab-content" id="tab_tabContent">
                     <div id="tab_1-1" class="tab-pane @if ($tab == 'tab_1') active @endif">
@@ -107,6 +117,10 @@ $disabled= isset($disabled)?$disabled : null;
                     <div id="tab_2-2" class="tab-pane @if ($tab == 'tab_2') active @endif">
             
                         @yield('tab_content_2')
+                    </div>
+                    <div id="tab_3-3" class="tab-pane @if ($tab == 'tab_3') active @endif">
+            
+                        @yield('tab_content_3')
                     </div>
             
                  
