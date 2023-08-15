@@ -22,7 +22,8 @@ WORKDIR /var/www/html
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Ejecuta Composer para instalar las dependencias de Laravel
-RUN composer install
+RUN composer clear-cache
+RUN composer install --no-interaction --prefer-dist
 
 # Copia el archivo de configuración de ejemplo de Laravel
 RUN cp .env.example .env
