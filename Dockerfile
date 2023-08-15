@@ -1,44 +1,33 @@
-# Usa la imagen oficial de PHP con Apache, versión 8.2
-FROM php:8.2-apache
+# Utilizamos la imagen oficial de PHP 8 con FPM
+FROM php:8.0-fpm
 
-# Instala las dependencias necesarias y herramientas para Composer
+# Instalamos las extensiones de PHP necesarias
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
-    unzip \
     && docker-php-ext-configure zip \
     && docker-php-ext-install zip pdo pdo_mysql
 
-# Instala Composer globalmente
+# Instalamos Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Configura el servidor web de Apache
-RUN a2enmod rewrite
+# Instalamos las herramientas necesarias para MySQL
+RUN apt-get update && apt-get install -y \
+    mysql-client
 
-# Copia los archivos de la aplicación al contenedor
-COPY . /var/www/html
+# Configuramos el directorio de trabajo
+WORKDIR /var/www
 
-# Establece el directorio de trabajo
-WORKDIR /var/www/html
+# Copiamos los archivos de tu proyecto Laravel al contenedor
+COPY . /var/www
 
-# Copia el archivo de configuración de ejemplo de Laravel
-COPY .env.example .env
-
-# Genera una clave de aplicación única
-RUN docker-compose run app bash
-
-RUN php artisan config:clear
-RUN php artisan route:clear
+# Instalamos las dependencias de Composer
+RUN composer install
+RUN php artisan cache:clear
 RUN php artisan view:clear
+RUN php artisan config:clear
 
-# Instala las dependencias de Composer
-RUN composer install --no-interaction --no-scripts --no-progress
+# Exponemos el puerto 9000 para el servidor PHP-FPM
+EXPOSE 9000
 
-# Establece los permisos adecuados en el directorio de almacenamiento
-RUN chown -R www-data:www-data storage
-
-# Expone el puerto 80
-EXPOSE 80
-
-# Inicia el servidor web de Apache
-CMD ["apache2-foreground"]
+# CMD ["php-fpm"]
