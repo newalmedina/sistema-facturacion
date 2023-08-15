@@ -25,6 +25,9 @@ WORKDIR /var/www/html
 COPY .env.example .env
 
 # Genera una clave de aplicación única
+RUN php artisan cache:clear
+RUN php artisan view:clear
+RUN php artisan config:clear
 RUN php artisan key:generate
 
 # Instala las dependencias de Composer
