@@ -1,33 +1,24 @@
-# Utilizamos la imagen oficial de PHP 8 con FPM
-FROM php:8.0-fpm
+# CARGAMOS IMAGEN DE PHP MODO ALPINE SUPER REDUCIDA
+FROM elrincondeisma/octane:latest
 
-# Instalamos las extensiones de PHP necesarias
-RUN apt-get update && apt-get install -y \
-    libzip-dev \
-    zip \
-    && docker-php-ext-configure zip \
-    && docker-php-ext-install zip pdo pdo_mysql
+RUN curl -sS https://getcomposer.org/installer​ | php -- \
+    --install-dir=/usr/local/bin --filename=composer
 
-# Instalamos Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=spiralscout/roadrunner:2.4.2 /usr/bin/rr /usr/bin/rr
 
-# Instalamos las herramientas necesarias para MySQL
-RUN apt-get update && apt-get install -y \
-    mysql-client
-
-# Configuramos el directorio de trabajo
-WORKDIR /var/www
-
-# Copiamos los archivos de tu proyecto Laravel al contenedor
-COPY . /var/www
-
-# Instalamos las dependencias de Composer
+WORKDIR /app
+COPY . .
+RUN rm -rf /app/vendor
+RUN rm -rf /app/composer.lock
 RUN composer install
+RUN composer require laravel/octane
+COPY .env.example .env
+RUN mkdir -p /app/storage/logs
 RUN php artisan cache:clear
 RUN php artisan view:clear
 RUN php artisan config:clear
+RUN php artisan octane:install --server="swoole"
+CMD php artisan octane:start --server="swoole" --host="0.0.0.0"
 
-# Exponemos el puerto 9000 para el servidor PHP-FPM
-EXPOSE 9000
-
-# CMD ["php-fpm"]
+EXPOSE 8000
