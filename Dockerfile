@@ -36,7 +36,7 @@ RUN php artisan config:clear
 RUN chown -R www-data:www-data storage
 
 # Expone el puerto 80
-EXPOSE 80000
+EXPOSE 8000
 
 # Inicia el servidor web de Apache
 CMD ["apache2-foreground"]
