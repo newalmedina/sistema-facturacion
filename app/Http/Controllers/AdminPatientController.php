@@ -449,6 +449,10 @@ class AdminPatientController extends Controller
                 $actions .= '<a  class="mb-2 btn btn-warning btn-xs" href="' . route('admin.patients.medicines', $data->id) . '" ><i
                 class="fa fa-pills fa-lg"></i></a> ';
             }
+            if (auth()->user()->isAbleTo("admin-patients-medical-studies")) {
+                $actions .= '<a  class="mb-2 btn btn-quaternary btn-xs" href="' . route('admin.patients.medical-studies', $data->id) . '" ><i
+                class="fa fa-book-medical fa-lg"></i></a> ';
+            }
             if (auth()->user()->isAbleTo("admin-patients-delete")) {
 
                 $actions .= '<button class="mb-2 btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
