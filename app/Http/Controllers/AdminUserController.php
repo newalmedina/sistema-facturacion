@@ -228,27 +228,27 @@ class AdminUserController extends Controller
         $table->editColumn('actions', function ($data) {
             $actions = '';
             if (auth()->user()->isAbleTo("admin-users-read")) {
-                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.users.show', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-info btn-xs" data-bs-content="' .trans('general/admin_lang.show') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.users.show', $data->id) . '" ><i
                 class="fa fa-eye fa-lg"></i></a> ';
             }
             if (auth()->user()->isAbleTo("admin-users-update")) {
-                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.users.edit', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.users.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-users-delete")) {
 
-                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' .trans('general/admin_lang.delete'). '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
                     url('admin/users/' . $data->id) . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';
             }
             if (auth()->user()->isAbleTo("admin-users-suplant-identity") && auth()->user()->id != $data->id) {
 
-                $actions .= '<a  class="btn btn-primary btn-xs ms-1" href="' . route('admin.suplantar', $data->id) . '" ><i
-                class="fa fa-user-secret"></i></a> ';
+                $actions .= '<a  class="btn btn-primary btn-xs ms-1"  data-bs-content="' .trans('general/admin_lang.suplant') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.suplantar', $data->id) . '" ><i
+                class="fa fa-user-secret" ></i></a> ';
             }
-
+           
             return $actions;
         });
 

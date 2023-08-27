@@ -156,17 +156,17 @@ class AdminMedicalSpecializationController extends Controller
         $table->editColumn('actions', function ($data) {
             $actions = '';
             if (auth()->user()->isAbleTo("admin-medical-specializations-read")) {
-                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.medical-specializations.show', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-info btn-xs" data-bs-content="' .trans('general/admin_lang.show') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.medical-specializations.show', $data->id) . '" ><i
                 class="fa fa-eye fa-lg"></i></a> ';
             }
             if (auth()->user()->isAbleTo("admin-medical-specializations-update")) {
-                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.medical-specializations.edit', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.medical-specializations.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-medical-specializations-delete")) {
 
-                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' .trans('general/admin_lang.delete'). '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
                     url('admin/medical-specializations/' . $data->id) . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';

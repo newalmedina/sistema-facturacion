@@ -215,11 +215,11 @@ class AdminClinicPersonalController extends Controller
         $table->editColumn('actions', function ($data) {
             $actions = '';
             if (auth()->user()->isAbleTo("admin-clinic-personal-read")) {
-                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.clinic-personal.show', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-info btn-xs" data-bs-content="' .trans('general/admin_lang.show') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.clinic-personal.show', $data->id) . '" ><i
                 class="fa fa-eye fa-lg"></i></a> ';
             }
             if (auth()->user()->isAbleTo("admin-clinic-personal-update")) {
-                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.clinic-personal.edit', $data->id) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.clinic-personal.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
 
