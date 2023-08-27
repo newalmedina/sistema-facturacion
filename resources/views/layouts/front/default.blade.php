@@ -107,6 +107,8 @@
 
     <!-- Theme Initialization Files -->
     <script src="{{ asset('assets/front/js/theme.init.js')}}"></script>
+	
+<script type="text/javascript" src="{{ asset("assets/admin/vendor/tinymce/tinymce.min.js") }}">       </script>
 	<script>
 		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

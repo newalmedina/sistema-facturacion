@@ -11,4 +11,10 @@ class PatientMedicineDetail extends Model
     use HasFactory;
 
     protected $table = "patient_medicine_details";
+
+    public function getPrescripcionStringAttribute()
+    {
+
+        return  $this->medicine . ', '  . $this->dosis . ', ' . $this->frecuency. ', '. $this->period;
+    }
 }

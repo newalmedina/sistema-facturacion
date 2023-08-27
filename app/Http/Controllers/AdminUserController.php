@@ -245,8 +245,8 @@ class AdminUserController extends Controller
             }
             if (auth()->user()->isAbleTo("admin-users-suplant-identity") && auth()->user()->id != $data->id) {
 
-                $actions .= '<a  class="btn btn-primary btn-sm ms-1" href="' . route('admin.suplantar', $data->id) . '" ><i
-                class="fa fa-user-secret fa-lg"></i></a> ';
+                $actions .= '<a  class="btn btn-primary btn-xs ms-1" href="' . route('admin.suplantar', $data->id) . '" ><i
+                class="fa fa-user-secret"></i></a> ';
             }
 
             return $actions;

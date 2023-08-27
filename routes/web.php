@@ -260,7 +260,7 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/clinic-personal/export-excel', [AdminClinicPersonalController::class, 'exportExcel'])->name("admin.clinic-personal.exportExcel");
 
     //admin patients
-    Route::get('/patients', [AdminPatientController::class, 'index']);
+    Route::get('/patients', [AdminPatientController::class, 'index'])->name("admin.patients");
     Route::get('/patients/create', [AdminPatientController::class, 'create'])->name('admin.patients.create');
     Route::get('/patients/{id}/edit', [AdminPatientController::class, 'edit'])->name('admin.patients.edit');
     Route::get('/patients/{id}/show', [AdminPatientController::class, 'show'])->name('admin.patients.show');
@@ -290,11 +290,16 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/patients/{patient_id}/medicines/create', [AdminPatientMedicineController::class, 'create'])->name('admin.patients.medicines.create');
     Route::get('/patients/{patient_id}/medicines/{id}/edit', [AdminPatientMedicineController::class, 'edit'])->name('admin.patients.medicines.edit');
     Route::get('/patients/{patient_id}/medicines/{id}/show', [AdminPatientMedicineController::class, 'show'])->name('admin.patients.medicines.show');
+    Route::get('/patients/{patient_id}/medicines/{id}/copy', [AdminPatientMedicineController::class, 'copy'])->name('admin.patients.medicines.copy');
+    Route::get('/patients/{patient_id}/medicines/{id}/generate-pdf', [AdminPatientMedicineController::class, 'generatePdf'])->name('admin.patients.medicines.generatePdf');
     Route::get('/patients/{patient_id}/medicines/remove-filter', [AdminPatientMedicineController::class, 'removeFilter'])->name('admin.patients.medicines.removeFilter');
     Route::get('/patients/{patient_id}/medicines/change-state/{id}', [AdminPatientMedicineController::class, 'changeState'])->name('admin.patients.medicines.changeState');
+
+    Route::get('/patients/{patient_id}/medicines/export-excel', [AdminPatientMedicineController::class, 'exportExcel'])->name("admin.patients.medicines.exportExcel");
 
     Route::post('/patients/{patient_id}/medicines', [AdminPatientMedicineController::class, 'store'])->name('admin.patients.medicines.store');
     Route::patch('/patients/{patient_id}/medicines/{id}', [AdminPatientMedicineController::class, 'update'])->name('admin.patients.medicines.update');
     Route::post('/patients/{patient_id}/medicines/save-filter', [AdminPatientMedicineController::class, 'saveFilter'])->name('admin.patients.medicines.saveFilter');
     Route::post('/patients/{patient_id}/medicines/list', [AdminPatientMedicineController::class, 'getData'])->name('admin.patients.medicines.getData');
+    Route::delete('/patients/{patient_id}/medicines/{id}', [AdminPatientMedicineController::class, 'destroy'])->name('admin.patients.medicines.destroy');
 });

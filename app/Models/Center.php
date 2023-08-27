@@ -29,4 +29,14 @@ class Center extends Model
     {
         return $this->belongsToMany(User::class, 'user_centers', 'center_id', 'user_id')->withTimestamps();
     }
+    public function getFullAddressAttribute()
+    {
+        $fullAddress = [
+            $this->address,
+            !empty($this->municipio_id) ? $this->municipio->name : null,
+            !empty($this->province_id) ? $this->province->name : null,
+        ];
+        $filteredData = array_values(array_filter($fullAddress));
+        return implode(", ", $filteredData);
+    }
 }

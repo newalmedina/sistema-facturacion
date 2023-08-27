@@ -23,10 +23,16 @@ return [
     'delete' => 'Eliminar',
     'delete_ok' => 'Registro eliminado correctamente',
     'delete_question' => '¿Seguro que quieres eliminar este registro?',
+    'copy' => 'Copiar',
+    'copy_ok' => 'Registro eliminado correctamente',
+    'copy_question' => '¿Seguro que quieres copiar este registro?',
+
     'delete_question_image' => '¿Seguro que quieres eliminar esta imagen?',
     'yes_delete' => 'Si, eliminar',
+    'yes_copy' => 'Si, copiar',
     'not_permission' => 'No tienes permisos necesarios para ver esta sección',
 
+    'generate_document' => 'Generar documento',
     'lang' => [
         'lang' => 'Idiomas',
         'es' => 'Español',

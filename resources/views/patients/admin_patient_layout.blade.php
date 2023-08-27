@@ -4,7 +4,8 @@
 @stop
 @section('head_page')
 <link href="{{ asset('/assets/admin/vendor/jquery-bonsai/css/jquery.bonsai.css')}}" rel="stylesheet" />
-    
+@yield('tab_head')
+
 @stop
 
 @section('breadcrumb')

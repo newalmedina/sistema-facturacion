@@ -17,7 +17,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('center_id');
             $table->date('date');
+            $table->text('comment')->nullable();
 
 
             $table->foreign('user_id')
@@ -25,6 +27,9 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->foreign('created_by')
                 ->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->foreign('center_id')
+                ->references('id')->on('centers')
                 ->onDelete('cascade');
 
             $table->timestamps();
@@ -55,7 +60,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('patient_medicines');
         Schema::dropIfExists('patient_medicine_details');
+        Schema::dropIfExists('patient_medicines');
     }
 };

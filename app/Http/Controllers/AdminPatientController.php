@@ -425,33 +425,33 @@ class AdminPatientController extends Controller
         $table->editColumn('actions', function ($data) {
             $actions = '';
             // if (auth()->user()->isAbleTo("admin-patients-read")) {
-            //     $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.patients.show', $data->id) . '" ><i
+            //     $actions .= '<a  class="mb-2 btn btn-info btn-xs" href="' . route('admin.patients.show', $data->id) . '" ><i
             //     class="fa fa-eye fa-lg"></i></a> ';
             // }
             if (auth()->user()->isAbleTo("admin-patients-update")) {
-                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.patients.edit', $data->id) . '" ><i
+                $actions .= '<a  class="mb-2 btn btn-primary btn-xs" href="' . route('admin.patients.edit', $data->id) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             } elseif (auth()->user()->isAbleTo("admin-patients-read")) {
-                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.patients.show', $data->id) . '" ><i
+                $actions .= '<a  class="mb-2 btn btn-info btn-xs" href="' . route('admin.patients.show', $data->id) . '" ><i
                     class="fa fa-eye fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-patients-clinic-record-update") || auth()->user()->isAbleTo("admin-patients-clinic-record-read")) {
-                $actions .= '<a  class="btn btn-tertiary btn-xs" href="' . route('admin.patients.clinicalRecord', $data->id) . '" ><i
+                $actions .= '<a  class="mb-2 btn btn-tertiary btn-xs" href="' . route('admin.patients.clinicalRecord', $data->id) . '" ><i
                 class="fa fa-notes-medical fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-patients-insurance-carriers-update") || auth()->user()->isAbleTo("admin-patients-insurance-carriers-read")) {
-                $actions .= '<a  class="btn btn-secondary btn-xs" href="' . route('admin.patients.insuranceCarrier', $data->id) . '" ><i
+                $actions .= '<a  class="mb-2 btn btn-secondary btn-xs" href="' . route('admin.patients.insuranceCarrier', $data->id) . '" ><i
                 class="fa fa-house-damage fa-lg"></i></a> ';
             }
             if (auth()->user()->isAbleTo("admin-patients-medicines")) {
-                $actions .= '<a  class="btn btn-warning btn-xs" href="' . route('admin.patients.medicines', $data->id) . '" ><i
+                $actions .= '<a  class="mb-2 btn btn-warning btn-xs" href="' . route('admin.patients.medicines', $data->id) . '" ><i
                 class="fa fa-pills fa-lg"></i></a> ';
             }
             if (auth()->user()->isAbleTo("admin-patients-delete")) {
 
-                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="mb-2 btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
                     url('admin/patients/' . $data->id) . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';

@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <html class="fixed js flexbox flexboxlegacy no-touch csstransforms csstransforms3d no-overflowscrolling gecko win js no-mobile-device custom-scroll" style=""><head>
 
     <!-- Basic -->
@@ -141,6 +142,7 @@
     <script src="{{ asset('assets/admin/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{ asset('assets/admin/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js')}}"></script>
     <script src="{{ asset('assets/admin/vendor/toast/toast.min.js')}}"></script>
+    
     <script>
         // alert(123);
 		// var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

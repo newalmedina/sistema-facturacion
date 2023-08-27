@@ -2,36 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\AdminClinicPersonalExport;
-use App\Http\Requests\AdminPatientsRequest;
+use App\Exports\AdminPatientMedicineExport;
+use App\Http\Requests\AdminPatientMedicinesRequest;
+use App\Models\Center;
 use App\Models\InsuranceCarrier;
 use App\Models\Municipio;
 use App\Models\PatientMedicine;
 use App\Models\PatientMedicineDetail;
 use App\Models\PatientProfile;
 use App\Models\Province;
-use App\Models\Role;
 use App\Models\User;
-use App\Models\UserProfile;
-use App\Services\StoragePathWork;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class AdminPatientMedicineController extends Controller
 {
-    public $filtProvinceId;
-    public $filtMunicipioId;
+    public $filtCenterId;
+    public $filtStartData;
+    public $filtEndData;
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $this->filtMunicipioId = ($request->session()->has('patient_filter_municipio_id')) ? ($request->session()->get('patient_filter_municipio_id')) : "";
-            $this->filtProvinceId = ($request->session()->has('patient_filter_province_id')) ? ($request->session()->get('patient_filter_province_id')) : "";
+            $this->filtStartData = ($request->session()->has('patient_medicine_start_date')) ? ($request->session()->get('patient_medicine_start_date')) : "";
+            $this->filtEndData = ($request->session()->has('patient_medicine_end_date')) ? ($request->session()->get('patient_medicine_end_date')) : "";
+            $this->filtCenterId = ($request->session()->has('patient_medicine_center_id')) ? ($request->session()->get('patient_medicine_center_id')) : [];
             return $next($request);
         });
     }
@@ -52,125 +51,194 @@ class AdminPatientMedicineController extends Controller
         $patient = User::find($patient_id);
 
         $pageTitle = trans('patient-medicines/admin_lang.list');
-        $title = trans('patients/admin_lang.list');
-        $provincesList = Province::active()->get();
-        // $municipiosList = Municipio::active()->where("province_id", $center->province_id)->get();
-        $municipiosList = Municipio::active()->where("province_id", $this->filtProvinceId)->get();
+        $title = trans('patients/admin_lang.patients');
+        $centerList = Center::active()->get();
         $tab = "tab_4";
         $notImage = true;
-        return view('patient-medicines.admin_index', compact('pageTitle', 'title', 'provincesList', 'municipiosList', "patient", "tab", "notImage"))
+        return view('patient-medicines.admin_index', compact('pageTitle', 'title', 'centerList', "patient", "tab", "notImage"))
             ->with([
-                'filtProvinceId' => $this->filtProvinceId,
-                'filtMunicipioId' => $this->filtMunicipioId,
+                'filtCenterId' => $this->filtCenterId,
+                'filtStartData' => $this->filtStartData,
+                'filtEndData' => $this->filtEndData,
             ]);
     }
-    public function create()
+
+    public function create($patient_id)
     {
         if (!auth()->user()->isAbleTo('admin-patients-medicines-create')) {
             app()->abort(403);
         }
-        $patient = new User();
-
-        $pageTitle = trans('patients/admin_lang.patients');
-        $title = trans('patients/admin_lang.list');
-        $provincesList = Province::active()->get();
-        // $municipiosList = Municipio::active()->where("province_id", $center->province_id)->get();
-        $municipiosList = Municipio::active()->where("province_id", $patient->province_id)->get();
-
-        $tab = 'tab_1';
-
-
-        $genders = [
-            "male" => trans("general/admin_lang.male"),
-            "female" => trans("general/admin_lang.female")
-        ];
-
-        return view('patients.admin_edit', compact('pageTitle', 'title', 'provincesList', 'municipiosList', 'patient', 'genders'))
-            ->with('tab', $tab);
-    }
-
-    public function show($id)
-    {
-        if (!auth()->user()->isAbleTo('admin-patients-medicines-read')) {
-            app()->abort(403);
-        }
-
-        $patient = User::where("users.id", $id)->patients()->first();
+        $patient = User::where("users.id", $patient_id)->patients()->first();
 
         if (empty($patient)) {
             app()->abort(404);
         }
 
-        $patient = User::find($id);
-        $pageTitle = trans('patients/admin_lang.patients');
-        $title = trans('patients/admin_lang.list');
-        $provincesList = Province::active()->get();
-        // $municipiosList = Municipio::active()->where("province_id", $center->province_id)->get();
-        $municipiosList = Municipio::active()->where("province_id", $patient->userProfile->province_id)->get();
+        $patient = User::find($patient_id);
 
-        $tab = 'tab_1';
+        $pageTitle = trans('patient-medicines/admin_lang.patient-medicines');
+        $title = trans('patients/admin_lang.patients');
+
+        $medicine = new PatientMedicine();
+
+        $tab = 'tab_4';
+
+        $notImage = true;
 
 
-        $genders = [
-            "male" => trans("general/admin_lang.male"),
-            "female" => trans("general/admin_lang.female")
-        ];
-        $disabled = "disabled";
-        return view('patients.admin_edit', compact('pageTitle', 'title', 'provincesList', 'municipiosList', 'patient', 'genders', 'disabled'))
+        return view('patient-medicines.admin_edit', compact('pageTitle', 'title', 'patient', 'medicine', 'notImage'))
             ->with('tab', $tab);
     }
 
-    public function edit($id)
+    public function show($patient_id, $id)
     {
         if (!auth()->user()->isAbleTo('admin-patients-medicines-update')) {
             app()->abort(403);
         }
 
-        $patient = User::where("users.id", $id)->patients()->first();
+        $patient = User::where("users.id", $patient_id)->patients()->first();
+        $medicine = PatientMedicine::where("id", $id)
+            ->where("user_id", $patient_id)->first();
 
-        if (empty($patient)) {
+        if (empty($patient) || empty($medicine->id)) {
             app()->abort(404);
         }
 
-        $patient = User::find($id);
-        $pageTitle = trans('patients/admin_lang.patients');
-        $title = trans('patients/admin_lang.list');
-        $provincesList = Province::active()->get();
-        // $municipiosList = Municipio::active()->where("province_id", $center->province_id)->get();
-        $municipiosList = Municipio::active()->where("province_id", $patient->userProfile->province_id)->get();
+        $patient = User::find($patient_id);
+        $pageTitle = trans('patient-medicines/admin_lang.patient-medicines');
+        $title = trans('patients/admin_lang.patients');
 
-        $tab = 'tab_1';
+        $tab = 'tab_4';
 
+        $notImage = true;
+        $disabled = "disabled";
 
-        $genders = [
-            "male" => trans("general/admin_lang.male"),
-            "female" => trans("general/admin_lang.female")
-        ];
-
-        $deleteImage = true;
-
-        return view('patients.admin_edit', compact('pageTitle', 'title', 'provincesList', 'municipiosList', 'patient', 'genders', 'deleteImage'))
+        return view('patient-medicines.admin_edit', compact('pageTitle', 'title', 'patient', 'medicine', 'notImage', "disabled"))
             ->with('tab', $tab);
     }
 
-    public function store(AdminPatientsRequest $request)
+    public function copy($patient_id, $id)
     {
         if (!auth()->user()->isAbleTo('admin-patients-medicines-create')) {
             app()->abort(403);
         }
 
+        $patient = User::where("users.id", $patient_id)->patients()->first();
+        $medicine = PatientMedicine::where("id", $id)
+            ->where("user_id", $patient_id)->first();
+
+        if (empty($patient) || empty($medicine->id)) {
+            app()->abort(404);
+        }
+
         try {
             DB::beginTransaction();
-            $patient = new User();
-            $patient->email = Str::random(8);
-            $patient->password =  Hash::make($patient->email);
-            $this->savePatients($patient, $request);
+            $newMedicine = $medicine->replicate();
+            $newMedicine->created_by = Auth::user()->id;
+            $newMedicine->user_id = $patient_id;
+            $newMedicine->date = Carbon::now();
+            $newMedicine->center_id =  Auth::user()->hasSelectedCenter();
+            $newMedicine->save();
 
-            $roles = Role::where("name", "patient")->pluck("id");
+            foreach ($medicine->details as $detail) {
 
-            $patient->syncRoles($roles);
+                $newDetail = $detail->replicate();
+                $newDetail->patient_medicine_id = $newMedicine->id;
+                $newDetail->save();
+            }
+
             DB::commit();
-            return redirect()->route('admin.patients.edit', [$patient->id])->with('success', trans('general/admin_lang.save_ok'));
+            return redirect()->route('admin.patients.medicines.edit', ["patient_id" => $patient_id, "id" => $newMedicine->id])->with('success', trans('general/admin_lang.save_ok'));
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollBack();
+            return redirect('admin/patients/create/')
+                ->with('error', trans('general/admin_lang.save_ko') . ' - ' . $e->getMessage());
+        }
+    }
+
+    public function generatePdf($patient_id, $id)
+    {
+        $patient = User::where("users.id", $patient_id)->patients()->first();
+        $medicine = PatientMedicine::where("id", $id)
+            ->where("user_id", $patient_id)
+            ->where("created_by", Auth::user()->id)
+            ->first();
+
+        if (empty($patient) || empty($medicine->id)) {
+            app()->abort(404);
+        }
+
+        $data = [
+            'title' => trans("pdfLayout/admin_lang.doctor_info"),
+            'info' => $medicine,
+            'date' => Carbon::parse($medicine->date)->format("d/m/Y"),
+            'doctorInfo' => $medicine->createdBy
+        ];
+        $pdf = PDF::loadView('pdf.partials.recetas', $data);
+
+        return $pdf->stream(
+            trans('patient-medicines/admin_lang.patient-medicines-export') . '_' . Carbon::now()->format("dmYHis") . '.pdf'
+        );
+    }
+
+    public function edit($patient_id, $id)
+    {
+        $medicine = PatientMedicine::where("id", $id)->where("user_id", $patient_id)->first();
+        $patient = User::where("users.id", $patient_id)->patients()->first();
+
+        if (empty($patient) || empty($medicine->id)) {
+            app()->abort(404);
+        }
+
+        if (!auth()->user()->isAbleTo('admin-patients-medicines-update-all') && !auth()->user()->isAbleTo('admin-patients-medicines-update')) {
+            app()->abort(403);
+        }
+
+
+        if (!auth()->user()->isAbleTo('admin-patients-medicines-update-all') && auth()->user()->isAbleTo('admin-patients-medicines-update') && $medicine->created_by != Auth::user()->id) {
+            app()->abort(403);
+        }
+
+
+
+        $patient = User::find($patient_id);
+        $pageTitle = trans('patient-medicines/admin_lang.patient-medicines');
+        $title = trans('patients/admin_lang.patients');
+
+        $tab = 'tab_4';
+
+        $notImage = true;
+
+
+        return view('patient-medicines.admin_edit', compact('pageTitle', 'title', 'patient', 'medicine', 'notImage'))
+            ->with('tab', $tab);
+    }
+
+    public function store(AdminPatientMedicinesRequest $request, $patient_id)
+    {
+        if (!auth()->user()->isAbleTo('admin-patients-medicines-create')) {
+            app()->abort(403);
+        }
+
+        $patient = User::where("users.id", $patient_id)->patients()->first();
+
+        if (empty($patient)) {
+            app()->abort(404);
+        }
+
+        try {
+            DB::beginTransaction();
+            $medicine = new PatientMedicine();
+            $medicine->created_by = Auth::user()->id;
+            $medicine->user_id = $patient_id;
+            $medicine->center_id =  Auth::user()->hasSelectedCenter();
+
+            $this->saveMedicine($medicine, $request);
+
+
+            DB::commit();
+            return redirect()->route('admin.patients.medicines.edit', ["patient_id" => $patient_id, "id" => $medicine->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
             dd($e);
             DB::rollBack();
@@ -179,30 +247,33 @@ class AdminPatientMedicineController extends Controller
                 ->with('error', trans('general/admin_lang.save_ko') . ' - ' . $e->getMessage());
         }
     }
-    public function update(AdminPatientsRequest $request, $id)
+
+    public function update(AdminPatientMedicinesRequest $request,  $patient_id, $id)
     {
         if (!auth()->user()->isAbleTo('admin-patients-medicines-update')) {
             app()->abort(403);
         }
 
+        $patient = User::where("users.id", $patient_id)->patients()->first();
+        $medicine =  PatientMedicine::find($id);
+
+        if (empty($patient) || empty($medicine->id)) {
+            app()->abort(404);
+        }
+
         try {
-            $patient = User::where("users.id", $id)->patients()->first();
+            DB::beginTransaction();
 
-            if (empty($patient)) {
-                app()->abort(404);
-            }
+            $this->saveMedicine($medicine, $request);
 
-            $patient = User::find($id);
 
-            $this->savePatients($patient, $request);
-
-            // DB::commit();
-            return redirect()->route('admin.patients.edit', [$patient->id])->with('success', trans('general/admin_lang.save_ok'));
+            DB::commit();
+            return redirect()->route('admin.patients.medicines.edit', ["patient_id" => $patient_id, "id" => $medicine->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
             dd($e);
             DB::rollBack();
 
-            return redirect('admin/patients/create/' . $patient->id)
+            return redirect('admin/patients/create/')
                 ->with('error', trans('general/admin_lang.save_ko') . ' - ' . $e->getMessage());
         }
     }
@@ -224,8 +295,8 @@ class AdminPatientMedicineController extends Controller
         }
 
         $patient = User::find($id);
-        $pageTitle = trans('patients/admin_lang.patients');
-        $title = trans('patients/admin_lang.list');
+        $pageTitle = trans('patient-medicines/admin_lang.patient-medicines');
+        $title = trans('patients/admin_lang.patients');
         $provincesList = Province::active()->get();
         // $municipiosList = Municipio::active()->where("province_id", $center->province_id)->get();
         $municipiosList = Municipio::active()->where("province_id", $patient->userProfile->province_id)->get();
@@ -296,8 +367,8 @@ class AdminPatientMedicineController extends Controller
             app()->abort(404);
         }
         $patient = User::find($id);
-        $pageTitle = trans('patients/admin_lang.patients');
-        $title = trans('patients/admin_lang.list');
+        $pageTitle = trans('patient-medicines/admin_lang.patient-medicines');
+        $title = trans('patients/admin_lang.patients');
 
         $insuranceList = InsuranceCarrier::active()->get();
         $patient = User::find($id);
@@ -341,40 +412,50 @@ class AdminPatientMedicineController extends Controller
         }
     }
 
-    public function saveFilter(Request $request)
+    public function saveFilter(Request $request, $patient_id)
     {
         $this->clearSesions($request);
-        if (!empty($request->province_id))
-            $request->session()->put('patient_filter_province_id', $request->province_id);
+        if (!empty($request->center_id))
+            $request->session()->put('patient_medicine_center_id', $request->center_id);
 
-        if (!empty($request->municipio_id))
-            $request->session()->put('patient_filter_municipio_id', $request->municipio_id);
+        if (!empty($request->start_date))
+            $request->session()->put('patient_medicine_start_date', $request->start_date);
+
+        if (!empty($request->end_date))
+            $request->session()->put('patient_medicine_end_date', $request->end_date);
 
 
-        return redirect('admin/patients');
+        return redirect('admin/patients/' . $patient_id . '/medicines');
     }
 
-    public function removeFilter(Request $request)
+    public function removeFilter(Request $request, $patient_id)
     {
         $this->clearSesions($request);
-        return redirect('admin/patients');
+        return redirect('admin/patients/' . $patient_id . '/medicines');
     }
 
     private function addFilter(&$query)
     {
 
-        if (!empty($this->filtProvinceId)) {
-            $query->where("user_profiles.province_id", $this->filtProvinceId);
+        if (count($this->filtCenterId) > 0) {
+            $query->whereIn("patient_medicines.center_id", [$this->filtCenterId]);
         }
-        if (!empty($this->filtMunicipioId)) {
-            $query->where("user_profiles.municipio_id", $this->filtMunicipioId);
+
+        if (!empty($this->filtStartData)) {
+            $date = Carbon::createFromFormat("d/m/Y", $this->filtStartData)->format("Y-m-d");
+            $query->where("patient_medicines.date", ">=", $date);
+        }
+        if (!empty($this->filtEndData)) {
+            $date = Carbon::createFromFormat("d/m/Y", $this->filtEndData)->format("Y-m-d");
+            $query->where("patient_medicines.date", "<=", $date);
         }
     }
 
     private function clearSesions($request)
     {
-        $request->session()->forget('patient_filter_province_id');
-        $request->session()->forget('patient_filter_municipio_id');
+        $request->session()->forget('patient_medicine_center_id');
+        $request->session()->forget('patient_medicine_start_date');
+        $request->session()->forget('patient_medicine_end_date');
     }
 
     public function getData($patient_id)
@@ -385,13 +466,18 @@ class AdminPatientMedicineController extends Controller
 
         $query = PatientMedicine::select(
             [
+                "patient_medicines.user_id",
                 "patient_medicines.id",
                 "patient_medicines.date",
+                "created.id as creador",
                 DB::raw('CONCAT(created.first_name, " ", created.last_name) as created_by'),
+                "centers.name as center",
             ]
         )
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "patient_medicines.user_id")
             ->leftJoin("user_profiles as created", "created.user_id", "=", "patient_medicines.created_by")
+            ->leftJoin("centers", "centers.id", "=", "patient_medicines.center_id")
+            ->leftJoin("patient_medicine_details", "patient_medicine_details.patient_medicine_id", "=", "patient_medicines.id")
             ->where("patient_medicines.user_id", $patient_id)
             ->distinct();
 
@@ -399,8 +485,24 @@ class AdminPatientMedicineController extends Controller
 
         $table = DataTables::of($query);
 
+        $table->filterColumn('date', function ($query, $keyword) {
+            $query->whereRaw("DATE_FORMAT(patient_medicines.date, '%d/%m/%Y') like ?", ["%{$keyword}%"]);
+        });
+
         $table->filterColumn('created_by', function ($query, $keyword) {
             $query->whereRaw("CONCAT(created.first_name,' ',created.last_name) like ?", ["%{$keyword}%"]);
+        });
+        $table->filterColumn('medicine', function ($query, $keyword) {
+            $query->whereRaw("patient_medicine_details.medicine like ?", ["%{$keyword}%"]);
+        });
+
+        $table->editColumn('date', function ($data) {
+
+            $fecha = Carbon::createFromFormat("Y-m-d", $data->date);
+            return [
+                'display' => e($fecha->format("d/m/Y")),
+                'timestamp' => $fecha->timestamp
+            ];
         });
 
         $table->editColumn('medicine', function ($data) {
@@ -414,28 +516,39 @@ class AdminPatientMedicineController extends Controller
 
         $table->editColumn('actions', function ($data) {
             $actions = '';
-            // if (auth()->user()->isAbleTo("admin-patients-medicines-read")) {
-            //     $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.patients.show', $data->id) . '" ><i
-            //     class="fa fa-eye fa-lg"></i></a> ';
-            // }
-            if (auth()->user()->isAbleTo("admin-patients-medicines-update")) {
-                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.patients.edit', $data->id) . '" ><i
-                class="fa fa-marker fa-lg"></i></a> ';
-            } elseif (auth()->user()->isAbleTo("admin-patients-medicines-read")) {
-                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.patients.show', $data->id) . '" ><i
+
+            if (auth()->user()->isAbleTo("admin-patients-medicines-read")) {
+                $actions .= '<a  class="btn btn-info btn-xs" href="' . route('admin.patients.medicines.show', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                     class="fa fa-eye fa-lg"></i></a> ';
             }
-
-            if (auth()->user()->isAbleTo("admin-patients-medicines-clinic-record-update") || auth()->user()->isAbleTo("admin-patients-medicines-clinic-record-read")) {
-                $actions .= '<a  class="btn btn-tertiary btn-xs" href="' . route('admin.patients.clinicalRecord', $data->id) . '" ><i
-                class="fa fa-notes-medical fa-lg"></i></a> ';
+            if (auth()->user()->isAbleTo("admin-patients-medicines-update-all")) {
+                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.patients.medicines.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                class="fa fa-marker fa-lg"></i></a> ';
+            } elseif (auth()->user()->isAbleTo("admin-patients-medicines-update") && $data->creador == Auth::user()->id) {
+                $actions .= '<a  class="btn btn-primary btn-xs" href="' . route('admin.patients.medicines.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                class="fa fa-marker fa-lg"></i></a> ';
             }
-            if (auth()->user()->isAbleTo("admin-patients-medicines-delete")) {
+            if ($data->creador == Auth::user()->id) {
+                $actions .= '<a  class="btn btn-danger btn-xs"href="' . route('admin.patients.medicines.generatePdf', ["patient_id" => $data->user_id, "id" => $data->id]) . '""><i
+                    class="fa fa-file-pdf fa-lg"></i></a> ';
+            }
+            if (auth()->user()->isAbleTo("admin-patients-medicines-create")) {
+                $actions .= '<a  class="btn btn-success btn-xs" href="javascript:void(0);"  onclick="javascript:copyElement(\'' .
+                    route('admin.patients.medicines.copy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');"><i
+                    class="fa fa-copy fa-lg"></i></a> ';
+            }
+
+            if (auth()->user()->isAbleTo("admin-patients-medicines-delete-all")) {
 
                 $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
-                    url('admin/patients/' . $data->id) . '\');" data-content="' .
+                    route('admin.patients.medicines.destroy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';
+            } elseif (auth()->user()->isAbleTo("admin-patients-medicines-delete") && $data->creador == Auth::user()->id) {
+                $actions .= '<button class="btn btn-danger btn-xs" onclick="javascript:deleteElement(\'' .
+                    route('admin.patients.medicines.destroy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');" data-content="' .
+                    trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
+                    <i class="fa fa-trash" aria-hidden="true"></i></button>';
             }
 
 
@@ -447,24 +560,19 @@ class AdminPatientMedicineController extends Controller
         return $table->make();
     }
 
-    public function destroy($id)
+    public function destroy($patient_id, $id)
     {
         // Si no tiene permisos para modificar lo echamos
         if (!auth()->user()->isAbleTo('admin-patients-medicines-delete')) {
             app()->abort(403);
         }
-        $patients = User::find($id);
-        if (empty($patients)) {
+        $medicina = PatientMedicine::where("id", $id)
+            ->where("user_id", $patient_id)->first();
+        if (empty($medicina)) {
             app()->abort(404);
         }
-        $myServiceSPW = new StoragePathWork("users");
 
-        if (!empty($patients->image)) {
-            // $myServiceSPW->deleteFile($patients->image, '');
-            // $patients->image = "";
-            // $patients->save = "";
-        }
-        $patients->delete();
+        $medicina->delete();
 
         return response()->json(array(
             'success' => true,
@@ -472,126 +580,60 @@ class AdminPatientMedicineController extends Controller
         ));
     }
 
-    public function changeState($id)
-    {
-        if (!auth()->user()->isAbleTo('admin-patients-medicines-update')) {
-            app()->abort(403);
-        }
-
-        $patients = User::find($id);
-
-        if (!empty($patients)) {
-            $patients->active = !$patients->active;
-            return $patients->save() ? 1 : 0;
-        }
-
-        return 0;
-    }
-
-
-    public function getImage($photo)
-    {
-        $myServiceSPW = new StoragePathWork("users");
-        return $myServiceSPW->showFile($photo, '/users');
-    }
-    public function deleteImage($id)
-    {
-        $myServiceSPW = new StoragePathWork("users");
-        $patient = User::find($id);
-
-        if (!empty($patient->userProfile->photo)) {
-            $myServiceSPW->deleteFile($patient->userProfile->photo, '');
-            $patient->userProfile->photo = "";
-        }
-        $patient->userProfile->save();
-
-        return response()->json(array(
-            'success' => true,
-            'msg' => trans("general/admin_lang.delete_ok"),
-        ));
-    }
-
-
-    public function exportExcel()
+    public function exportExcel($patient_id)
     {
         if (!auth()->user()->isAbleTo('admin-patients-medicines-list')) {
             app()->abort(403);
         }
 
-        $query = User::select(
+        $query = PatientMedicine::select(
             [
-                'users.id',
-                'users.email',
-                'user_profiles.phone',
-                'user_profiles.first_name',
-                'user_profiles.photo',
-                'provinces.name as province',
-                'municipios.name as municipio',
+                "patient_medicines.user_id",
+                "patient_medicines.id",
+                "patient_medicines.date",
+                DB::raw('CONCAT(created.first_name, " ", created.last_name) as created_by'),
+                DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as patient'),
+                "centers.name as center",
+                "patient_medicine_details.dosis",
+                "patient_medicine_details.frecuency",
+                "patient_medicine_details.amount",
+                "patient_medicine_details.period",
+                "patient_medicine_details.medicine",
             ]
         )
-            ->patient()->clinicPersonalSelectedCenter()
-            ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
-            ->leftJoin("doctor_profiles", "doctor_profiles.user_id", "=", "users.id")
-            ->leftJoin("provinces", "user_profiles.province_id", "=", "provinces.id")
-            ->leftJoin("municipios", "user_profiles.municipio_id", "=", "municipios.id")
-            ->where("roles.name", "patient")
+            ->leftJoin("user_profiles", "user_profiles.user_id", "=", "patient_medicines.user_id")
+            ->leftJoin("user_profiles as created", "created.user_id", "=", "patient_medicines.created_by")
+            ->leftJoin("centers", "centers.id", "=", "patient_medicines.center_id")
+            ->leftJoin("patient_medicine_details", "patient_medicine_details.patient_medicine_id", "=", "patient_medicines.id")
+            ->where("patient_medicines.user_id", $patient_id)
             ->distinct();
+
 
         $this->addFilter($query);
 
-        return Excel::download(new AdminClinicPersonalExport($query), strtolower(trans('patients/admin_lang.patients')) . '_' . Carbon::now()->format("dmYHis") . '.xlsx');
+        return Excel::download(new AdminPatientMedicineExport($query), strtolower(trans('patient-medicines/admin_lang.patient-medicines-export')) . '_' . Carbon::now()->format("dmYHis") . '.xlsx');
     }
 
 
-    private function savePatients($patient, $request)
+    private function saveMedicine($medicine, $request)
     {
+        $medicine->date = Carbon::createFromFormat("d/m/Y", $request->date);
+        $medicine->comment =  $request->comment;
+        $medicine->save();
 
-        $patient->active = $request->input('active', 0);
-        $patient->save();
-        if (empty($patient->userProfile)) {
-            $userProfile = new UserProfile();
-            $userProfile->user_id = $patient->id;
-        } else {
-            $userProfile = UserProfile::where('user_id', $patient->id)->first();
+        //eliminando medicamentos antiguos
+        if (!empty($medicine->id)) {
+            $details = PatientMedicineDetail::where("patient_medicine_id", $medicine->id)->delete();
         }
 
-
-        $userProfile->first_name = $request->input('user_profile.first_name');
-        $userProfile->last_name = $request->input('user_profile.last_name');
-        $userProfile->birthday = !empty($request->input('user_profile.birthday')) ? Carbon::createFromFormat("d/m/Y", $request->input('user_profile.birthday'))->format("Y-m-d") : null;
-        $userProfile->identification = $request->input('user_profile.identification');
-        $userProfile->phone = $request->input('user_profile.phone');
-        $userProfile->mobile = $request->input('user_profile.mobile');
-        $userProfile->gender = $request->input('user_profile.gender');
-        $userProfile->province_id = $request->input('user_profile.province_id');
-        $userProfile->municipio_id = $request->input('user_profile.municipio_id');
-        $userProfile->address = $request->input('user_profile.address');
-
-        $image = $request->file('image');
-
-        if (!is_null($image)) {
-            $myServiceSPW = new StoragePathWork("users");
-
-            if (!empty($userProfile->photo)) {
-                $myServiceSPW->deleteFile($userProfile->photo, '');
-                $userProfile->photo  = "";
-            }
-
-            $filename = $myServiceSPW->saveFile($image, '');
-            $userProfile->photo  = $filename;
+        for ($i = 0; $i < count($request->medicine); $i++) {
+            $detail = new PatientMedicineDetail();
+            $detail->patient_medicine_id = $medicine->id;
+            $detail->medicine = $request->medicine[$i];
+            $detail->dosis = $request->dosis[$i];
+            $detail->frecuency = $request->frecuency[$i];
+            $detail->period = $request->period[$i];
+            $detail->save();
         }
-
-        $userProfile->save();
-
-        if (empty($patient->patientProfile)) {
-            $patientProfile = new PatientProfile();
-            $patientProfile->user_id = $patient->id;
-            $patientProfile->created_by = Auth::user()->id;
-        } else {
-            $patientProfile = PatientProfile::where('user_id', $patient->id)->first();
-        }
-
-        $patientProfile->email = $request->input('patient_profile.email');
-        $patientProfile->save();
     }
 }

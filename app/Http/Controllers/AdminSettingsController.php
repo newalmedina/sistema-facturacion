@@ -53,6 +53,8 @@ class AdminSettingsController extends Controller
 
                         $filename = $myServiceSPW->saveFile($image, '');
                         $setting->value = $filename;
+                        //guardando en la carpeta public para luego sacarla en los pdf
+                     $image->storeAs('settings', $filename, 'public');
                     }
                 } else {
                     $setting->value = $value;

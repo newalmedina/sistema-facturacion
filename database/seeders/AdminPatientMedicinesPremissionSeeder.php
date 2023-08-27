@@ -60,6 +60,11 @@ class AdminPatientMedicinesPremissionSeeder  extends BaseSeeder
                 'name' => Str::slug('admin-patients-medicines-delete'),
                 'description' => 'Pacientes Medicamentos - borrar'
             ],
+            [
+                'display_name' => 'Pacientes Medicamentos - borrar todos',
+                'name' => Str::slug('admin-patients-medicines-delete-all'),
+                'description' => 'Pacientes Medicamentos - borrar Todos'
+            ],
 
 
 

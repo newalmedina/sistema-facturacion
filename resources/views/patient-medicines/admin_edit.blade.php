@@ -13,159 +13,127 @@
     </li>
 @stop
 
-@section('tab_content_1')
+@section('tab_content_4')
 @php
     $disabled= isset($disabled)?$disabled : null;
 @endphp
 
+@if(!empty($medicine->id) && auth()->user()->id ==$medicine->created_by)  
+<div class="row">
+    <div class="col-12 d-flex justify-content-end">
+        <a href="{{ route('admin.patients.medicines.generatePdf', ["patient_id" => $medicine->user_id, "id" => $medicine->id]) }}" class="btn btn-danger btn-xs"> <i
+            class="fa fa-file-excel mr-1"></i> {{ trans("general/admin_lang.generate_document") }}</a>
+    </div>
+</div>
+@endif
+
 <div class="row">
     
     <div class="col-12">
-        <form id="formData" enctype="multipart/form-data" action="@if(empty($patient->id)) {{ route("admin.patients.store") }} @else {{ route("admin.patients.update",$patient->id) }} @endif " method="post"  novalidate="false">
+        <form id="formData" enctype="multipart/form-data" action="@if(empty($medicine->id)) {{ route("admin.patients.medicines.store",['patient_id'=>$patient->id]) }} @else {{ route("admin.patients.medicines.update", ['patient_id'=>$patient->id,"id"=>$medicine->id]) }} @endif " method="post"  novalidate="false">
             @csrf       
             
-            @if(empty($patient->id))  
+            @if(empty($medicine->id))  
                 @method('post')
             @else   
                 @method('patch') 
             @endif
               
             <div class="card-body"> 
-                <div class="row form-group mb-3">
-                    <div class="col-12 col-md-6">                     
+            
+
+                <div class="row form-group mb-3">                   
+
+                    <div class="col-md-2">
+                     
                         <div class="form-group">
-                            <label for="active"> {{ trans('patients/admin_lang.fields.active') }}</label>
-                            <div class="form-check form-switch">
-                                <input {{ $disabled }}  class="form-check-input toggle-switch" @if($patient->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
-                            </div>                           
+                            <label for="date"> {{ trans('patient-medicines/admin_lang.fields.date') }}<span class="text-danger">*</span></label>
+                            <input value="{{ $medicine->dateFormatted }}" name="date" type="text" {{ $disabled }} class="form-control datepicker"   placeholder="{{ trans('patient-medicines/admin_lang.fields.date_helper') }}">
                         </div>
-                    </div>   
-                    @if (!empty($patient->patientProfile))
-                        <div class="col-12 col-md-6">                     
+                    </div>
+                   <div class="col-md-10">
+                    <div class="row">
+                        @if(!empty($medicine->created_by)) 
+                        <div class=" offset-md-4 col-md-4">
+                         
                             <div class="form-group">
-                                <label for="email"> {{ trans('patients/admin_lang.fields.created_by') }}</label>
-                                <input value="{{ !empty($patient->patientProfile)?$patient->patientProfile->createdBy->userProfile->fullname :null}}" type="text" disabled class="form-control" >
+                                <label for="created_by"> {{ trans('patient-medicines/admin_lang.fields.created_by') }}</label>
+                                <input value="{{ $medicine->createdBy->userProfile->fullName }}" type="text" disabled class="form-control "   placeholder="{{ trans('patient-medicines/admin_lang.fields.created_by_helper') }}">
                             </div>
-                        </div>                       
+                        </div>
+                        @endif
+                        @if(!empty($medicine->center_id)) 
+                        <div class="col-md-4">
+                         
+                            <div class="form-group">
+                                <label for="center"> {{ trans('patient-medicines/admin_lang.fields.center') }}</label>
+                                <input value="{{ $medicine->center->name }}" type="text" disabled class="form-control "   placeholder="{{ trans('patient-medicines/admin_lang.fields.center_helper') }}">
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                   </div>
+                </div>
+                
+                <div class="row form-group mb-3">
+                    @if (empty( $disabled ))
+                    <div class="col-12">
+                     
+                        <div class="form-group">
+                            <button type="button" id="addInsurance" class="btn btn-xs btn-primary">{{ trans('patient-medicines/admin_lang.add_medicine') }}</button>
+                        </div>
+                    </div>                                       
                     @endif
-                </div>
-
-                <div class="row form-group mb-3">                   
-
-                    <div class="col-lg-6">
-                     
-                        <div class="form-group">
-                            <label for="first_name"> {{ trans('patients/admin_lang.fields.first_name') }}<span class="text-danger">*</span></label>
-                            <input value="{{ !empty($patient->userProfile)?$patient->userProfile->first_name :null}}" type="text" {{ $disabled }} class="form-control" name="user_profile[first_name]"  placeholder="{{ trans('patients/admin_lang.fields.first_name_helper') }}">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="last_name"> {{ trans('patients/admin_lang.fields.last_name') }}<span class="text-danger">*</span></label>
-                            <input  value="{{ !empty($patient->userProfile)?$patient->userProfile->last_name :null}}"  type="text" {{ $disabled }} class="form-control" name="user_profile[last_name]"  id="last_name" placeholder="{{ trans('patients/admin_lang.fields.last_name_helper') }}">
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group mb-3">                   
-
-                    <div class="col-lg-6">                     
-                        <div class="form-group">
-                            <label for="email"> {{ trans('patients/admin_lang.fields.email') }}<span class="text-danger">*</span></label>
-                            <input value="{{ !empty($patient->patientProfile)?$patient->patientProfile->email :null}}" type="text" {{ $disabled }} class="form-control" name="patient_profile[email]"  placeholder="{{ trans('patients/admin_lang.fields.email_helper') }}">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row form-group mb-3">
-                    <div class="col-lg-6">
-                     
-                        <div class="form-group">
-                            <label for="birthday"> {{ trans('patients/admin_lang.fields.birthday') }} <span class="text-danger">*</span></label>
-                            <input value="{{ !empty($patient->userProfile)?$patient->userProfile->birthdayFormatted :null}}" type="text" {{ $disabled }} class="form-control" autocomplete="off" id="birthday" name="user_profile[birthday]"  placeholder="{{ trans('patients/admin_lang.fields.birthday_helper') }}">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="identification"> {{ trans('patients/admin_lang.fields.identification') }} <span class="text-danger">*</span></label>
-                            <input  value="{{ !empty($patient->userProfile)?$patient->userProfile->identification:null }}" maxlength="15" type="text" {{ $disabled }} class="form-control" name="user_profile[identification]"  id="identification" placeholder="{{ trans('patients/admin_lang.fields.identification_helper') }}">
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group mb-3">
-                    <div class="col-lg-6">
-                     
-                        <div class="form-group">
-                            <label for="phone"> {{ trans('patients/admin_lang.fields.phone') }} <span class="text-danger">*</span></label>
-                            <input value="{{ !empty($patient->userProfile)?$patient->userProfile->phone:null }}" type="text"  maxlength="15" {{ $disabled }} class="form-control" name="user_profile[phone]"  placeholder="{{ trans('patients/admin_lang.fields.phone_helper') }}">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="mobile"> {{ trans('patients/admin_lang.fields.mobile') }}</label>
-                            <input  value="{{ !empty($patient->userProfile)?$patient->userProfile->mobile :null}}"  type="text"  maxlength="15" {{ $disabled }} class="form-control" name="user_profile[mobile]"  id="mobile" placeholder="{{ trans('patients/admin_lang.fields.mobile_helper') }}">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row form-group mb-3">
-                    <div class="col-lg-6">
-                     
-                        <div class="form-group">
-                            <label for="gender" class="col-12"> {{ trans('patients/admin_lang.fields.gender') }} <span class="text-danger">*</span></label>
-                            <select {{ $disabled }} class="form-control select2" name="user_profile[gender]" id="gender"> 
-                                @foreach ($genders as $key=>$value)
-                                    <option value="{{ $key }}" @if(!empty($patient->userProfile)?$patient->userProfile->gender:null ==$key) selected @endif>{{ $value }}</option>
-                                @endforeach 
-                            </select>    
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group mb-3">
-                    <div class="col-12 col-md-6">                     
-                        <div class="form-group">
-                            <label for="province_id" class="col-12"> {{ trans('patients/admin_lang.fields.province_id') }}<span class="text-danger">*</span></label>
-                            <select {{ $disabled }} class="form-control select2" name="user_profile[province_id]" id="province_id">
-                                <option value="">{{ trans('patients/admin_lang.fields.province_id_helper') }}</option>   
-                                @foreach ($provincesList as $province)
-                                    <option value="{{ $province->id }}" @if(!empty($patient->userProfile)&& $patient->userProfile->province_id ==$province->id) selected @endif>{{ $province->name }}</option>
-                                @endforeach 
-                            </select>    
-                        
-                        </div>
-                    </div>    
-                    <div class="col-12 col-md-6">                     
-                        <div class="form-group">
-                            <label for="municipio_id" class="col-12"> {{ trans('patients/admin_lang.fields.municipio_id') }} <span class="text-danger">*</span> </label>
-                            <select {{ $disabled }} class="form-control select2" name="user_profile[municipio_id]" id="municipio_id">
-                                <option value="">{{ trans('patients/admin_lang.fields.municipio_id_helper') }}</option>   
-                                @foreach ($municipiosList as $municipio)
-                                    <option value="{{ $municipio->id }}" @if(!empty($patient->userProfile)&& $patient->userProfile->municipio_id ==$municipio->id) selected @endif>{{ $municipio->name }}</option>
-                                @endforeach 
-                            </select>    
-                        </div>
-                    </div>                        
-                </div>
-                <div class="row form-group mb-3">
-                    <div class="col-lg-12">
-                     
-                        <div class="form-group">
-                            <label for="address"> {{ trans('patients/admin_lang.fields.address') }} <span class="text-danger">*</span></label>
-                            <input value="{{ !empty($patient->userProfile)?$patient->userProfile->address :null}}" type="text" {{ $disabled }} class="form-control" name="user_profile[address]"  placeholder="{{ trans('patients/admin_lang.fields.address_helper') }}">
-                        </div>
-                    </div>
-                    
-                </div>
-                  <div class="row form-group mb-3"">                         
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="image"> {{ trans('patients/admin_lang.fields.photo') }}</label>
-                            <input type="file" accept="image/*" class="form-control d-none" name="image" id="patient_image" style="opacity: 0; width: 0;">
-                            <div class="input-group">
-                                <input type="text"  disabled class="form-control" id="nombrefichero" readonly>
-                                <span class="input-group-append">
-                                    <button id="btnSelectImage" {{ $disabled }} class="btn btn-primary" type="button">{{ trans('profile/admin_lang.fields.search_image') }}</button>
-                                </span>
+                </div> 
+                <div id="insuranceContainer" class="mb-3">
+                    @php
+                        $cont=0;
+                    @endphp
+                    @foreach ($medicine->details as $detail)
+                       <div class="row">
+                        <div class="col-12 col-md-3 mt-2">                             
+                            <div class="form-group">
+                                <input value="{{ $detail->medicine }}"  type="text" {{ $disabled }} class="form-control required-field" name="medicine[{{ $cont }}]"  placeholder="{{ trans('patient-medicines/admin_lang.fields.medicine') }}">
                             </div>
+                        </div>                                       
+                        <div class="col-12 col-md-2 mt-2">                             
+                            <div class="form-group">
+                                <input value="{{ $detail->dosis }}"  type="text" {{ $disabled }} class="form-control required-field" name="dosis[{{ $cont }}]"  placeholder="{{ trans('patient-medicines/admin_lang.fields.dosis') }}">
+                            </div>
+                        </div>                                       
+                        <div class="col-12 col-md-2 mt-2">                             
+                            <div class="form-group">
+                               
+                                <input value="{{ $detail->frecuency }}"  type="text" {{ $disabled }} class="form-control required-field" name="frecuency[{{ $cont }}]"  placeholder="{{ trans('patient-medicines/admin_lang.fields.frecuency') }}">
+                            </div>
+                        </div>                                       
+                        <div class="col-12 col-md-3 mt-2">                             
+                            <div class="form-group">
+                               
+                                <input value="{{ $detail->period }}"  type="text" {{ $disabled }} class="form-control required-field" name="period[{{ $cont }}]"  placeholder="{{ trans('patient-medicines/admin_lang.fields.period') }}">
+                            </div>
+                        </div>   
+                            @if (empty( $disabled ))                                   
+                                <div class="col-12 col-md-2 mt-2">                             
+                                    <div class="form-group">
+                                        <button type="button"  class="btn btn-danger btn-xs remove "> <i class="fa fa-trash" aria-hidden="true"></i></button>
+                                    </div>
+                                </div>         
+                            @endif 
+                        @php
+                            $cont++;
+                        @endphp
+                       </div>
+                    @endforeach
+                </div> 
+                <hr>
+                 <div class="row form-group mb-3">                   
+
+                    <div class="col-12">
+                     
+                        <div class="form-group">
+                            <label for="comment"> {{ trans('patient-medicines/admin_lang.fields.comment') }}</label> 
+                            <textarea name="comment" class="form-control textarea" id="" cols="30" rows="10">{{ $medicine->comment }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -173,9 +141,9 @@
             </div>
             <div class="card-footer row">
                 <div class="col-12  d-flex justify-content-between">
-                    <a href="{{ url('admin/patients') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
+                    <a href="{{ route('admin.patients.medicines',["patient_id"=>$patient->id]) }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
                     @if (empty( $disabled ))
-                        <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>                           
+                        <button type="button" id="saveData" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>                           
                     @endif
                 </div>
             </div>
@@ -188,68 +156,139 @@
 
     
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+<script type="text/javascript" src="{{ asset("assets/admin/vendor/tinymce/tinymce.min.js") }}">       </script>
 <script>
 
-     $(document).ready(function() {
+    $(document).ready(function() {
         $('.select2').select2();
-        $('#birthday').datepicker(
+        $('.datepicker').datepicker(
             {
                 language: 'es',
                 format: 'dd/mm/yyyy',
                 orientation:'bottom',
                 autoclose: true
             }
-       );
-         $("#patient_image").change(function(){
-            getFileName();
-            readURL(this);
-        });
-      });
-
-    $("#province_id").change(function(){
-        $('#municipio_id').html("<option value='' >{{ trans('centers/admin_lang.fields.municipio_id_helper') }}</option>");
-        $.ajax({
-            url     : "{{ url('admin/municipios/municipios-list') }}/"+$(this).val(),
-            type    : 'GET',
-            "headers": {"X-CSRF-TOKEN": "{{ csrf_token() }}"},
-            data: {_method: 'delete'},
-            success : function(data) {
-                console.log(data)
-                $.each(data, function(index, value) {
-                    $('#municipio_id').append("<option value='"+value['id']+"' >"+value['name']+"</option>");
-                   
-                });
+        );    
+        tinymce.init({
+            selector: "textarea.textarea",
+            menubar: false,
+            height: 300,
+            resize:false,
+            convert_urls: false,
+            @isset($viewPatient)
+                        readonly : 1,
+                    @endisset
+            // extended_valid_elements : "a[class|name|href|target|title|onclick|rel],script[type|src],iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name]",
+            plugins: [
+                "textcolor",
+                "advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table paste hr",
+                "wordcount fullscreen nonbreaking visualblocks",
+            ],
+            content_css: [
+                {{--
+                // Ponemos aquí los css de front
+                '{{ url('assets/front/vendor/bootstrap/css/bootstrap.min.css') }}',
+                '{{ url('assets/front/vendor/fontawesome/css/font-awesome.min.css') }}',
+                '{{ url('assets/front/css/front.min.css') }}',
+                '{{ url('assets/front/css/theme.css') }}',
+                '{{ url('assets/front/css/theme-element.css') }}',
+                '{{ url('assets/front/vendor/fontawesome/css/font-awesome.min.css') }}'
+                --}}
+                ],
+            toolbar: "forecolor backcolor | insertfile undo redo | styleselect | fontsizeselect | bold italic forecolor, backcolor | hr nonbreaking visualblocks | table |  alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image | code fullscreen",
+            file_picker_callback: function(callback, value, meta) {
+                openImageControllerExt(callback, '0');
             }
-
         });
     });
 
-    function getFileName() {
-            $('#nombrefichero').val($('#patient_image')[0].files[0].name);
-            $("#delete_photo").val('1');
-            $("#contenedor-remove").css("display","");
-    }
-   
-    $("#btnSelectImage").click(function() {
-        $('#patient_image').trigger('click');
+    var cont = "{{ $cont }}"
+    $(document).on('click', '#addInsurance', function() {
+        var containerInsurance = $('#insuranceContainer');
+        
+        var html=`
+        <div class="row form-group s">
+            <div class="col-12 col-md-3 mt-2">                             
+                <div class="form-group">
+                    <input value=""  type="text" {{ $disabled }} class="form-control required-field" name="medicine[${cont }]"  placeholder="{{ trans('patient-medicines/admin_lang.fields.medicine') }}">
+                </div>
+            </div>                                       
+            <div class="col-12 col-md-2 mt-2">                             
+                <div class="form-group">
+                    <input value=""  type="text" {{ $disabled }} class="form-control required-field" name="dosis[${cont }]"  placeholder="{{ trans('patient-medicines/admin_lang.fields.dosis') }}">
+                </div>
+            </div>                                       
+            <div class="col-12 col-md-2 mt-2">                             
+                <div class="form-group">
+                    <input value=""  type="text" {{ $disabled }} class="form-control required-field" name="frecuency[${cont }]"  placeholder="{{ trans('patient-medicines/admin_lang.fields.frecuency') }}">
+                </div>
+            </div>                                       
+            <div class="col-12 col-md-3 mt-2">                             
+                <div class="form-group">
+                    <input value=""  type="text" {{ $disabled }} class="form-control required-field" name="period[${cont }]"  placeholder="{{ trans('patient-medicines/admin_lang.fields.period') }}">
+                </div>
+            </div>                                       
+            <div class="col-12 col-md-2 mt-2">                             
+                <div class="form-group">
+                    <button type="button"  class="btn btn-danger btn-xs remove"> <i class="fa fa-trash" aria-hidden="true"></i></button>
+                </div>
+            </div>                                       
+        </div>
+        `;
+        containerInsurance.append(html);
+        cont ++;
+        $(".select2").select2();
     });
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
 
-            reader.onload = function (e) {
-                $('#fileOutput').html("<img src='"+e.target.result+"' id='image_ouptup' width='100%' alt=''>");
-                $("#remove").css("display","block");
-                //  $('#image_ouptup').attr('src', e.target.result);
+    $(document).on('click', '.remove', function() {
+    // Code to execute when the element is clicked
+        $(this).parent().parent().parent().remove();
+    });
+    $(document).on('click', '#saveData', function(event) {
+    // Code to execute when the element is clicked
+        event.preventDefault();
+        var  hayCamposNulos=false;
+    
+        $(".required-field").each(function() {
+            const valor = $(this).val().trim(); // Obtenemos el valor del campo y eliminamos espacios en blanco
+            if (valor == "") {
+                hayCamposNulos = true;
+                // Agregamos una clase o estilo para resaltar campos nulos (opcional)
+                $(this).addClass("is-invalid");
+            } else {
+                // Quitamos la clase de resaltado en caso de que el campo tenga valor
+                $(this).removeClass("is-invalid");
             }
+        });
 
-            reader.readAsDataURL(input.files[0]);
+        // Si hay campos nulos, mostramos un mensaje de error (opcional)
+        if (hayCamposNulos) {
+            toastr.error(" {{ trans('general/admin_lang.required_files') }}")
+        }else{
+            $("#formData").submit();
         }
-    }
-  
+    });
+        // Delegar evento de validación a los campos con la clase "mi-campo"
+    $(document).on("blur", ".required-field", function() {
+        const valor = $(this).val().trim();
+        if (valor == "") {
+        $(this).addClass("is-invalid");
+        } else {
+        $(this).removeClass("is-invalid");
+        }
+    });
+    $(document).on("focusout", ".required-field", function() {
+        const valor = $(this).val().trim();
+        if (valor == "") {
+        $(this).addClass("is-invalid");
+        } else {
+        $(this).removeClass("is-invalid");
+        }
+    });
 
-  
-  
+    
 </script>
-{!! JsValidator::formRequest('App\Http\Requests\AdminPatientsRequest')->selector('#formData') !!}
+{!! JsValidator::formRequest('App\Http\Requests\AdminPatientMedicinesRequest')->selector('#formData') !!}
 @stop

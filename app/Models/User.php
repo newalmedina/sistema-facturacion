@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -76,6 +77,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return null;
     }
 
+    public function medicines()
+    {
+        return $this->hasMany(PatientMedicine::class,  'user_id', 'id')->withTimestamps();
+    }
+
     public function centers()
     {
         return $this->belongsToMany(Center::class, 'user_centers', 'user_id', 'center_id')->withTimestamps();
@@ -137,5 +143,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $query->join("user_centers", "users.id", "=", "user_centers.user_id")
             ->where("user_centers.center_id", Auth::user()->hasSelectedCenter());
+    }
+    public function getSpecializationStringAttribute()
+    {
+        $data = [];
+        foreach ($this->specializations as $specialization) {
+            $data[] = $specialization->name;
+        }
+        return implode(", ", $data);
     }
 }

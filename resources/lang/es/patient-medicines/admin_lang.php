@@ -3,7 +3,8 @@
 
 return [
     'patient-medicines' => 'Recetas médicas',
-
+    'patient-medicines-export' => 'recetas_medicas',
+    'patients' => "Pacientes",
     'todos' => 'Todos los recetas médicas',
     'patient-medicine' => 'Receta médica',
     'list' => 'Listado de recetas médicas',
@@ -12,6 +13,7 @@ return [
     'show' => 'Visualizar receta médica',
     'patient-medicines-management' => 'Gestión de recetas médicas',
     'created_at' => 'Creado el:',
+    'add_medicine' => 'Añadir medicina',
 
 
     'fields' => [
@@ -44,13 +46,33 @@ return [
         'frecuency_helper' => 'Introduce frecuencia',
         'frecuency_required' => 'El campo frecuencia es obligatorio',
 
+        'period_resum' => 'Tiempo',
         'period' => 'Durante (periodo, tiempo del tratamiento,..)',
         'period_helper' => 'Introduce durante (periodo, tiempo del tratamiento,..)',
         'period_required' => 'El campo durante  (periodo, tiempo del tratamiento,..) es obligatorio',
 
         'medicine' => 'Medicamento',
-        'medicine_helper' => 'Introduce Medicamento',
-        'medicine_required' => 'El campo Medicamento es obligatorio',
+        'medicine_helper' => 'Introduce medicamento',
+        'medicine_required' => 'El campo medicamento es obligatorio',
+
+        'center' => 'Centro',
+        'center_helper' => 'Introduce centro',
+        'center_required' => 'El campo centro es obligatorio',
+
+        'centers' => 'Centros',
+        'centers_helper' => 'Introduce centros',
+        'centers_required' => 'El campo centros es obligatorio',
+
+        'start_date' => 'Fecha inicial',
+        'start_date_helper' => 'Introduce fecha inicial',
+        'start_date_required' => 'El campo fecha inicial es obligatorio',
+
+        'end_date' => 'Fecha final',
+        'end_date_helper' => 'Introduce fecha final',
+        'end_date_required' => 'El campo fecha final es obligatorio',
+
+        'patient' => 'Paciente',
+        'comment' => 'Comentario',
 
     ],
 

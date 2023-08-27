@@ -39,4 +39,10 @@ class UserProfile extends Model
 
         return '';
     }
+    public function getyearsAttribute()
+    {
+        $date = Carbon::createFromFormat('Y-m-d', $this->birthday);
+        // Calcula la edad en años
+        return $date->age;
+    }
 }
