@@ -123,7 +123,7 @@
         <table class="bordered-table">
             <tr>
                 <th colspan="">
-                    {{ trans("pdfLayout/admin_lang.receta_medica") }}
+                    {{ $title }}
                    
                 </th>
             </tr>
@@ -131,7 +131,7 @@
 
         <table class="bordered-table">
             <tr>
-                <th colspan="4">{{ $title}}</th>
+                <th colspan="4">{{ $doctor_info}}</th>
             </tr>
             <tr class="table-text">
                 <td><b>{{ trans("pdfLayout/admin_lang.exequatur") }}</b>: {{ !empty($doctorInfo->doctorProfile)?$doctorInfo->doctorProfile->exequatur:null }}</td>

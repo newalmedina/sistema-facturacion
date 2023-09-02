@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\AdminPatientMedicineExport;
-use App\Http\Requests\AdminPatientMedicinesRequest;
+use App\Exports\AdminPatientMedicalStudiesExport;
+use App\Http\Requests\AdminPatientMedicalStudiesRequest;
 use App\Models\Center;
 use App\Models\InsuranceCarrier;
 use App\Models\Municipio;
-use App\Models\PatientMedicine;
-use App\Models\PatientMedicineDetail;
+use App\Models\PatientMedicalStudies;
+use App\Models\PatientMedicalStudiesDetail;
 use App\Models\PatientProfile;
 use App\Models\Province;
 use App\Models\User;
+use App\Services\UtilsServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,7 @@ class AdminPatientMedicalStudieController extends Controller
     public $filtEndData;
     public function __construct()
     {
+       
         $this->middleware(function ($request, $next) {
             $this->filtStartData = ($request->session()->has('patient_medical_studies_start_date')) ? ($request->session()->get('patient_medical_studies_start_date')) : "";
             $this->filtEndData = ($request->session()->has('patient_medical_studies_end_date')) ? ($request->session()->get('patient_medical_studies_end_date')) : "";
@@ -48,12 +50,12 @@ class AdminPatientMedicalStudieController extends Controller
             app()->abort(404);
         }
 
-        $patient = User::find($patient_id);
+         $patient = User::find($patient_id);
 
         $pageTitle = trans('patient-medical-studies/admin_lang.list');
         $title = trans('patients/admin_lang.patients');
         $centerList = Center::active()->get();
-        $tab = "tab_4";
+        $tab = "tab_5";
         $notImage = true;
         return view('patient-medical-studies.admin_index', compact('pageTitle', 'title', 'centerList', "patient", "tab", "notImage"))
             ->with([
@@ -79,14 +81,14 @@ class AdminPatientMedicalStudieController extends Controller
         $pageTitle = trans('patient-medical-studies/admin_lang.patient-medical-studies');
         $title = trans('patients/admin_lang.patients');
 
-        $medicine = new PatientMedicine();
+        $medicalStudies = new PatientMedicalStudies();
 
-        $tab = 'tab_4';
+        $tab = 'tab_5';
 
         $notImage = true;
 
 
-        return view('patient-medical-studies.admin_edit', compact('pageTitle', 'title', 'patient', 'medicine', 'notImage'))
+        return view('patient-medical-studies.admin_edit', compact('pageTitle', 'title', 'patient', 'medicalStudies', 'notImage'))
             ->with('tab', $tab);
     }
 
@@ -97,10 +99,10 @@ class AdminPatientMedicalStudieController extends Controller
         }
 
         $patient = User::where("users.id", $patient_id)->patients()->first();
-        $medicine = PatientMedicine::where("id", $id)
+        $medicalStudies = PatientMedicalStudies::where("id", $id)
             ->where("user_id", $patient_id)->first();
 
-        if (empty($patient) || empty($medicine->id)) {
+        if (empty($patient) || empty($medicalStudies->id)) {
             app()->abort(404);
         }
 
@@ -108,12 +110,12 @@ class AdminPatientMedicalStudieController extends Controller
         $pageTitle = trans('patient-medical-studies/admin_lang.patient-medical-studies');
         $title = trans('patients/admin_lang.patients');
 
-        $tab = 'tab_4';
+        $tab = 'tab_5';
 
         $notImage = true;
         $disabled = "disabled";
 
-        return view('patient-medical-studies.admin_edit', compact('pageTitle', 'title', 'patient', 'medicine', 'notImage', "disabled"))
+        return view('patient-medical-studies.admin_edit', compact('pageTitle', 'title', 'patient', 'medicalStudies', 'notImage', "disabled"))
             ->with('tab', $tab);
     }
 
@@ -124,31 +126,25 @@ class AdminPatientMedicalStudieController extends Controller
         }
 
         $patient = User::where("users.id", $patient_id)->patients()->first();
-        $medicine = PatientMedicine::where("id", $id)
+        $medicalStudies = PatientMedicalStudies::where("id", $id)
             ->where("user_id", $patient_id)->first();
 
-        if (empty($patient) || empty($medicine->id)) {
+        if (empty($patient) || empty($medicalStudies->id)) {
             app()->abort(404);
         }
 
         try {
             DB::beginTransaction();
-            $newMedicine = $medicine->replicate();
+            $newMedicine = $medicalStudies->replicate();
             $newMedicine->created_by = Auth::user()->id;
             $newMedicine->user_id = $patient_id;
             $newMedicine->date = Carbon::now();
             $newMedicine->center_id =  Auth::user()->hasSelectedCenter();
             $newMedicine->save();
-
-            foreach ($medicine->details as $detail) {
-
-                $newDetail = $detail->replicate();
-                $newDetail->patient_medical_studies_id = $newMedicine->id;
-                $newDetail->save();
-            }
+          
 
             DB::commit();
-            return redirect()->route('admin.patients.medicines.edit', ["patient_id" => $patient_id, "id" => $newMedicine->id])->with('success', trans('general/admin_lang.save_ok'));
+            return redirect()->route('admin.patients.medical-studies.edit', ["patient_id" => $patient_id, "id" => $newMedicine->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
             dd($e);
             DB::rollBack();
@@ -160,22 +156,24 @@ class AdminPatientMedicalStudieController extends Controller
     public function generatePdf($patient_id, $id)
     {
         $patient = User::where("users.id", $patient_id)->patients()->first();
-        $medicine = PatientMedicine::where("id", $id)
+        $medicalStudies = PatientMedicalStudies::where("id", $id)
             ->where("user_id", $patient_id)
             ->where("created_by", Auth::user()->id)
             ->first();
 
-        if (empty($patient) || empty($medicine->id)) {
+        if (empty($patient) || empty($medicalStudies->id)) {
             app()->abort(404);
         }
 
         $data = [
-            'title' => trans("pdfLayout/admin_lang.doctor_info"),
-            'info' => $medicine,
-            'date' => Carbon::parse($medicine->date)->format("d/m/Y"),
-            'doctorInfo' => $medicine->createdBy
+            'doctor_info' => trans("pdfLayout/admin_lang.doctor_info"),
+            'title' => trans("pdfLayout/admin_lang.medical_studies"),
+            'info' => $medicalStudies,
+            'date' => Carbon::parse($medicalStudies->date)->format("d/m/Y"),
+            'doctorInfo' => $medicalStudies->createdBy
         ];
-        $pdf = PDF::loadView('pdf.partials.recetas', $data);
+        
+        $pdf = PDF::loadView('pdf.partials.studies', $data);
 
         return $pdf->stream(
             trans('patient-medical-studies/admin_lang.patient-medical-studies-export') . '_' . Carbon::now()->format("dmYHis") . '.pdf'
@@ -184,10 +182,10 @@ class AdminPatientMedicalStudieController extends Controller
 
     public function edit($patient_id, $id)
     {
-        $medicine = PatientMedicine::where("id", $id)->where("user_id", $patient_id)->first();
+        $medicalStudies = PatientMedicalStudies::where("id", $id)->where("user_id", $patient_id)->first();
         $patient = User::where("users.id", $patient_id)->patients()->first();
 
-        if (empty($patient) || empty($medicine->id)) {
+        if (empty($patient) || empty($medicalStudies->id)) {
             app()->abort(404);
         }
 
@@ -196,7 +194,7 @@ class AdminPatientMedicalStudieController extends Controller
         }
 
 
-        if (!auth()->user()->isAbleTo('admin-patients-medical-studies-update-all') && auth()->user()->isAbleTo('admin-patients-medical-studies-update') && $medicine->created_by != Auth::user()->id) {
+        if (!auth()->user()->isAbleTo('admin-patients-medical-studies-update-all') && auth()->user()->isAbleTo('admin-patients-medical-studies-update') && $medicalStudies->created_by != Auth::user()->id) {
             app()->abort(403);
         }
 
@@ -206,21 +204,21 @@ class AdminPatientMedicalStudieController extends Controller
         $pageTitle = trans('patient-medical-studies/admin_lang.patient-medical-studies');
         $title = trans('patients/admin_lang.patients');
 
-        $tab = 'tab_4';
+        $tab = 'tab_5';
 
         $notImage = true;
 
 
-        return view('patient-medical-studies.admin_edit', compact('pageTitle', 'title', 'patient', 'medicine', 'notImage'))
+        return view('patient-medical-studies.admin_edit', compact('pageTitle', 'title', 'patient', 'medicalStudies', 'notImage'))
             ->with('tab', $tab);
     }
 
-    public function store(AdminPatientMedicinesRequest $request, $patient_id)
+    public function store(AdminPatientMedicalStudiesRequest $request, $patient_id)
     {
         if (!auth()->user()->isAbleTo('admin-patients-medical-studies-create')) {
             app()->abort(403);
         }
-
+  
         $patient = User::where("users.id", $patient_id)->patients()->first();
 
         if (empty($patient)) {
@@ -229,16 +227,16 @@ class AdminPatientMedicalStudieController extends Controller
 
         try {
             DB::beginTransaction();
-            $medicine = new PatientMedicine();
-            $medicine->created_by = Auth::user()->id;
-            $medicine->user_id = $patient_id;
-            $medicine->center_id =  Auth::user()->hasSelectedCenter();
+            $medicalStudies = new PatientMedicalStudies();
+            $medicalStudies->created_by = Auth::user()->id;
+            $medicalStudies->user_id = $patient_id;
+            $medicalStudies->center_id =  Auth::user()->hasSelectedCenter();
 
-            $this->saveMedicine($medicine, $request);
+            $this->saveMedicalStudies($medicalStudies, $request);
 
 
             DB::commit();
-            return redirect()->route('admin.patients.medicines.edit', ["patient_id" => $patient_id, "id" => $medicine->id])->with('success', trans('general/admin_lang.save_ok'));
+            return redirect()->route('admin.patients.medical-studies.edit', ["patient_id" => $patient_id, "id" => $medicalStudies->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
             dd($e);
             DB::rollBack();
@@ -248,27 +246,27 @@ class AdminPatientMedicalStudieController extends Controller
         }
     }
 
-    public function update(AdminPatientMedicinesRequest $request,  $patient_id, $id)
+    public function update(AdminPatientMedicalStudiesRequest $request,  $patient_id, $id)
     {
         if (!auth()->user()->isAbleTo('admin-patients-medical-studies-update')) {
             app()->abort(403);
         }
 
         $patient = User::where("users.id", $patient_id)->patients()->first();
-        $medicine =  PatientMedicine::find($id);
+        $medicalStudies =  PatientMedicalStudies::find($id);
 
-        if (empty($patient) || empty($medicine->id)) {
+        if (empty($patient) || empty($medicalStudies->id)) {
             app()->abort(404);
         }
 
         try {
             DB::beginTransaction();
 
-            $this->saveMedicine($medicine, $request);
+            $this->saveMedicalStudies($medicalStudies, $request);
 
 
             DB::commit();
-            return redirect()->route('admin.patients.medicines.edit', ["patient_id" => $patient_id, "id" => $medicine->id])->with('success', trans('general/admin_lang.save_ok'));
+            return redirect()->route('admin.patients.medical-studies.edit', ["patient_id" => $patient_id, "id" => $medicalStudies->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
             dd($e);
             DB::rollBack();
@@ -278,139 +276,8 @@ class AdminPatientMedicalStudieController extends Controller
         }
     }
 
-    public function clinicalRecord($id)
-    {
-        $disabled = null;
-        if (!auth()->user()->isAbleTo('admin-patients-medical-studies-clinic-record-update') && !auth()->user()->isAbleTo('admin-patients-medical-studies-clinic-record-read')) {
-            app()->abort(403);
-        }
-        if (!auth()->user()->isAbleTo('admin-patients-medical-studies-clinic-record-update') && auth()->user()->isAbleTo('admin-patients-medical-studies-clinic-record-read')) {
-            $disabled = "disabled";
-        }
+ 
 
-        $patient = User::where("users.id", $id)->patients()->first();
-
-        if (empty($patient)) {
-            app()->abort(404);
-        }
-
-        $patient = User::find($id);
-        $pageTitle = trans('patient-medical-studies/admin_lang.patient-medical-studies');
-        $title = trans('patients/admin_lang.patients');
-        $provincesList = Province::active()->get();
-        // $municipiosList = Municipio::active()->where("province_id", $center->province_id)->get();
-        $municipiosList = Municipio::active()->where("province_id", $patient->userProfile->province_id)->get();
-
-        $tab = 'tab_2';
-
-
-        $genders = [
-            "male" => trans("general/admin_lang.male"),
-            "female" => trans("general/admin_lang.female")
-        ];
-        return view('patients.admin_clinic_record_edit', compact('pageTitle', 'title', 'provincesList', 'municipiosList', 'patient', 'genders', 'disabled'))
-            ->with('tab', $tab);
-    }
-
-    public function clinicalRecordUpdate(Request $request, $id)
-    {
-        if (!auth()->user()->isAbleTo('admin-patients-medical-studies-clinic-record-update')) {
-            app()->abort(403);
-        }
-
-        try {
-            DB::beginTransaction();
-
-            $patient = User::where("users.id", $id)->patients()->first();
-
-            if (empty($patient)) {
-                app()->abort(404);
-            }
-
-            $patient = User::find($id);
-            if (empty($patient->patientProfile)) {
-                $patientProfile = new PatientProfile();
-                $patientProfile->user_id = $patient->id;
-            } else {
-                $patientProfile = PatientProfile::where('user_id', $patient->id)->first();
-            }
-
-            $patientProfile->allergies = $request->input('patient_profile.allergies');
-            $patientProfile->pathological_diseases = $request->input('patient_profile.pathological_diseases');
-            $patientProfile->surgical_diseases = $request->input('patient_profile.surgical_diseases');
-            $patientProfile->family_history = $request->input('patient_profile.family_history');
-            $patientProfile->gynecological_history = $request->input('patient_profile.gynecological_history');
-            $patientProfile->others = $request->input('patient_profile.others');
-            $patientProfile->save();
-
-
-            DB::commit();
-            return redirect()->route('admin.patients.clinicalRecord', [$patient->id])->with('success', trans('general/admin_lang.save_ok'));
-        } catch (\Exception $e) {
-            dd($e);
-        }
-    }
-    public function insuranceCarrier($id)
-    {
-        $disabled = null;
-        if (!auth()->user()->isAbleTo('admin-patients-medical-studies-insurance-carriers-update') && !auth()->user()->isAbleTo('admin-patients-medical-studies-insurance-carriers-read')) {
-            app()->abort(403);
-        }
-        if (!auth()->user()->isAbleTo('admin-patients-medical-studies-insurance-carriers-update') && auth()->user()->isAbleTo('admin-patients-medical-studies-insurance-carriers-read')) {
-
-            $disabled = "disabled";
-        }
-
-        $patient = User::where("users.id", $id)->patients()->first();
-
-        if (empty($patient)) {
-            app()->abort(404);
-        }
-        $patient = User::find($id);
-        $pageTitle = trans('patient-medical-studies/admin_lang.patient-medical-studies');
-        $title = trans('patients/admin_lang.patients');
-
-        $insuranceList = InsuranceCarrier::active()->get();
-        $patient = User::find($id);
-        $tab = 'tab_3';
-
-        return view('patients.admin_insurance_carrier', compact('pageTitle', 'title', 'insuranceList', 'patient', 'disabled'))
-            ->with('tab', $tab);
-    }
-
-    public function insuranceCarrierUpdate(Request $request, $id)
-    {
-        if (!auth()->user()->isAbleTo('admin-patients-medical-studies-insurance-carriers-update')) {
-            app()->abort(403);
-        }
-
-        try {
-            DB::beginTransaction();
-
-            $patient = User::where("users.id", $id)->patients()->first();
-
-            if (empty($patient)) {
-                app()->abort(404);
-            }
-
-            $patient = User::find($id);
-            $patient->insuranceCarriers()->detach();
-            if (!empty($request->insurance)) {
-                foreach ($request->insurance as $key => $value) {
-                    $segurosData = [];
-                    $segurosData[$value] = ["poliza" => $request->poliza[$key]];
-                    $patient->insuranceCarriers()->attach($segurosData);
-                }
-            }
-
-            $patient->save();
-
-            DB::commit();
-            return redirect()->route('admin.patients.insuranceCarrier', [$patient->id])->with('success', trans('general/admin_lang.save_ok'));
-        } catch (\Exception $e) {
-            dd($e);
-        }
-    }
 
     public function saveFilter(Request $request, $patient_id)
     {
@@ -425,29 +292,29 @@ class AdminPatientMedicalStudieController extends Controller
             $request->session()->put('patient_medical_studies_end_date', $request->end_date);
 
 
-        return redirect('admin/patients/' . $patient_id . '/medicines');
+        return redirect('admin/patients/' . $patient_id . '/medical-studies');
     }
 
     public function removeFilter(Request $request, $patient_id)
     {
         $this->clearSesions($request);
-        return redirect('admin/patients/' . $patient_id . '/medicines');
+        return redirect('admin/patients/' . $patient_id . '/medical-studies');
     }
 
     private function addFilter(&$query)
     {
 
         if (count($this->filtCenterId) > 0) {
-            $query->whereIn("patient_medical_studiess.center_id", [$this->filtCenterId]);
+            $query->whereIn("patient_medical_studies.center_id", $this->filtCenterId);
         }
 
         if (!empty($this->filtStartData)) {
             $date = Carbon::createFromFormat("d/m/Y", $this->filtStartData)->format("Y-m-d");
-            $query->where("patient_medical_studiess.date", ">=", $date);
+            $query->where("patient_medical_studies.date", ">=", $date);
         }
         if (!empty($this->filtEndData)) {
             $date = Carbon::createFromFormat("d/m/Y", $this->filtEndData)->format("Y-m-d");
-            $query->where("patient_medical_studiess.date", "<=", $date);
+            $query->where("patient_medical_studies.date", "<=", $date);
         }
     }
 
@@ -464,21 +331,22 @@ class AdminPatientMedicalStudieController extends Controller
             app()->abort(403);
         }
 
-        $query = PatientMedicine::select(
+        $query = PatientMedicalStudies::select(
             [
-                "patient_medical_studiess.user_id",
-                "patient_medical_studiess.id",
-                "patient_medical_studiess.date",
+                "patient_medical_studies.user_id",
+                "patient_medical_studies.id",
+                "patient_medical_studies.description",
+                "patient_medical_studies.date",
                 "created.id as creador",
                 DB::raw('CONCAT(created.first_name, " ", created.last_name) as created_by'),
                 "centers.name as center",
+                "patient_medical_studies.center_id",
             ]
         )
-            ->leftJoin("user_profiles", "user_profiles.user_id", "=", "patient_medical_studiess.user_id")
-            ->leftJoin("user_profiles as created", "created.user_id", "=", "patient_medical_studiess.created_by")
-            ->leftJoin("centers", "centers.id", "=", "patient_medical_studiess.center_id")
-            ->leftJoin("patient_medical_studies_details", "patient_medical_studies_details.patient_medical_studies_id", "=", "patient_medical_studiess.id")
-            ->where("patient_medical_studiess.user_id", $patient_id)
+            ->leftJoin("user_profiles", "user_profiles.user_id", "=", "patient_medical_studies.user_id")
+            ->leftJoin("user_profiles as created", "created.user_id", "=", "patient_medical_studies.created_by")
+            ->leftJoin("centers", "centers.id", "=", "patient_medical_studies.center_id")
+            ->where("patient_medical_studies.user_id", $patient_id)
             ->distinct();
 
         $this->addFilter($query);
@@ -486,15 +354,13 @@ class AdminPatientMedicalStudieController extends Controller
         $table = DataTables::of($query);
 
         $table->filterColumn('date', function ($query, $keyword) {
-            $query->whereRaw("DATE_FORMAT(patient_medical_studiess.date, '%d/%m/%Y') like ?", ["%{$keyword}%"]);
+            $query->whereRaw("DATE_FORMAT(patient_medical_studies.date, '%d/%m/%Y') like ?", ["%{$keyword}%"]);
         });
 
         $table->filterColumn('created_by', function ($query, $keyword) {
             $query->whereRaw("CONCAT(created.first_name,' ',created.last_name) like ?", ["%{$keyword}%"]);
         });
-        $table->filterColumn('medicine', function ($query, $keyword) {
-            $query->whereRaw("patient_medical_studies_details.medicine like ?", ["%{$keyword}%"]);
-        });
+      
 
         $table->editColumn('date', function ($data) {
 
@@ -505,48 +371,44 @@ class AdminPatientMedicalStudieController extends Controller
             ];
         });
 
-        $table->editColumn('medicine', function ($data) {
-
-            $medicines = PatientMedicineDetail::where("patient_medical_studies_id", $data->id)->pluck('medicine');
-            return $medicines->implode(", ");
+        $table->editColumn('description', function ($data) {
+         return  UtilsServices::makeTextShort(strip_tags($data->description),100);
         });
-
-
 
 
         $table->editColumn('actions', function ($data) {
             $actions = '';
 
             if (auth()->user()->isAbleTo("admin-patients-medical-studies-read")) {
-                $actions .= '<a  class="btn btn-info btn-xs" data-bs-content="' .trans('general/admin_lang.show') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medicines.show', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                $actions .= '<a  class="btn btn-info btn-xs" data-bs-content="' .trans('general/admin_lang.show') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medical-studies.show', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                     class="fa fa-eye fa-lg"></i></a> ';
             }
             if (auth()->user()->isAbleTo("admin-patients-medical-studies-update-all")) {
-                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medicines.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medical-studies.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             } elseif (auth()->user()->isAbleTo("admin-patients-medical-studies-update") && $data->creador == Auth::user()->id) {
-                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medicines.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medical-studies.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
             if ($data->creador == Auth::user()->id) {
-                $actions .= '<a  class="btn btn-danger btn-xs"href="' . route('admin.patients.medicines.generatePdf', ["patient_id" => $data->user_id, "id" => $data->id]) . '""><i
+                $actions .= '<a  class="btn btn-danger btn-xs"href="' . route('admin.patients.medical-studies.generatePdf', ["patient_id" => $data->user_id, "id" => $data->id]) . '""><i
                     class="fa fa-file-pdf fa-lg"></i></a> ';
             }
             if (auth()->user()->isAbleTo("admin-patients-medical-studies-create")) {
                 $actions .= '<a  class="btn btn-success btn-xs" href="javascript:void(0);"  onclick="javascript:copyElement(\'' .
-                    route('admin.patients.medicines.copy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');"><i
+                    route('admin.patients.medical-studies.copy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');"><i
                     class="fa fa-copy fa-lg"></i></a> ';
             }
 
             if (auth()->user()->isAbleTo("admin-patients-medical-studies-delete-all")) {
 
                 $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' .trans('general/admin_lang.delete'). '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
-                    route('admin.patients.medicines.destroy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');" data-content="' .
+                    route('admin.patients.medical-studies.destroy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';
             } elseif (auth()->user()->isAbleTo("admin-patients-medical-studies-delete") && $data->creador == Auth::user()->id) {
                 $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' .trans('general/admin_lang.delete'). '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
-                    route('admin.patients.medicines.destroy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');" data-content="' .
+                    route('admin.patients.medical-studies.destroy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                     <i class="fa fa-trash" aria-hidden="true"></i></button>';
             }
@@ -556,7 +418,7 @@ class AdminPatientMedicalStudieController extends Controller
         });
 
         $table->removeColumn('id');
-        $table->rawColumns(['actions', 'medicine']);
+        $table->rawColumns(['actions', 'description']);
         return $table->make();
     }
 
@@ -566,7 +428,7 @@ class AdminPatientMedicalStudieController extends Controller
         if (!auth()->user()->isAbleTo('admin-patients-medical-studies-delete')) {
             app()->abort(403);
         }
-        $medicina = PatientMedicine::where("id", $id)
+        $medicina = PatientMedicalStudies::where("id", $id)
             ->where("user_id", $patient_id)->first();
         if (empty($medicina)) {
             app()->abort(404);
@@ -586,54 +448,36 @@ class AdminPatientMedicalStudieController extends Controller
             app()->abort(403);
         }
 
-        $query = PatientMedicine::select(
+        $query = PatientMedicalStudies::select(
             [
-                "patient_medical_studiess.user_id",
-                "patient_medical_studiess.id",
-                "patient_medical_studiess.date",
+                "patient_medical_studies.user_id",
+                "patient_medical_studies.id",
+                "patient_medical_studies.description",
+                "patient_medical_studies.date",
                 DB::raw('CONCAT(created.first_name, " ", created.last_name) as created_by'),
                 DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as patient'),
                 "centers.name as center",
-                "patient_medical_studies_details.dosis",
-                "patient_medical_studies_details.frecuency",
-                "patient_medical_studies_details.amount",
-                "patient_medical_studies_details.period",
-                "patient_medical_studies_details.medicine",
             ]
         )
-            ->leftJoin("user_profiles", "user_profiles.user_id", "=", "patient_medical_studiess.user_id")
-            ->leftJoin("user_profiles as created", "created.user_id", "=", "patient_medical_studiess.created_by")
-            ->leftJoin("centers", "centers.id", "=", "patient_medical_studiess.center_id")
-            ->leftJoin("patient_medical_studies_details", "patient_medical_studies_details.patient_medical_studies_id", "=", "patient_medical_studiess.id")
-            ->where("patient_medical_studiess.user_id", $patient_id)
+            ->leftJoin("user_profiles", "user_profiles.user_id", "=", "patient_medical_studies.user_id")
+            ->leftJoin("user_profiles as created", "created.user_id", "=", "patient_medical_studies.created_by")
+            ->leftJoin("centers", "centers.id", "=", "patient_medical_studies.center_id")
+            ->where("patient_medical_studies.user_id", $patient_id)
             ->distinct();
 
 
         $this->addFilter($query);
 
-        return Excel::download(new AdminPatientMedicineExport($query), strtolower(trans('patient-medical-studies/admin_lang.patient-medical-studies-export')) . '_' . Carbon::now()->format("dmYHis") . '.xlsx');
+        return Excel::download(new AdminPatientMedicalStudiesExport($query), strtolower(trans('patient-medical-studies/admin_lang.patient-medical-studies-export')) . '_' . Carbon::now()->format("dmYHis") . '.xlsx');
     }
 
 
-    private function saveMedicine($medicine, $request)
+    private function saveMedicalStudies($medicalStudies, $request)
     {
-        $medicine->date = Carbon::createFromFormat("d/m/Y", $request->date);
-        $medicine->comment =  $request->comment;
-        $medicine->save();
+        $medicalStudies->date = Carbon::createFromFormat("d/m/Y", $request->date);
+        $medicalStudies->description =  $request->description;
+        $medicalStudies->save();
 
-        //eliminando medicamentos antiguos
-        if (!empty($medicine->id)) {
-            $details = PatientMedicineDetail::where("patient_medical_studies_id", $medicine->id)->delete();
-        }
-
-        for ($i = 0; $i < count($request->medicine); $i++) {
-            $detail = new PatientMedicineDetail();
-            $detail->patient_medical_studies_id = $medicine->id;
-            $detail->medicine = $request->medicine[$i];
-            $detail->dosis = $request->dosis[$i];
-            $detail->frecuency = $request->frecuency[$i];
-            $detail->period = $request->period[$i];
-            $detail->save();
-        }
+      
     }
 }

@@ -16,5 +16,7 @@ return [
     'female' => 'F',
     'medicines' => 'Medicamentos',
     'receta_medica' => 'Receta médica',
+    'medical_studies' => 'Estudios médicos',
+    'do_studies' => 'Estudios a realizar',
 
 ];

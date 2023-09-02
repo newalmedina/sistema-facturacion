@@ -119,6 +119,16 @@ $disabled= isset($disabled)?$disabled : null;
                         
                         </li>
                     @endif                   
+                    @if(!empty($patient->id) && Auth::user()->isAbleTo("admin-patients-medical-studies-update") || Auth::user()->isAbleTo("admin-patients-medical-studies-read"))
+                        <li class="nav-item @if ($tab == 'tab_5') active @endif">
+                            <a id="tab_5" class="nav-link" data-bs-target="#tab_5-5"
+                            data-bs-toggle="tabajax" href="{{ url('admin/patients/'.$patient->id.'/medical-studies') }}" data-target="#tab_5-5"
+                            aria-controls="tab_5-5" aria-selected="true" >
+                            {{ trans('patient-medical-studies/admin_lang.patient-medical-studies') }}
+                            </a>
+                        
+                        </li>
+                    @endif                   
                 </ul>
                 <div class="tab-content" id="tab_tabContent">
                     <div id="tab_1-1" class="tab-pane @if ($tab == 'tab_1') active @endif">
@@ -136,6 +146,10 @@ $disabled= isset($disabled)?$disabled : null;
                     <div id="tab_4-4" class="tab-pane @if ($tab == 'tab_4') active @endif">
             
                         @yield('tab_content_4')
+                    </div>
+                    <div id="tab_5-5" class="tab-pane @if ($tab == 'tab_5') active @endif">
+            
+                        @yield('tab_content_5')
                     </div>
             
                  

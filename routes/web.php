@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminInsuranceCarrierController;
 use App\Http\Controllers\AdminMedicalSpecializationController;
 use App\Http\Controllers\AdminMunicipioController;
 use App\Http\Controllers\AdminPatientController;
+use App\Http\Controllers\AdminPatientMedicalStudieController;
 use App\Http\Controllers\AdminPatientMedicineController;
 use App\Http\Controllers\AdminProvinceController;
 use App\Http\Controllers\AdminRoleController;
@@ -306,20 +307,20 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::delete('/patients/{patient_id}/medicines/{id}', [AdminPatientMedicineController::class, 'destroy'])->name('admin.patients.medicines.destroy');
 
     //estudios patients
-    Route::get('/patients/{patient_id}/medical-studies', [AdminPatientMedicineController::class, 'index'])->name('admin.patients.medical-studies');
-    Route::get('/patients/{patient_id}/medical-studies/create', [AdminPatientMedicineController::class, 'create'])->name('admin.patients.medical-studies.create');
-    Route::get('/patients/{patient_id}/medical-studies/{id}/edit', [AdminPatientMedicineController::class, 'edit'])->name('admin.patients.medical-studies.edit');
-    Route::get('/patients/{patient_id}/medical-studies/{id}/show', [AdminPatientMedicineController::class, 'show'])->name('admin.patients.medical-studies.show');
-    Route::get('/patients/{patient_id}/medical-studies/{id}/copy', [AdminPatientMedicineController::class, 'copy'])->name('admin.patients.medical-studies.copy');
-    Route::get('/patients/{patient_id}/medical-studies/{id}/generate-pdf', [AdminPatientMedicineController::class, 'generatePdf'])->name('admin.patients.medical-studies.generatePdf');
-    Route::get('/patients/{patient_id}/medical-studies/remove-filter', [AdminPatientMedicineController::class, 'removeFilter'])->name('admin.patients.medical-studies.removeFilter');
-    Route::get('/patients/{patient_id}/medical-studies/change-state/{id}', [AdminPatientMedicineController::class, 'changeState'])->name('admin.patients.medical-studies.changeState');
+    Route::get('/patients/{patient_id}/medical-studies', [AdminPatientMedicalStudieController::class, 'index'])->name('admin.patients.medical-studies');
+    Route::get('/patients/{patient_id}/medical-studies/create', [AdminPatientMedicalStudieController::class, 'create'])->name('admin.patients.medical-studies.create');
+    Route::get('/patients/{patient_id}/medical-studies/{id}/edit', [AdminPatientMedicalStudieController::class, 'edit'])->name('admin.patients.medical-studies.edit');
+    Route::get('/patients/{patient_id}/medical-studies/{id}/show', [AdminPatientMedicalStudieController::class, 'show'])->name('admin.patients.medical-studies.show');
+    Route::get('/patients/{patient_id}/medical-studies/{id}/copy', [AdminPatientMedicalStudieController::class, 'copy'])->name('admin.patients.medical-studies.copy');
+    Route::get('/patients/{patient_id}/medical-studies/{id}/generate-pdf', [AdminPatientMedicalStudieController::class, 'generatePdf'])->name('admin.patients.medical-studies.generatePdf');
+    Route::get('/patients/{patient_id}/medical-studies/remove-filter', [AdminPatientMedicalStudieController::class, 'removeFilter'])->name('admin.patients.medical-studies.removeFilter');
+    Route::get('/patients/{patient_id}/medical-studies/change-state/{id}', [AdminPatientMedicalStudieController::class, 'changeState'])->name('admin.patients.medical-studies.changeState');
 
-    Route::get('/patients/{patient_id}/medical-studies/export-excel', [AdminPatientMedicineController::class, 'exportExcel'])->name("admin.patients.medical-studies.exportExcel");
+    Route::get('/patients/{patient_id}/medical-studies/export-excel', [AdminPatientMedicalStudieController::class, 'exportExcel'])->name("admin.patients.medical-studies.exportExcel");
 
-    Route::post('/patients/{patient_id}/medical-studies', [AdminPatientMedicineController::class, 'store'])->name('admin.patients.medical-studies.store');
-    Route::patch('/patients/{patient_id}/medical-studies/{id}', [AdminPatientMedicineController::class, 'update'])->name('admin.patients.medical-studies.update');
-    Route::post('/patients/{patient_id}/medical-studies/save-filter', [AdminPatientMedicineController::class, 'saveFilter'])->name('admin.patients.medical-studies.saveFilter');
-    Route::post('/patients/{patient_id}/medical-studies/list', [AdminPatientMedicineController::class, 'getData'])->name('admin.patients.medical-studies.getData');
-    Route::delete('/patients/{patient_id}/medical-studies/{id}', [AdminPatientMedicineController::class, 'destroy'])->name('admin.patients.medical-studies.destroy');
+    Route::post('/patients/{patient_id}/medical-studies', [AdminPatientMedicalStudieController::class, 'store'])->name('admin.patients.medical-studies.store');
+    Route::patch('/patients/{patient_id}/medical-studies/{id}', [AdminPatientMedicalStudieController::class, 'update'])->name('admin.patients.medical-studies.update');
+    Route::post('/patients/{patient_id}/medical-studies/save-filter', [AdminPatientMedicalStudieController::class, 'saveFilter'])->name('admin.patients.medical-studies.saveFilter');
+    Route::post('/patients/{patient_id}/medical-studies/list', [AdminPatientMedicalStudieController::class, 'getData'])->name('admin.patients.medical-studies.getData');
+    Route::delete('/patients/{patient_id}/medical-studies/{id}', [AdminPatientMedicalStudieController::class, 'destroy'])->name('admin.patients.medical-studies.destroy');
 });

@@ -170,7 +170,8 @@ class AdminPatientMedicineController extends Controller
         }
 
         $data = [
-            'title' => trans("pdfLayout/admin_lang.doctor_info"),
+            'doctor_info' => trans("pdfLayout/admin_lang.doctor_info"),
+            'title' => trans("pdfLayout/admin_lang.receta_medica"),
             'info' => $medicine,
             'date' => Carbon::parse($medicine->date)->format("d/m/Y"),
             'doctorInfo' => $medicine->createdBy
@@ -278,141 +279,9 @@ class AdminPatientMedicineController extends Controller
         }
     }
 
-    public function clinicalRecord($id)
-    {
-        $disabled = null;
-        if (!auth()->user()->isAbleTo('admin-patients-medicines-clinic-record-update') && !auth()->user()->isAbleTo('admin-patients-medicines-clinic-record-read')) {
-            app()->abort(403);
-        }
-        if (!auth()->user()->isAbleTo('admin-patients-medicines-clinic-record-update') && auth()->user()->isAbleTo('admin-patients-medicines-clinic-record-read')) {
-            $disabled = "disabled";
-        }
+    
 
-        $patient = User::where("users.id", $id)->patients()->first();
-
-        if (empty($patient)) {
-            app()->abort(404);
-        }
-
-        $patient = User::find($id);
-        $pageTitle = trans('patient-medicines/admin_lang.patient-medicines');
-        $title = trans('patients/admin_lang.patients');
-        $provincesList = Province::active()->get();
-        // $municipiosList = Municipio::active()->where("province_id", $center->province_id)->get();
-        $municipiosList = Municipio::active()->where("province_id", $patient->userProfile->province_id)->get();
-
-        $tab = 'tab_2';
-
-
-        $genders = [
-            "male" => trans("general/admin_lang.male"),
-            "female" => trans("general/admin_lang.female")
-        ];
-        return view('patients.admin_clinic_record_edit', compact('pageTitle', 'title', 'provincesList', 'municipiosList', 'patient', 'genders', 'disabled'))
-            ->with('tab', $tab);
-    }
-
-    public function clinicalRecordUpdate(Request $request, $id)
-    {
-        if (!auth()->user()->isAbleTo('admin-patients-medicines-clinic-record-update')) {
-            app()->abort(403);
-        }
-
-        try {
-            DB::beginTransaction();
-
-            $patient = User::where("users.id", $id)->patients()->first();
-
-            if (empty($patient)) {
-                app()->abort(404);
-            }
-
-            $patient = User::find($id);
-            if (empty($patient->patientProfile)) {
-                $patientProfile = new PatientProfile();
-                $patientProfile->user_id = $patient->id;
-            } else {
-                $patientProfile = PatientProfile::where('user_id', $patient->id)->first();
-            }
-
-            $patientProfile->allergies = $request->input('patient_profile.allergies');
-            $patientProfile->pathological_diseases = $request->input('patient_profile.pathological_diseases');
-            $patientProfile->surgical_diseases = $request->input('patient_profile.surgical_diseases');
-            $patientProfile->family_history = $request->input('patient_profile.family_history');
-            $patientProfile->gynecological_history = $request->input('patient_profile.gynecological_history');
-            $patientProfile->others = $request->input('patient_profile.others');
-            $patientProfile->save();
-
-
-            DB::commit();
-            return redirect()->route('admin.patients.clinicalRecord', [$patient->id])->with('success', trans('general/admin_lang.save_ok'));
-        } catch (\Exception $e) {
-            dd($e);
-        }
-    }
-    public function insuranceCarrier($id)
-    {
-        $disabled = null;
-        if (!auth()->user()->isAbleTo('admin-patients-medicines-insurance-carriers-update') && !auth()->user()->isAbleTo('admin-patients-medicines-insurance-carriers-read')) {
-            app()->abort(403);
-        }
-        if (!auth()->user()->isAbleTo('admin-patients-medicines-insurance-carriers-update') && auth()->user()->isAbleTo('admin-patients-medicines-insurance-carriers-read')) {
-
-            $disabled = "disabled";
-        }
-
-        $patient = User::where("users.id", $id)->patients()->first();
-
-        if (empty($patient)) {
-            app()->abort(404);
-        }
-        $patient = User::find($id);
-        $pageTitle = trans('patient-medicines/admin_lang.patient-medicines');
-        $title = trans('patients/admin_lang.patients');
-
-        $insuranceList = InsuranceCarrier::active()->get();
-        $patient = User::find($id);
-        $tab = 'tab_3';
-
-        return view('patients.admin_insurance_carrier', compact('pageTitle', 'title', 'insuranceList', 'patient', 'disabled'))
-            ->with('tab', $tab);
-    }
-
-    public function insuranceCarrierUpdate(Request $request, $id)
-    {
-        if (!auth()->user()->isAbleTo('admin-patients-medicines-insurance-carriers-update')) {
-            app()->abort(403);
-        }
-
-        try {
-            DB::beginTransaction();
-
-            $patient = User::where("users.id", $id)->patients()->first();
-
-            if (empty($patient)) {
-                app()->abort(404);
-            }
-
-            $patient = User::find($id);
-            $patient->insuranceCarriers()->detach();
-            if (!empty($request->insurance)) {
-                foreach ($request->insurance as $key => $value) {
-                    $segurosData = [];
-                    $segurosData[$value] = ["poliza" => $request->poliza[$key]];
-                    $patient->insuranceCarriers()->attach($segurosData);
-                }
-            }
-
-            $patient->save();
-
-            DB::commit();
-            return redirect()->route('admin.patients.insuranceCarrier', [$patient->id])->with('success', trans('general/admin_lang.save_ok'));
-        } catch (\Exception $e) {
-            dd($e);
-        }
-    }
-
-    public function saveFilter(Request $request, $patient_id)
+      public function saveFilter(Request $request, $patient_id)
     {
         $this->clearSesions($request);
         if (!empty($request->center_id))
@@ -438,7 +307,7 @@ class AdminPatientMedicineController extends Controller
     {
 
         if (count($this->filtCenterId) > 0) {
-            $query->whereIn("patient_medicines.center_id", [$this->filtCenterId]);
+            $query->whereIn("patient_medicines.center_id", $this->filtCenterId);
         }
 
         if (!empty($this->filtStartData)) {

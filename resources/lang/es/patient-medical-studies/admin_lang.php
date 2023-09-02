@@ -2,18 +2,18 @@
 
 
 return [
-    'patient-medicines' => 'Recetas médicas',
-    'patient-medicines-export' => 'recetas_medicas',
+    'patient-medical-studies' => 'Estudios médicos',
+    'patient-medical-studies-export' => 'recetas_medicas',
     'patients' => "Pacientes",
-    'todos' => 'Todos los recetas médicas',
-    'patient-medicine' => 'Receta médica',
-    'list' => 'Listado de recetas médicas',
-    'new' => 'Nueva receta médica',
-    'edit' => 'Editar receta médica',
-    'show' => 'Visualizar receta médica',
-    'patient-medicines-management' => 'Gestión de recetas médicas',
+    'todos' => 'Todos los estudios médicos',
+    'patient-medical-study' => 'Estudio médico',
+    'list' => 'Listado de estudios médicos',
+    'new' => 'Nuevo estudio médico',
+    'edit' => 'Editar estudio médico',
+    'show' => 'Visualizar estudio médico',
+    'patient-medical-studies-management' => 'Gestión de estudios médicos',
     'created_at' => 'Creado el:',
-    'add_medicine' => 'Añadir medicina',
+    
 
 
     'fields' => [
@@ -30,30 +30,7 @@ return [
         'created_by_helper' => 'Introduce creado por',
         'created_by_required' => 'El campo creado por es obligatorio',
 
-        'medicine' => 'Medicamento',
-        'medicine_helper' => 'Introduce medicamento',
-        'medicine_required' => 'El campo medicamento es obligatorio',
-
-        'dosis' => 'Dosis',
-        'dosis_helper' => 'Introduce dosis',
-        'dosis_required' => 'El campo dosis es obligatorio',
-
-        'amount' => 'Cantidad',
-        'amount_helper' => 'Introduce cantidad',
-        'amount_required' => 'El campo cantidad es obligatorio',
-
-        'frecuency' => 'Frecuencia',
-        'frecuency_helper' => 'Introduce frecuencia',
-        'frecuency_required' => 'El campo frecuencia es obligatorio',
-
-        'period_resum' => 'Tiempo',
-        'period' => 'Durante (periodo, tiempo del tratamiento,..)',
-        'period_helper' => 'Introduce durante (periodo, tiempo del tratamiento,..)',
-        'period_required' => 'El campo durante  (periodo, tiempo del tratamiento,..) es obligatorio',
-
-        'medicine' => 'Medicamento',
-        'medicine_helper' => 'Introduce medicamento',
-        'medicine_required' => 'El campo medicamento es obligatorio',
+       
 
         'center' => 'Centro',
         'center_helper' => 'Introduce centro',
@@ -73,6 +50,9 @@ return [
 
         'patient' => 'Paciente',
         'comment' => 'Comentario',
+        'description' => 'Descripción',
+        'description_helper' => 'Introduce descripción',
+        'description_required' => 'El campo descripción es obligatorio',
 
     ],
 
