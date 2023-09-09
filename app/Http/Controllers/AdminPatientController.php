@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AdminClinicPersonalExport;
+use App\Exports\AdminPatientExport;
 use App\Http\Requests\AdminPatientsRequest;
 use App\Models\InsuranceCarrier;
 use App\Models\Municipio;
@@ -547,27 +548,32 @@ class AdminPatientController extends Controller
         }
 
         $query = User::select(
-            [
-                'users.id',
-                'users.email',
-                'user_profiles.phone',
-                'user_profiles.first_name',
-                'user_profiles.photo',
-                'provinces.name as province',
-                'municipios.name as municipio',
-            ]
-        )
-            ->patient()->clinicPersonalSelectedCenter()
-            ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
-            ->leftJoin("doctor_profiles", "doctor_profiles.user_id", "=", "users.id")
-            ->leftJoin("provinces", "user_profiles.province_id", "=", "provinces.id")
-            ->leftJoin("municipios", "user_profiles.municipio_id", "=", "municipios.id")
-            ->where("roles.name", "patient")
-            ->distinct();
+                [
+                    'users.id',
+                    'patient_profiles.email',
+                    'user_profiles.phone',
+                    'user_profiles.first_name',
+                    'user_profiles.birthday',
+                    'user_profiles.identification',
+                    'user_profiles.phone',
+                    'user_profiles.mobile',
+                    'user_profiles.address',
+                    DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as patient'),
+                    'provinces.name as province',
+                    'municipios.name as municipio',
+                ]
+            )
+                ->patients()
+                ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
+                ->leftJoin("patient_profiles", "patient_profiles.user_id", "=", "users.id")
+                ->leftJoin("doctor_profiles", "doctor_profiles.user_id", "=", "users.id")
+                ->leftJoin("provinces", "user_profiles.province_id", "=", "provinces.id")
+                ->leftJoin("municipios", "user_profiles.municipio_id", "=", "municipios.id")
+                ->distinct();
 
         $this->addFilter($query);
 
-        return Excel::download(new AdminClinicPersonalExport($query), strtolower(trans('patients/admin_lang.patients')) . '_' . Carbon::now()->format("dmYHis") . '.xlsx');
+        return Excel::download(new AdminPatientExport($query), strtolower(trans('patients/admin_lang.patients')) . '_' . Carbon::now()->format("dmYHis") . '.xlsx');
     }
 
 
