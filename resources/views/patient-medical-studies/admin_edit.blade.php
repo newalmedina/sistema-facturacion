@@ -22,7 +22,7 @@
 <div class="row">
     <div class="col-12 d-flex justify-content-end">
         <a href="{{ route('admin.patients.medical-studies.generatePdf', ["patient_id" => $medicalStudies->user_id, "id" => $medicalStudies->id]) }}" class="btn btn-danger btn-xs"> <i
-            class="fa fa-file-excel mr-1"></i> {{ trans("general/admin_lang.generate_document") }}</a>
+            class="fa fa-file-pdf mr-1"></i> {{ trans("general/admin_lang.generate_document") }}</a>
     </div>
 </div>
 @endif
@@ -133,7 +133,7 @@
             height: 300,
             resize:false,
             convert_urls: false,
-            @isset($viewPatient)
+            @isset($disabled)
                         readonly : 1,
                     @endisset
             // extended_valid_elements : "a[class|name|href|target|title|onclick|rel],script[type|src],iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name]",

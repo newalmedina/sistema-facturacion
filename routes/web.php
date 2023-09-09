@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminMunicipioController;
 use App\Http\Controllers\AdminPatientController;
 use App\Http\Controllers\AdminPatientMedicalStudieController;
 use App\Http\Controllers\AdminPatientMedicineController;
+use App\Http\Controllers\AdminPatientMonitoringController;
 use App\Http\Controllers\AdminProvinceController;
 use App\Http\Controllers\AdminRoleController;
 use App\Http\Controllers\AdminServiceController;
@@ -323,4 +324,22 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::post('/patients/{patient_id}/medical-studies/save-filter', [AdminPatientMedicalStudieController::class, 'saveFilter'])->name('admin.patients.medical-studies.saveFilter');
     Route::post('/patients/{patient_id}/medical-studies/list', [AdminPatientMedicalStudieController::class, 'getData'])->name('admin.patients.medical-studies.getData');
     Route::delete('/patients/{patient_id}/medical-studies/{id}', [AdminPatientMedicalStudieController::class, 'destroy'])->name('admin.patients.medical-studies.destroy');
+   
+    //seguimientos patients
+    Route::get('/patients/{patient_id}/monitorings', [AdminPatientMonitoringController::class, 'index'])->name('admin.patients.monitorings');
+    Route::get('/patients/{patient_id}/monitorings/create', [AdminPatientMonitoringController::class, 'create'])->name('admin.patients.monitorings.create');
+    Route::get('/patients/{patient_id}/monitorings/{id}/edit', [AdminPatientMonitoringController::class, 'edit'])->name('admin.patients.monitorings.edit');
+    Route::get('/patients/{patient_id}/monitorings/{id}/show', [AdminPatientMonitoringController::class, 'show'])->name('admin.patients.monitorings.show');
+    Route::get('/patients/{patient_id}/monitorings/{id}/copy', [AdminPatientMonitoringController::class, 'copy'])->name('admin.patients.monitorings.copy');
+    Route::get('/patients/{patient_id}/monitorings/{id}/generate-pdf', [AdminPatientMonitoringController::class, 'generatePdf'])->name('admin.patients.monitorings.generatePdf');
+    Route::get('/patients/{patient_id}/monitorings/remove-filter', [AdminPatientMonitoringController::class, 'removeFilter'])->name('admin.patients.monitorings.removeFilter');
+    Route::get('/patients/{patient_id}/monitorings/change-state/{id}', [AdminPatientMonitoringController::class, 'changeState'])->name('admin.patients.monitorings.changeState');
+
+    Route::get('/patients/{patient_id}/monitorings/export-excel', [AdminPatientMonitoringController::class, 'exportExcel'])->name("admin.patients.monitorings.exportExcel");
+
+    Route::post('/patients/{patient_id}/monitorings', [AdminPatientMonitoringController::class, 'store'])->name('admin.patients.monitorings.store');
+    Route::patch('/patients/{patient_id}/monitorings/{id}', [AdminPatientMonitoringController::class, 'update'])->name('admin.patients.monitorings.update');
+    Route::post('/patients/{patient_id}/monitorings/save-filter', [AdminPatientMonitoringController::class, 'saveFilter'])->name('admin.patients.monitorings.saveFilter');
+    Route::post('/patients/{patient_id}/monitorings/list', [AdminPatientMonitoringController::class, 'getData'])->name('admin.patients.monitorings.getData');
+    Route::delete('/patients/{patient_id}/monitorings/{id}', [AdminPatientMonitoringController::class, 'destroy'])->name('admin.patients.monitorings.destroy');
 });

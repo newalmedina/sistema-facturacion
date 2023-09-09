@@ -14,6 +14,12 @@ class Diagnosi extends Model
     protected $fillable = ['name', 'active'];
     protected $table = "diagnosis";
 
+    public function monitoring()
+    {
+        return $this->belongsToMany(PatientMonitoring::class, 'patient_monitorin_diagnosis', 'diagnosi_id', 'patient_monitoring_id')->withTimestamps();
+        
+    }
+
     public function scopeActive($query)
     {
         return $query->where('active', 1);

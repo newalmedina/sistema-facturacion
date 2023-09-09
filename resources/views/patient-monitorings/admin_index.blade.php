@@ -18,11 +18,11 @@
 </li>
 @stop
 
-@section('tab_content_5')
+@section('tab_content_6')
 <div class="card-body mb-4">  
     <div class="row">
         <div class="col">
-            <form id="formData" enctype="multipart/form-data" action=" {{ route("admin.patients.medical-studies.saveFilter",[$patient->id]) }}" method="post"  novalidate="false">
+            <form id="formData" enctype="multipart/form-data" action=" {{ route("admin.patients.monitorings.saveFilter",[$patient->id]) }}" method="post"  novalidate="false">
                 @csrf
                 @method("post")
             <section class="card card-featured-top card-featured-primary">
@@ -38,21 +38,21 @@
                   <div class="row form-group mb-3">
                     <div class="col-md-4">                     
                         <div class="form-group">
-                            <label for="start_date"> {{ trans('patient-medical-studies/admin_lang.fields.start_date') }}</label>
-                            <input value="{{ $filtStartData }}" name="start_date" type="text"  class="form-control datepicker"   placeholder="{{ trans('patient-medical-studies/admin_lang.fields.start_date_helper') }}">
+                            <label for="start_date"> {{ trans('patient-monitorings/admin_lang.fields.start_date') }}</label>
+                            <input value="{{ $filtStartData }}" name="start_date" type="text"  class="form-control datepicker"   placeholder="{{ trans('patient-monitorings/admin_lang.fields.start_date_helper') }}">
                         </div>
                     </div>
                     <div class="col-md-4">                     
                         <div class="form-group">
-                            <label for="end_date"> {{ trans('patient-medical-studies/admin_lang.fields.end_date') }}</label>
-                            <input value="{{ $filtEndData }}" name="end_date" type="text"  class="form-control datepicker"   placeholder="{{ trans('patient-medical-studies/admin_lang.fields.end_date_helper') }}">
+                            <label for="end_date"> {{ trans('patient-monitorings/admin_lang.fields.end_date') }}</label>
+                            <input value="{{ $filtEndData }}" name="end_date" type="text"  class="form-control datepicker"   placeholder="{{ trans('patient-monitorings/admin_lang.fields.end_date_helper') }}">
                         </div>
                     </div>
                   </div>
                     <div class="row form-group mb-3">
                         <div class="col-12 col-md-8">                     
                             <div class="form-group">
-                                <label for="center_id"  class="col-12"> {{ trans('patient-medical-studies/admin_lang.fields.centers') }}</label>
+                                <label for="center_id"  class="col-12"> {{ trans('patient-monitorings/admin_lang.fields.centers') }}</label>
                                 <select class="form-control select2" multiple name="center_id[]" id="center_id">   
                                     @foreach ($centerList as $center)
                                         <option value="{{ $center->id }}" @if( $center->id==in_array($center->id,$filtCenterId))  selected @endif >{{ $center->name }}</option>
@@ -66,13 +66,13 @@
                     <div class="row ">
                         <div class="col-12 col-md-6 d-flex justify-content-start">
                             <button class="btn btn-success btn-xs " type="submit"> {!! trans('general/admin_lang.filter') !!}</button>
-                            <a href="{{ url('admin/patients/'.$patient->id.'/medical-studies/remove-filter') }}" class="ms-2 btn btn-danger btn-xs">
+                            <a href="{{ url('admin/patients/'.$patient->id.'/monitorings/remove-filter') }}" class="ms-2 btn btn-danger btn-xs">
                                 {!! trans('general/admin_lang.clean_filter') !!}
                             </a>
                         </div>
-                        @if ( Auth::user()->isAbleTo("admin-patients-medical-studies-list") ) 
+                        @if ( Auth::user()->isAbleTo("admin-patients-monitoring-list") ) 
                         <div class="col-12 col-md-6 d-flex justify-content-end">
-                            <a href="{{ url('admin/patients/'.$patient->id.'/medical-studies/export-excel') }}" class="text-success">
+                            <a href="{{ url('admin/patients/'.$patient->id.'/monitorings/export-excel') }}" class="text-success">
                                 <i class="far fa-file-excel fa-2x"></i>
                             </a>
                         </div>
@@ -86,9 +86,9 @@
 </div>
 <div class="card-body">  
     <div class="text-end">
-        @if(Auth::user()->isAbleTo("admin-patients-medical-studies-create"))
-            <a href="{{ route('admin.patients.medical-studies.create',["patient_id"=>$patient->id]) }}" class="btn btn-outline-success">
-            {{ trans('patient-medical-studies/admin_lang.new') }}
+        @if(Auth::user()->isAbleTo("admin-patients-monitoring-create"))
+            <a href="{{ route('admin.patients.monitorings.create',["patient_id"=>$patient->id]) }}" class="btn btn-outline-success">
+            {{ trans('patient-monitorings/admin_lang.new') }}
             </a>
         @endif
     </div>
@@ -97,8 +97,8 @@
 <div class="card-body">
     <div class="row">
         <div class="col-12 table-responsive">
-            @if ( Auth::user()->isAbleTo("admin-patients-medical-studies-list") ) 
-            <table id="table_patient-medical-studies" class="table table-bordered table-striped" style="width: 100%" aria-hidden="true">
+            @if ( Auth::user()->isAbleTo("admin-patients-monitoring-list") ) 
+            <table id="table_patient-monitorings" class="table table-bordered table-striped" style="width: 100%" aria-hidden="true">
                 <thead>
                     <tr>
                         <th scope="col">
@@ -154,9 +154,9 @@
       
     });
     var oTable = '';
-    @if ( Auth::user()->isAbleTo("admin-patients-medical-studies-list") )    
+    @if ( Auth::user()->isAbleTo("admin-patients-monitoring-list") )    
         $(function() {
-            oTable = $('#table_patient-medical-studies').DataTable({
+            oTable = $('#table_patient-monitorings').DataTable({
                 "stateSave": true,
                 "stateDuration": 60,
                 "processing": true,
@@ -167,7 +167,7 @@
                     "headers": {
                         "X-CSRF-TOKEN": "{{ csrf_token() }}"
                     },
-                    url: "{{ url('admin/patients/'.$patient->id.'/medical-studies/list') }}",
+                    url: "{{ url('admin/patients/'.$patient->id.'/monitorings/list') }}",
                     type: "POST"
                 },
             /* order: [
@@ -177,7 +177,7 @@
                   
                   
                     {
-                        "title": "{!! trans('patient-medical-studies/admin_lang.fields.date') !!}",
+                        "title": "{!! trans('patient-monitorings/admin_lang.fields.date') !!}",
                         orderable       : true,
                         searchable      : true,
                         data            : 'date',
@@ -190,35 +190,37 @@
                             sWidth          : '100px'
                     },
                     {
-                        "title": "{!! trans('patient-medical-studies/admin_lang.fields.created_by') !!}",
+                        "title": "{!! trans('patient-monitorings/admin_lang.fields.created_by') !!}",
                         orderable: true,
                         searchable: true,
                         data: 'created_by',
                         name: 'created_by',
                         sWidth: ''
                     },
+               
                     {
-                        "title": "{!! trans('patient-medical-studies/admin_lang.fields.description') !!}",
-                        orderable: true,
-                        searchable: true,
-                        data: 'description',
-                        name: 'description',
-                        sWidth: ''
-                    },
-                    {
-                        "title": "{!! trans('patient-medical-studies/admin_lang.fields.center') !!}",
+                        "title": "{!! trans('patient-monitorings/admin_lang.fields.center') !!}",
                         orderable: true,
                         searchable: true,
                         data: 'center',
                         name: 'centers.name',
                         sWidth: ''
                     },
+                    {
+                        "title": "{!! trans('patient-monitorings/admin_lang.fields.motive') !!}",
+                        orderable: true,
+                        searchable: true,
+                        data: 'motive',
+                        name: 'patient_monitorings.motive',
+                        sWidth: ''
+                    },
+                   
                     
                     {
                         "title": "{!! trans('general/admin_lang.actions') !!}",
                         orderable: false,
                         searchable: false,
-                        sWidth: '180px',
+                        sWidth: '100px',
                         data: 'actions'
                     }
 
@@ -237,8 +239,8 @@
             });
 
             var state = oTable.state.loaded();
-            $('tfoot th', $('#table_patient-medical-studies')).each(function(colIdx) {
-                var title = $('tfoot th', $('#table_patient-medical-studies')).eq($(this).index()).text();
+            $('tfoot th', $('#table_patient-monitorings')).each(function(colIdx) {
+                var title = $('tfoot th', $('#table_patient-monitorings')).eq($(this).index()).text();
                 if (oTable.settings()[0]['aoColumns'][$(this).index()]['bSearchable']) {
                     var defecto = "";
                     if (state) defecto = state.columns[colIdx].search.search;
@@ -250,7 +252,7 @@
                 }
             });
 
-            $('#table_patient-medical-studies').on('keyup change', 'tfoot input', function(e) {
+            $('#table_patient-monitorings').on('keyup change', 'tfoot input', function(e) {
                 oTable
                     .column($(this).parent().index() + ':visible')
                     .search(this.value)
@@ -260,7 +262,7 @@
         });    
         function changeState(id){
             $.ajax({
-                url     : "{{ url('admin/patient-medical-studies/change-state/') }}/"+id,
+                url     : "{{ url('admin/patient-monitorings/change-state/') }}/"+id,
                 type    : 'GET',
                 success : function(data) {
                     console.log("estado actalizado");           

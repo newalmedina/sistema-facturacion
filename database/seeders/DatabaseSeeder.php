@@ -42,5 +42,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminPatientsInsurancesPremissionSeeder::class);
         $this->call(AdminPatientMedicinesPremissionSeeder::class);
         $this->call(AdminPatientMedicalStudiesPremissionSeeder::class);
+        $this->call(AdminPatientMonitoringPremissionSeeder::class);
     }
 }

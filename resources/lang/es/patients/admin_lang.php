@@ -20,6 +20,7 @@ return [
     'quit_image' => 'Quitar imagen',
     'clinic_record' => 'Historial clínico',
     'insurance_carriers' => 'Seguros médicos',
+    'patient_monitorings' => 'Seguimientos del paciente',
     'add_insurance' => 'Añadir seguro',
     'fields' => [
         'active' => 'Activo',
