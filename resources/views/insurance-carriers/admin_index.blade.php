@@ -27,6 +27,7 @@
    
     <div class="row">
         <div class="col">
+    
             <form id="formData" enctype="multipart/form-data" action=" {{ route("admin.insurance-carriers.saveFilter") }}" method="post"  novalidate="false">
                 @csrf
                 @method("post")
@@ -114,10 +115,9 @@
                         <div class="row">
                             <div class="col-12 table-responsive">
                                 @if ( Auth::user()->isAbleTo("admin-insurance-carriers-list") ) 
-                                <table id="table_users" class="table table-bordered table-striped" style="width: 100%" aria-hidden="true">
+                                <table id="table_insurance_carriers" class="table table-bordered table-striped" style="width: 100%" aria-hidden="true">
                                     <thead>
                                         <tr>
-                                            <th scope="col">
                                             <th scope="col">
                                             <th scope="col">
                                             <th scope="col">
@@ -131,7 +131,6 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th scope="col">
                                             <th scope="col">
                                             <th scope="col">
                                             <th scope="col">
@@ -195,7 +194,7 @@
     var oTable = '';
     @if ( Auth::user()->isAbleTo("admin-insurance-carriers-list") )    
         $(function() {
-            oTable = $('#table_users').DataTable({
+            oTable = $('#table_insurance_carriers').DataTable({
                 "stateSave": true,
                 "stateDuration": 60,
                 "processing": true,
@@ -213,41 +212,42 @@
                     [2, "asc"]
                 ],*/
                 columns: [
-                    
+                   
+                    // {
+                    //     "title": "{!! trans('centers/admin_lang.fields.image2') !!}",
+                    //     orderable: false,
+                    //     searchable: false,
+                    //     data: 'image',
+                    //     name: 'image',
+                    //     sWidth: '80px'
+                    // },
+               
                     {
-                        "title": "{!! trans('insurance-carriers/admin_lang.fields.image2') !!}",
+                        "title": "{!! trans('centers/admin_lang.fields.image2') !!}",
                         orderable: false,
                         searchable: false,
                         data: 'image',
                         name: 'image',
-                        sWidth: '80px'
+                        sWidth: ''
                     },
                     {
-                        "title": "{!! trans('insurance-carriers/admin_lang.fields.name') !!}",
+                        "title": "{!! trans('centers/admin_lang.fields.name') !!}",
                         orderable: true,
                         searchable: true,
                         data: 'name',
-                        name: 'insurance-carriers.name',
+                        name: 'insurance_carriers.name',
                         sWidth: ''
                     },
                     {
-                        "title": "{!! trans('insurance-carriers/admin_lang.fields.phone') !!}",
+                        "title": "{!! trans('centers/admin_lang.fields.phone') !!}",
                         orderable: true,
                         searchable: true,
                         data: 'phone',
-                        name: 'insurance-carriers.phone',
+                        name: 'insurance_carriers.phone',
                         sWidth: ''
                     },
                     {
-                        "title": "{!! trans('insurance-carriers/admin_lang.fields.email') !!}",
-                        orderable: true,
-                        searchable: true,
-                        data: 'email',
-                        name: 'insurance-carriers.email',
-                        sWidth: ''
-                    },
-                    {
-                        "title": "{!! trans('insurance-carriers/admin_lang.fields.province_id') !!}",
+                        "title": "{!! trans('centers/admin_lang.fields.province_id') !!}",
                         orderable: true,
                         searchable: true,
                         data: 'province',
@@ -255,14 +255,22 @@
                         sWidth: ''
                     },
                     {
-                        "title": "{!! trans('insurance-carriers/admin_lang.fields.municipio_id') !!}",
+                        "title": "{!! trans('centers/admin_lang.fields.municipio_id') !!}",
                         orderable: true,
                         searchable: true,
                         data: 'municipio',
                         name: 'municipios.name',
                         sWidth: ''
                     },
-                    
+              
+                    {
+                        "title": "{!! trans('general/admin_lang.active') !!}",
+                        orderable: false,
+                        searchable: false,
+                        data: 'active',
+                        name: 'active',
+                        sWidth: '80px'
+                    },
                     {
                         "title": "{!! trans('general/admin_lang.actions') !!}",
                         orderable: false,
@@ -286,8 +294,8 @@
             });
 
             var state = oTable.state.loaded();
-            $('tfoot th', $('#table_users')).each(function(colIdx) {
-                var title = $('tfoot th', $('#table_users')).eq($(this).index()).text();
+            $('tfoot th', $('#table_insurance_carriers')).each(function(colIdx) {
+                var title = $('tfoot th', $('#table_insurance_carriers')).eq($(this).index()).text();
                 if (oTable.settings()[0]['aoColumns'][$(this).index()]['bSearchable']) {
                     var defecto = "";
                     if (state) defecto = state.columns[colIdx].search.search;
@@ -299,7 +307,7 @@
                 }
             });
 
-            $('#table_users').on('keyup change', 'tfoot input', function(e) {
+            $('#table_insurance_carriers').on('keyup change', 'tfoot input', function(e) {
                 oTable
                     .column($(this).parent().index() + ':visible')
                     .search(this.value)
@@ -307,6 +315,7 @@
             });
 
         });
+     
         function changeState(id){
             $.ajax({
                 url     : "{{ url('admin/insurance-carriers/change-state/') }}/"+id,
@@ -318,9 +327,7 @@
                     console.log("Error al actualizar "+error);           
                 }
             });
-        }
-
-   
+        }   
     @endif 
     function deleteElement(url) {
         var strBtn = "";
