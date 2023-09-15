@@ -162,6 +162,14 @@
                             </a>                        
                         </li>
                     @endif
+                    @if(Auth::user()->isAbleTo("admin-appointments") && Auth::user()->hasSelectedCenter()  )
+                        <li class="@if (Request::is('admin/calendar*') ) nav-active @endif">
+                            <a class="nav-link" @if (Request::is('admin/calendar*')) style="color:{{ $activeColor }}" @endif  href="{{ url('/admin/calendar') }}">
+                                <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                                <span>{{ trans('calendar/admin_lang.calendar') }}</span>
+                            </a>                        
+                        </li>
+                    @endif
                     
                     @if(Auth::user()->isAbleTo("admin-settings")  )
                         <li class="@if (Request::is('admin/settings*') ) nav-active @endif">

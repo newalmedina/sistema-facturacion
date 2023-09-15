@@ -86,9 +86,9 @@ class AdminPatientMonitoringController extends Controller
         $tab = 'tab_6';
 
         $notImage = true;
-        $diagnosisSelected=$patientMonitoring->diagnosisIdArrayFormatted;
+        $diagnosisSelected = $patientMonitoring->diagnosisIdArrayFormatted;
 
-        return view('patient-monitorings.admin_edit', compact('pageTitle', 'title', 'patient', 'patientMonitoring', 'notImage','diagnosisList','diagnosisSelected'))
+        return view('patient-monitorings.admin_edit', compact('pageTitle', 'title', 'patient', 'patientMonitoring', 'notImage', 'diagnosisList', 'diagnosisSelected'))
             ->with('tab', $tab);
     }
 
@@ -115,9 +115,9 @@ class AdminPatientMonitoringController extends Controller
         $notImage = true;
         $disabled = "disabled";
         $diagnosisList = Diagnosi::active()->orderBy("name", "asc")->get();
-        $diagnosisSelected=$patientMonitoring->diagnosisIdArrayFormatted;
-        
-        return view('patient-monitorings.admin_edit', compact('pageTitle', 'title', 'patient', 'patientMonitoring', 'notImage', "disabled" ,'diagnosisList','diagnosisSelected'))
+        $diagnosisSelected = $patientMonitoring->diagnosisIdArrayFormatted;
+
+        return view('patient-monitorings.admin_edit', compact('pageTitle', 'title', 'patient', 'patientMonitoring', 'notImage', "disabled", 'diagnosisList', 'diagnosisSelected'))
             ->with('tab', $tab);
     }
 
@@ -182,7 +182,7 @@ class AdminPatientMonitoringController extends Controller
         ];
         $pdf = PDF::loadView('pdf.partials.recetas', $data);
 
-        return $pdf->stream(
+        return $pdf->download(
             trans('patient-monitorings/admin_lang.patient-monitorings-export') . '_' . Carbon::now()->format("dmYHis") . '.pdf'
         );
     }
@@ -216,10 +216,10 @@ class AdminPatientMonitoringController extends Controller
         $notImage = true;
 
         $diagnosisList = Diagnosi::active()->orderBy("name", "asc")->get();
-         $diagnosisSelected=$patientMonitoring->diagnosisIdArrayFormatted;
-    
-        
-        return view('patient-monitorings.admin_edit', compact('pageTitle', 'title', 'patient', 'patientMonitoring', 'notImage','diagnosisList','diagnosisSelected'))
+        $diagnosisSelected = $patientMonitoring->diagnosisIdArrayFormatted;
+
+
+        return view('patient-monitorings.admin_edit', compact('pageTitle', 'title', 'patient', 'patientMonitoring', 'notImage', 'diagnosisList', 'diagnosisSelected'))
             ->with('tab', $tab);
     }
 
@@ -286,9 +286,9 @@ class AdminPatientMonitoringController extends Controller
         }
     }
 
-    
 
-      public function saveFilter(Request $request, $patient_id)
+
+    public function saveFilter(Request $request, $patient_id)
     {
         $this->clearSesions($request);
         if (!empty($request->center_id))
@@ -368,10 +368,10 @@ class AdminPatientMonitoringController extends Controller
         $table->filterColumn('created_by', function ($query, $keyword) {
             $query->whereRaw("CONCAT(created.first_name,' ',created.last_name) like ?", ["%{$keyword}%"]);
         });
-       
+
         $table->editColumn('motive', function ($data) {
-            return  UtilsServices::makeTextShort(strip_tags($data->motive),100);
-           });
+            return  UtilsServices::makeTextShort(strip_tags($data->motive), 100);
+        });
 
         $table->editColumn('date', function ($data) {
 
@@ -382,7 +382,7 @@ class AdminPatientMonitoringController extends Controller
             ];
         });
 
-       
+
 
 
 
@@ -391,14 +391,14 @@ class AdminPatientMonitoringController extends Controller
             $actions = '';
 
             if (auth()->user()->isAbleTo("admin-patients-monitoring-read")) {
-                $actions .= '<a  class="btn btn-info btn-xs" data-bs-content="' .trans('general/admin_lang.show') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.monitorings.show', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                $actions .= '<a  class="btn btn-info btn-xs" data-bs-content="' . trans('general/admin_lang.show') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.monitorings.show', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                     class="fa fa-eye fa-lg"></i></a> ';
             }
             if (auth()->user()->isAbleTo("admin-patients-monitoring-update-all")) {
-                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.monitorings.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' . trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.monitorings.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             } elseif (auth()->user()->isAbleTo("admin-patients-monitoring-update") && $data->creador == Auth::user()->id) {
-                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.monitorings.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' . trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.monitorings.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
             // if ($data->creador == Auth::user()->id) {
@@ -413,12 +413,12 @@ class AdminPatientMonitoringController extends Controller
 
             if (auth()->user()->isAbleTo("admin-patients-monitoring-delete-all")) {
 
-                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' .trans('general/admin_lang.delete'). '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' . trans('general/admin_lang.delete') . '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
                     route('admin.patients.monitorings.destroy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';
             } elseif (auth()->user()->isAbleTo("admin-patients-monitoring-delete") && $data->creador == Auth::user()->id) {
-                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' .trans('general/admin_lang.delete'). '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' . trans('general/admin_lang.delete') . '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
                     route('admin.patients.monitorings.destroy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                     <i class="fa fa-trash" aria-hidden="true"></i></button>';
@@ -429,7 +429,7 @@ class AdminPatientMonitoringController extends Controller
         });
 
         $table->removeColumn('id');
-        $table->rawColumns(['actions','motive']);
+        $table->rawColumns(['actions', 'motive']);
         return $table->make();
     }
 
@@ -467,7 +467,7 @@ class AdminPatientMonitoringController extends Controller
                 DB::raw('CONCAT(created.first_name, " ", created.last_name) as created_by'),
                 DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as patient'),
                 "centers.name as center",
-               
+
                 'patient_monitorings.height',
                 'patient_monitorings.weight',
                 'patient_monitorings.temperature',
@@ -484,7 +484,7 @@ class AdminPatientMonitoringController extends Controller
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "patient_monitorings.user_id")
             ->leftJoin("user_profiles as created", "created.user_id", "=", "patient_monitorings.created_by")
             ->leftJoin("centers", "centers.id", "=", "patient_monitorings.center_id")
-             ->where("patient_monitorings.user_id", $patient_id)
+            ->where("patient_monitorings.user_id", $patient_id)
             ->distinct();
 
 
@@ -510,7 +510,5 @@ class AdminPatientMonitoringController extends Controller
         $patientMonitoring->comment =  $request->comment;
         $patientMonitoring->save();
         $patientMonitoring->diagnosis()->sync($request->diagnosis_id);
-
-       
     }
 }

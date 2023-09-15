@@ -178,7 +178,7 @@ class AdminPatientMedicineController extends Controller
         ];
         $pdf = PDF::loadView('pdf.partials.recetas', $data);
 
-        return $pdf->stream(
+        return $pdf->download(
             trans('patient-medicines/admin_lang.patient-medicines-export') . '_' . Carbon::now()->format("dmYHis") . '.pdf'
         );
     }
@@ -279,9 +279,9 @@ class AdminPatientMedicineController extends Controller
         }
     }
 
-    
 
-      public function saveFilter(Request $request, $patient_id)
+
+    public function saveFilter(Request $request, $patient_id)
     {
         $this->clearSesions($request);
         if (!empty($request->center_id))
@@ -387,14 +387,14 @@ class AdminPatientMedicineController extends Controller
             $actions = '';
 
             if (auth()->user()->isAbleTo("admin-patients-medicines-read")) {
-                $actions .= '<a  class="btn btn-info btn-xs" data-bs-content="' .trans('general/admin_lang.show') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medicines.show', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                $actions .= '<a  class="btn btn-info btn-xs" data-bs-content="' . trans('general/admin_lang.show') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medicines.show', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                     class="fa fa-eye fa-lg"></i></a> ';
             }
             if (auth()->user()->isAbleTo("admin-patients-medicines-update-all")) {
-                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medicines.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' . trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medicines.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             } elseif (auth()->user()->isAbleTo("admin-patients-medicines-update") && $data->creador == Auth::user()->id) {
-                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medicines.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' . trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medicines.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
             if ($data->creador == Auth::user()->id) {
@@ -409,12 +409,12 @@ class AdminPatientMedicineController extends Controller
 
             if (auth()->user()->isAbleTo("admin-patients-medicines-delete-all")) {
 
-                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' .trans('general/admin_lang.delete'). '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' . trans('general/admin_lang.delete') . '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
                     route('admin.patients.medicines.destroy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';
             } elseif (auth()->user()->isAbleTo("admin-patients-medicines-delete") && $data->creador == Auth::user()->id) {
-                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' .trans('general/admin_lang.delete'). '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' . trans('general/admin_lang.delete') . '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
                     route('admin.patients.medicines.destroy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                     <i class="fa fa-trash" aria-hidden="true"></i></button>';
