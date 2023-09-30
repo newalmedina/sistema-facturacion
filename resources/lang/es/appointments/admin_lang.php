@@ -27,6 +27,11 @@ return [
         'hour_helper' => 'Introduce hora',
         'hour_required' => 'El campo hora es obligatorio',
 
+        'doctor_id' => 'Médico',
+        'doctor_id_helper' => 'Seleccione médico',
+        'doctor_id_all' => 'Todos los medicos',
+        'doctor_id_required' => 'El campo médico es obligatorio',
+
         'service_id' => 'Servicio',
         'service_id_helper' => 'Seleccione servicio',
         'service_id_required' => 'El campo servicio es obligatorio',
@@ -55,7 +60,14 @@ return [
         'paid_helper' => 'Introduce facturado',
         'paid_required' => 'El campo facturado es obligatorio',
 
+        'comment' => 'Comentario',
+        'comment_helper' => 'Introduce comentario',
+        'comment_required' => 'El campo comentario es obligatorio',
+
         'active' => '¿Activo?',
+
+        'poliza' => 'Poliza',
+        'created_by' => 'Creado por',
     ],
 
 ];

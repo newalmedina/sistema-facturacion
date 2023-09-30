@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('doctor_id')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('center_id')->nullable();
             $table->datetime('start_at')->nullable();
@@ -34,10 +35,14 @@ return new class extends Migration
 
             $table->text('comment')->nullable();
             $table->boolean("paid")->default(0);
+            $table->string("color")->nullable();
 
             $table->timestamps();
 
             $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->foreign('doctor_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
             $table->foreign('created_by')
@@ -54,6 +59,7 @@ return new class extends Migration
             $table->foreign('insurance_carrier_id')
                 ->references('id')->on('insurance_carriers')
                 ->onDelete('cascade');
+            $table->softDeletes();
         });
     }
 
