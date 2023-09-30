@@ -28,7 +28,7 @@ class AdminPatientMedicalStudieController extends Controller
     public $filtEndData;
     public function __construct()
     {
-       
+
         $this->middleware(function ($request, $next) {
             $this->filtStartData = ($request->session()->has('patient_medical_studies_start_date')) ? ($request->session()->get('patient_medical_studies_start_date')) : "";
             $this->filtEndData = ($request->session()->has('patient_medical_studies_end_date')) ? ($request->session()->get('patient_medical_studies_end_date')) : "";
@@ -50,7 +50,7 @@ class AdminPatientMedicalStudieController extends Controller
             app()->abort(404);
         }
 
-         $patient = User::find($patient_id);
+        $patient = User::find($patient_id);
 
         $pageTitle = trans('patient-medical-studies/admin_lang.list');
         $title = trans('patients/admin_lang.patients');
@@ -141,7 +141,7 @@ class AdminPatientMedicalStudieController extends Controller
             $newMedicine->date = Carbon::now();
             $newMedicine->center_id =  Auth::user()->hasSelectedCenter();
             $newMedicine->save();
-          
+
 
             DB::commit();
             return redirect()->route('admin.patients.medical-studies.edit', ["patient_id" => $patient_id, "id" => $newMedicine->id])->with('success', trans('general/admin_lang.save_ok'));
@@ -172,10 +172,10 @@ class AdminPatientMedicalStudieController extends Controller
             'date' => Carbon::parse($medicalStudies->date)->format("d/m/Y"),
             'doctorInfo' => $medicalStudies->createdBy
         ];
-        
+
         $pdf = PDF::loadView('pdf.partials.studies', $data);
 
-        return $pdf->stream(
+        return $pdf->download(
             trans('patient-medical-studies/admin_lang.patient-medical-studies-export') . '_' . Carbon::now()->format("dmYHis") . '.pdf'
         );
     }
@@ -218,7 +218,7 @@ class AdminPatientMedicalStudieController extends Controller
         if (!auth()->user()->isAbleTo('admin-patients-medical-studies-create')) {
             app()->abort(403);
         }
-  
+
         $patient = User::where("users.id", $patient_id)->patients()->first();
 
         if (empty($patient)) {
@@ -276,7 +276,7 @@ class AdminPatientMedicalStudieController extends Controller
         }
     }
 
- 
+
 
 
     public function saveFilter(Request $request, $patient_id)
@@ -360,7 +360,7 @@ class AdminPatientMedicalStudieController extends Controller
         $table->filterColumn('created_by', function ($query, $keyword) {
             $query->whereRaw("CONCAT(created.first_name,' ',created.last_name) like ?", ["%{$keyword}%"]);
         });
-      
+
 
         $table->editColumn('date', function ($data) {
 
@@ -372,7 +372,7 @@ class AdminPatientMedicalStudieController extends Controller
         });
 
         $table->editColumn('description', function ($data) {
-         return  UtilsServices::makeTextShort(strip_tags($data->description),100);
+            return  UtilsServices::makeTextShort(strip_tags($data->description), 100);
         });
 
 
@@ -380,14 +380,14 @@ class AdminPatientMedicalStudieController extends Controller
             $actions = '';
 
             if (auth()->user()->isAbleTo("admin-patients-medical-studies-read")) {
-                $actions .= '<a  class="btn btn-info btn-xs" data-bs-content="' .trans('general/admin_lang.show') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medical-studies.show', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                $actions .= '<a  class="btn btn-info btn-xs" data-bs-content="' . trans('general/admin_lang.show') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medical-studies.show', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                     class="fa fa-eye fa-lg"></i></a> ';
             }
             if (auth()->user()->isAbleTo("admin-patients-medical-studies-update-all")) {
-                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medical-studies.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' . trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medical-studies.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             } elseif (auth()->user()->isAbleTo("admin-patients-medical-studies-update") && $data->creador == Auth::user()->id) {
-                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' .trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medical-studies.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
+                $actions .= '<a  class="btn btn-primary btn-xs" data-bs-content="' . trans('general/admin_lang.edit') . '" data-bs-placement="left" data-bs-toggle="popover" href="' . route('admin.patients.medical-studies.edit', ["patient_id" => $data->user_id, "id" => $data->id]) . '" ><i
                 class="fa fa-marker fa-lg"></i></a> ';
             }
             if ($data->creador == Auth::user()->id) {
@@ -402,12 +402,12 @@ class AdminPatientMedicalStudieController extends Controller
 
             if (auth()->user()->isAbleTo("admin-patients-medical-studies-delete-all")) {
 
-                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' .trans('general/admin_lang.delete'). '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' . trans('general/admin_lang.delete') . '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
                     route('admin.patients.medical-studies.destroy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                         <i class="fa fa-trash" aria-hidden="true"></i></button>';
             } elseif (auth()->user()->isAbleTo("admin-patients-medical-studies-delete") && $data->creador == Auth::user()->id) {
-                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' .trans('general/admin_lang.delete'). '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
+                $actions .= '<button class="btn btn-danger btn-xs" data-bs-content="' . trans('general/admin_lang.delete') . '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:deleteElement(\'' .
                     route('admin.patients.medical-studies.destroy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');" data-content="' .
                     trans('general/admin_lang.borrar') . '" data-placement="left" data-toggle="popover">
                     <i class="fa fa-trash" aria-hidden="true"></i></button>';
@@ -477,7 +477,5 @@ class AdminPatientMedicalStudieController extends Controller
         $medicalStudies->date = Carbon::createFromFormat("d/m/Y", $request->date);
         $medicalStudies->description =  $request->description;
         $medicalStudies->save();
-
-      
     }
 }

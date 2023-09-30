@@ -19,7 +19,9 @@ use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\AdminSuplantacionController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminUserProfileController;
+use App\Http\Controllers\AdminAppointmentController;
 use App\Http\Controllers\Auth\FrontRegisterUserController;
+use App\Http\Controllers\AdminCalendarController;
 use App\Http\Controllers\FrontSettingsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocalizationController;
@@ -62,7 +64,7 @@ Route::get('/', function () {
 //change language
 Route::get('lang/{locale}', [LocalizationController::class, 'index']);
 
-Route::get('home', function(){
+Route::get('home', function () {
     return redirect()->route('admin.dashboard');
 });
 
@@ -324,7 +326,7 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::post('/patients/{patient_id}/medical-studies/save-filter', [AdminPatientMedicalStudieController::class, 'saveFilter'])->name('admin.patients.medical-studies.saveFilter');
     Route::post('/patients/{patient_id}/medical-studies/list', [AdminPatientMedicalStudieController::class, 'getData'])->name('admin.patients.medical-studies.getData');
     Route::delete('/patients/{patient_id}/medical-studies/{id}', [AdminPatientMedicalStudieController::class, 'destroy'])->name('admin.patients.medical-studies.destroy');
-   
+
     //seguimientos patients
     Route::get('/patients/{patient_id}/monitorings', [AdminPatientMonitoringController::class, 'index'])->name('admin.patients.monitorings');
     Route::get('/patients/{patient_id}/monitorings/create', [AdminPatientMonitoringController::class, 'create'])->name('admin.patients.monitorings.create');
@@ -342,4 +344,8 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::post('/patients/{patient_id}/monitorings/save-filter', [AdminPatientMonitoringController::class, 'saveFilter'])->name('admin.patients.monitorings.saveFilter');
     Route::post('/patients/{patient_id}/monitorings/list', [AdminPatientMonitoringController::class, 'getData'])->name('admin.patients.monitorings.getData');
     Route::delete('/patients/{patient_id}/monitorings/{id}', [AdminPatientMonitoringController::class, 'destroy'])->name('admin.patients.monitorings.destroy');
+
+    ///appointments
+    Route::get('/appointments', [AdminAppointmentController::class, 'index'])->name('admin.appointment');
+    Route::get('/calendar', [AdminCalendarController::class, 'index'])->name('admin.calendar');
 });
