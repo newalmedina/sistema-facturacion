@@ -35,8 +35,8 @@ class SettingsServices
 
         $addressArray = [
             $data["address"],
-            $province->name,
-            $municipio->name
+            !empty($province) ? $province : null,
+            !empty($municipio) ? $municipio->name : null
         ];
 
         return implode(", ", $addressArray);
