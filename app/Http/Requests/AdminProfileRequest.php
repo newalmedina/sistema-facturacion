@@ -31,7 +31,7 @@ class AdminProfileRequest extends FormRequest
             //'active' => 'required',
             'user_profile.first_name' => 'required',
             'user_profile.last_name' => 'required',
-            'profile_image' => 'nullable|image',
+            // 'profile_image' => 'nullable|image',
             'password' => 'nullable|same:password_confirm|min:8',
         ];
     }

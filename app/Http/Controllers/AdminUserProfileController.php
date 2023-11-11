@@ -90,7 +90,6 @@ class AdminUserProfileController extends Controller
             // Redirect to the new user page
             DB::commit();
 
-
             // Y Devolvemos una redirección a la acción show para mostrar el usuario
             return redirect('admin/profile')->with('success', trans('general/admin_lang.save_ok'));
         } catch (\PDOException $e) {
