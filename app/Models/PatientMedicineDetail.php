@@ -14,7 +14,7 @@ class PatientMedicineDetail extends Model
 
     public function getPrescripcionStringAttribute()
     {
-
-        return  $this->medicine . ', '  . $this->dosis . ', ' . $this->frecuency. ', '. $this->period;
+        //subiendo cambiosdsadsa
+        return  $this->medicine . ', '  . $this->dosis . ', ' . $this->frecuency . ', ' . $this->period;
     }
 }

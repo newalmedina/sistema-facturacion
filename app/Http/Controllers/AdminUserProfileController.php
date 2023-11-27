@@ -7,6 +7,7 @@ use App\Http\Requests\AdminProfileRequest;
 use App\Models\DoctorProfile;
 use App\Models\MedicalSpecialization;
 use App\Models\Municipio;
+use App\Models\PatientMedicine;
 use App\Models\Province;
 use App\Models\User;
 use App\Models\UserProfile;
@@ -27,6 +28,8 @@ class AdminUserProfileController extends Controller
      */
     public function edit()
     {
+
+
         //Obtengo la información del usuario para pasarsela al formulario
         $user = User::with('userProfile')->find(auth()->user()->id);
         $tab = 'tab_1';
