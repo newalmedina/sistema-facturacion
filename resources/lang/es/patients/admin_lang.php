@@ -21,6 +21,7 @@ return [
     'clinic_record' => 'Historial clínico',
     'insurance_carriers' => 'Seguros médicos',
     'patient_monitorings' => 'Seguimientos del paciente',
+    'patient_studies' => 'Estudios médicos',
     'add_insurance' => 'Añadir seguro',
     'fields' => [
         'active' => 'Activo',

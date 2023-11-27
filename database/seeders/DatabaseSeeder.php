@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\PatientMedicine;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -44,5 +45,9 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminPatientMedicalStudiesPremissionSeeder::class);
         $this->call(AdminPatientMonitoringPremissionSeeder::class);
         $this->call(AdminAppointmentPremissionSeeder::class);
+
+        $this->call(ServiciosDataSeeder::class);
+        $this->call(DatosPruebaSeeder::class);
+        $this->call(PatientMedicineSeeder::class);
     }
 }
