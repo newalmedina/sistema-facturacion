@@ -30,5 +30,12 @@ class InsertCenterDataSeeder extends Seeder
         $user->userProfile->selected_center = 1;
         $user->userProfile->save();
         $user->centers()->sync([$center->id]);
+
+        //segundo centro 
+        $center = new  Center();
+        $center->name = "Segundo centro";
+        $center->active = 1;
+        $center->default = 0;
+        $center->save();
     }
 }

@@ -89,83 +89,87 @@ $disabled= isset($disabled)?$disabled : null;
                             </a>  
                         @endif
                     </li>
-                    @if(!empty($patient->id) && Auth::user()->isAbleTo("admin-patients-clinic-record-update") || Auth::user()->isAbleTo("admin-patients-clinic-record-read"))
-                        <li class="nav-item @if ($tab == 'tab_2') active @endif">
-                            <a id="tab_2" class="nav-link" data-bs-target="#tab_2-2"
-                            data-bs-toggle="tabajax" href="{{ url('admin/patients/clinical-record/'.$patient->id.'/edit') }}" data-target="#tab_2-2"
-                            aria-controls="tab_2-2" aria-selected="true" >
-                            {{ trans('patients/admin_lang.clinic_record') }}
-                            </a>
-                        
-                        </li>
-                    @endif                   
-                    @if(!empty($patient->id) && Auth::user()->isAbleTo("admin-patients-insurance-carriers-update") || Auth::user()->isAbleTo("admin-patients-insurance-carriers-read"))
-                        <li class="nav-item @if ($tab == 'tab_3') active @endif">
-                            <a id="tab_3" class="nav-link" data-bs-target="#tab_3-3"
-                            data-bs-toggle="tabajax" href="{{ url('admin/patients/insurance-carriers/'.$patient->id.'/edit') }}" data-target="#tab_3-3"
-                            aria-controls="tab_3-3" aria-selected="true" >
-                            {{ trans('patients/admin_lang.insurance_carriers') }}
-                            </a>
-                        
-                        </li>
-                    @endif                   
-                    @if(!empty($patient->id) && Auth::user()->isAbleTo("admin-patients-medicines-update") || Auth::user()->isAbleTo("admin-patients-medicines-read"))
-                        <li class="nav-item @if ($tab == 'tab_4') active @endif">
-                            <a id="tab_4" class="nav-link" data-bs-target="#tab_4-4"
-                            data-bs-toggle="tabajax" href="{{ url('admin/patients/'.$patient->id.'/medicines') }}" data-target="#tab_4-4"
-                            aria-controls="tab_4-4" aria-selected="true" >
-                            {{ trans('patient-medicines/admin_lang.patient-medicines') }}
-                            </a>
-                        
-                        </li>
-                    @endif                   
-                    @if(!empty($patient->id) && Auth::user()->isAbleTo("admin-patients-medical-studies-update") || Auth::user()->isAbleTo("admin-patients-medical-studies-read"))
-                        <li class="nav-item @if ($tab == 'tab_5') active @endif">
-                            <a id="tab_5" class="nav-link" data-bs-target="#tab_5-5"
-                            data-bs-toggle="tabajax" href="{{ url('admin/patients/'.$patient->id.'/medical-studies') }}" data-target="#tab_5-5"
-                            aria-controls="tab_5-5" aria-selected="true" >
-                            {{ trans('patient-medical-studies/admin_lang.patient-medical-studies') }}
-                            </a>
-                        
-                        </li>
-                    @endif                   
-                    @if(!empty($patient->id) && Auth::user()->isAbleTo("admin-patients-monitoring-update") || Auth::user()->isAbleTo("admin-patients-monitoring-read"))
-                        <li class="nav-item @if ($tab == 'tab_6') active @endif">
-                            <a id="tab_6" class="nav-link" data-bs-target="#tab_6-6"
-                            data-bs-toggle="tabajax" href="{{ url('admin/patients/'.$patient->id.'/monitorings') }}" data-target="#tab_6-6"
-                            aria-controls="tab_6-6" aria-selected="true" >
-                            {{ trans('patient-monitorings/admin_lang.patient-monitorings') }}
-                            </a>
-                        
-                        </li>
-                    @endif                   
+                    
+                    @if (!empty($patient->id))
+                        @if(  Auth::user()->isAbleTo("admin-patients-clinic-record-update") || Auth::user()->isAbleTo("admin-patients-clinic-record-read"))
+                            <li class="nav-item @if ($tab == 'tab_2') active @endif">
+                                <a id="tab_2" class="nav-link" data-bs-target="#tab_2-2"
+                                data-bs-toggle="tabajax" href="{{ url('admin/patients/clinical-record/'.$patient->id.'/edit') }}" data-target="#tab_2-2"
+                                aria-controls="tab_2-2" aria-selected="true" >
+                                {{ trans('patients/admin_lang.clinic_record') }}
+                                </a>
+                            
+                            </li>
+                        @endif                   
+                        @if(  Auth::user()->isAbleTo("admin-patients-insurance-carriers-update") || Auth::user()->isAbleTo("admin-patients-insurance-carriers-read"))
+                            <li class="nav-item @if ($tab == 'tab_3') active @endif">
+                                <a id="tab_3" class="nav-link" data-bs-target="#tab_3-3"
+                                data-bs-toggle="tabajax" href="{{ url('admin/patients/insurance-carriers/'.$patient->id.'/edit') }}" data-target="#tab_3-3"
+                                aria-controls="tab_3-3" aria-selected="true" >
+                                {{ trans('patients/admin_lang.insurance_carriers') }}
+                                </a>
+                            
+                            </li>
+                        @endif                   
+                        @if(  Auth::user()->isAbleTo("admin-patients-medicines-update") || Auth::user()->isAbleTo("admin-patients-medicines-read"))
+                            <li class="nav-item @if ($tab == 'tab_4') active @endif">
+                                <a id="tab_4" class="nav-link" data-bs-target="#tab_4-4"
+                                data-bs-toggle="tabajax" href="{{ url('admin/patients/'.$patient->id.'/medicines') }}" data-target="#tab_4-4"
+                                aria-controls="tab_4-4" aria-selected="true" >
+                                {{ trans('patient-medicines/admin_lang.patient-medicines') }}
+                                </a>
+                            
+                            </li>
+                        @endif                   
+                        @if(  Auth::user()->isAbleTo("admin-patients-medical-studies-update") || Auth::user()->isAbleTo("admin-patients-medical-studies-read"))
+                            <li class="nav-item @if ($tab == 'tab_5') active @endif">
+                                <a id="tab_5" class="nav-link" data-bs-target="#tab_5-5"
+                                data-bs-toggle="tabajax" href="{{ url('admin/patients/'.$patient->id.'/medical-studies') }}" data-target="#tab_5-5"
+                                aria-controls="tab_5-5" aria-selected="true" >
+                                {{ trans('patient-medical-studies/admin_lang.patient-medical-studies') }}
+                                </a>
+                            
+                            </li>
+                        @endif                   
+                        @if(  Auth::user()->isAbleTo("admin-patients-monitoring-update") || Auth::user()->isAbleTo("admin-patients-monitoring-read"))
+                            <li class="nav-item @if ($tab == 'tab_6') active @endif">
+                                <a id="tab_6" class="nav-link" data-bs-target="#tab_6-6"
+                                data-bs-toggle="tabajax" href="{{ url('admin/patients/'.$patient->id.'/monitorings') }}" data-target="#tab_6-6"
+                                aria-controls="tab_6-6" aria-selected="true" >
+                                {{ trans('patient-monitorings/admin_lang.patient-monitorings') }}
+                                </a>
+                            
+                            </li>
+                        @endif        
+                    @endif           
                 </ul>
                 <div class="tab-content" id="tab_tabContent">
                     <div id="tab_1-1" class="tab-pane @if ($tab == 'tab_1') active @endif">
             
                         @yield('tab_content_1')
                     </div>
-                    <div id="tab_2-2" class="tab-pane @if ($tab == 'tab_2') active @endif">
-            
-                        @yield('tab_content_2')
-                    </div>
-                    <div id="tab_3-3" class="tab-pane @if ($tab == 'tab_3') active @endif">
-            
-                        @yield('tab_content_3')
-                    </div>
-                    <div id="tab_4-4" class="tab-pane @if ($tab == 'tab_4') active @endif">
-            
-                        @yield('tab_content_4')
-                    </div>
-                    <div id="tab_5-5" class="tab-pane @if ($tab == 'tab_5') active @endif">
-            
-                        @yield('tab_content_5')
-                    </div>
-                    <div id="tab_6-6" class="tab-pane @if ($tab == 'tab_6') active @endif">
-            
-                        @yield('tab_content_6')
-                    </div>
-            
+                    @if (!empty($patient->id))
+                        <div id="tab_2-2" class="tab-pane @if ($tab == 'tab_2') active @endif">
+                
+                            @yield('tab_content_2')
+                        </div>
+                        <div id="tab_3-3" class="tab-pane @if ($tab == 'tab_3') active @endif">
+                
+                            @yield('tab_content_3')
+                        </div>
+                        <div id="tab_4-4" class="tab-pane @if ($tab == 'tab_4') active @endif">
+                
+                            @yield('tab_content_4')
+                        </div>
+                        <div id="tab_5-5" class="tab-pane @if ($tab == 'tab_5') active @endif">
+                
+                            @yield('tab_content_5')
+                        </div>
+                        <div id="tab_6-6" class="tab-pane @if ($tab == 'tab_6') active @endif">
+                
+                            @yield('tab_content_6')
+                        </div>
+                    @endif
                  
                 </div>
             </div>
