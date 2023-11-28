@@ -32,7 +32,7 @@ class DoctorProfileFactory extends Factory
         $user->active = $this->faker->numberBetween(0, 1);
         $user->email_verified_at = Carbon::now();
 
-        $user->password =  bcrypt("Secret");
+        $user->password =  bcrypt("Secret15");
         $user->save();
 
         $fechaInicio = '-50 years'; // Hace 30 años hacia atrás
