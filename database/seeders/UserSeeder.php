@@ -35,6 +35,9 @@ class UserSeeder extends Seeder
 
         $userProfile->first_name = "newal";
         $userProfile->last_name = "medina";
+        $userProfile->birthday = "1991-07-30";
+        $userProfile->identification = "40221148360";
+        $userProfile->phone = "00000000";
         $userProfile->gender = 'male';
         $userProfile->user_lang = 'es';
 

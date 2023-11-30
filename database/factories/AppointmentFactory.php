@@ -47,6 +47,7 @@ class AppointmentFactory extends Factory
             "center_id" => $center->id,
             "created_by" => 1,
             "doctor_id" => 1,
+            "service_id" => $service->id,
             "start_at" => $fecha,
             "end_at" => $fecha,
             "price" => $service->price,
