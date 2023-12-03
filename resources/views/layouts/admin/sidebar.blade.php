@@ -19,7 +19,7 @@
             <nav id="menu" class="nav-main" role="navigation">
 
                 <ul class="nav nav-main">
-                    @if(Auth::user()->isAbleTo("admin-dashboard-show") )
+                    @if(Auth::user()->isAbleTo("admin-dashboard") )
                         <li class="@if (Request::is('admin/dashboard*') ) nav-active @endif">
                             <a class="nav-link" @if (Request::is('admin/dashboard*')) style="color:{{ $activeColor }}" @endif href="{{ url('admin/dashboard') }}">
                                 <i class="fas fa-home" aria-hidden="true"></i>
