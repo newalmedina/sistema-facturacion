@@ -123,7 +123,7 @@ Auth::user()->isAbleTo("admin-dashboard-appointment-this-month")
     @endif
 
 @endif
-{{-- @section('foot_page')
+@push('scripts')
 <script>
     $(document).ready(function() {
     
@@ -148,4 +148,4 @@ Auth::user()->isAbleTo("admin-dashboard-appointment-this-month")
            
     });
 </script>
-@endsection --}}
+@endpush

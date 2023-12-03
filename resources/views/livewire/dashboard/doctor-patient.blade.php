@@ -56,7 +56,7 @@ Auth::user()->isAbleTo("admin-dashboard-patient-studies-number")
                                             </div>
                                             <div class="summary-footer text-start">
                                                 <labe>Seleccione mes</label>
-                                                <input   type="text"  class="form-control datepicker" data-id="patientFilter" wire:model="patientFilter"  wire:change='getDatos' >
+                                                <input   type="text"  class="form-control datepicker-doctor-patient" data-id="patientFilter" wire:model="patientFilter"  wire:change='getDatos' >
                                             </div>
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@ Auth::user()->isAbleTo("admin-dashboard-patient-studies-number")
                                             </div>
                                             <div class="summary-footer text-start">
                                                 <labe>Seleccione mes</label>
-                                                <input   type="text"  class="form-control datepicker" data-id="recetaFilter" wire:model="recetaFilter"  wire:change='getDatos' >
+                                                <input   type="text"  class="form-control datepicker-doctor-patient" data-id="recetaFilter" wire:model="recetaFilter"  wire:change='getDatos' >
                                             </div>
                                         </div>
                                     </div>
@@ -110,7 +110,7 @@ Auth::user()->isAbleTo("admin-dashboard-patient-studies-number")
                                             </div>
                                             <div class="summary-footer text-start">
                                                 <labe>Seleccione mes</label>
-                                                <input   type="text"  class="form-control datepicker" data-id="estudiosFilter" wire:model="estudiosFilter"  wire:change='getDatos' >
+                                                <input   type="text"  class="form-control datepicker-doctor-patient" data-id="estudiosFilter" wire:model="estudiosFilter"  wire:change='getDatos' >
                                             </div>
                                             
                                         </div>
@@ -125,11 +125,11 @@ Auth::user()->isAbleTo("admin-dashboard-patient-studies-number")
     @endif    
     
 @endif
-@section('foot_page')
+@push('scripts')
 <script>
     $(document).ready(function() {
     
-        $('.datepicker').datepicker(
+        $('.datepicker-doctor-patient').datepicker(
             {
                 language: 'es',
                 format: 'mm/yyyy',
@@ -142,9 +142,8 @@ Auth::user()->isAbleTo("admin-dashboard-patient-studies-number")
         );    
         
 
-        $('.datepicker').datepicker().on('changeDate', function(e) {
+        $('.datepicker-doctor-patient').datepicker().on('changeDate', function(e) {
             let inputName = $(this).data("id");
-            alert(inputName);
             // Obtiene la fecha seleccionada del evento
             // Emite el evento a Livewire con la fecha seleccionada
             Livewire.emit('actualizarFechaDoctorPatient',inputName, e.format());
@@ -154,4 +153,4 @@ Auth::user()->isAbleTo("admin-dashboard-patient-studies-number")
       
     });
 </script>
-@endsection
+@endpush

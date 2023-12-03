@@ -153,4 +153,5 @@
     @include('layouts.admin.includes.success')
    
     @yield('foot_page')
+    @stack('scripts')
 </body></html>
