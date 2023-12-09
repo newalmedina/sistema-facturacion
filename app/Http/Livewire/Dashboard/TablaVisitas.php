@@ -39,6 +39,7 @@ class TablaVisitas extends Component
     {
         $apointment = Appointment::find($id);
         $apointment->paid_at = Carbon::now();
+        $apointment->color = "#ffc107";
         $apointment->save();
     }
 
@@ -46,6 +47,7 @@ class TablaVisitas extends Component
     {
         $apointment = Appointment::find($id);
         $apointment->finish_at = Carbon::now();
+        $apointment->color = "#28a745";
         $apointment->save();
     }
 
