@@ -348,11 +348,12 @@
                     </div>
                     <div class="col-12 col-md-4">
                         <div class="form-group ">
-                            <label for="doctorfilter_id"> Facturado</label>
-                            <select   class="form-control select2" wire:model="filtersForm.paid" wire:change="filters"   name="" id="doctorfilter_id">
-                                <option value=""> Todos</option>
-                                <option value="1"> Si</option>
-                                <option value="0"> No</option>
+                            <label for="doctorfilter_id"> Estado</label>
+                            <select   class="form-control select2" wire:model="estado" wire:change="filters"   name="" id="doctorfilter_id">
+                                <option value="">Todos los Estados</option>
+                                <option value="pend">Pendiente</option>
+                                <option value="fact">facturado</option>
+                                <option value="fin">Finalizado</option>
                                
                             </select>
                         </div>

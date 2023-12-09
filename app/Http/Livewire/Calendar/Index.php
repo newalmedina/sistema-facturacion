@@ -25,6 +25,7 @@ class Index extends Component
     public $patientList = [];
     public $successSaved = null;
     public $disabledForm = null;
+    public $estado;
 
     public $filtersForm = [
         "doctor_id" => "",
@@ -306,6 +307,29 @@ class Index extends Component
             }
             if ($this->filtersForm["paid"] || $this->filtersForm["paid"] == 0) {
                 $events->where("paid", $this->filtersForm["paid"]);
+            }
+            if (!empty($this->estado)) {
+                switch ($this->estado) {
+                    case "pend":
+                        $events
+                            ->whereNull("appointments.finish_at")
+                            ->whereNull("appointments.paid_at");
+                        break;
+                    case "fact":
+                        $events
+                            ->whereNull("appointments.finish_at")
+                            ->whereNotNull("appointments.paid_at");
+                        break;
+                    case "fin":
+                        $events
+                            ->whereNotNull("appointments.finish_at");
+                        # code...
+                        break;
+
+                    default:
+                        # codsadsadsadsasadsade...
+                        break;
+                }
             }
         } else {
             $events = Appointment::select('id', 'title', 'start_at as start', "end_at as end", 'color')->whereNull("id");
