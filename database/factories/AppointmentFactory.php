@@ -57,7 +57,7 @@ class AppointmentFactory extends Factory
             "end_at" => $randomDate,
             "price" => $service->price,
             "total" => $service->price,
-            "color" => "#47a447",
+            "color" => "#6c757d",
             "comment" => $this->faker->paragraph(),
             "paid_at" => $this->faker->numberBetween(0, 1) == 1 ? Carbon::now() : null,
         ];
