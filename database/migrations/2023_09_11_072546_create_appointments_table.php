@@ -34,7 +34,7 @@ return new class extends Migration
             $table->decimal("total", 18, 2)->default(0);
 
             $table->text('comment')->nullable();
-            $table->boolean("paid")->default(0);
+            $table->dateTime("paid_at")->nullable();
             $table->string("color")->nullable();
 
             $table->timestamps();

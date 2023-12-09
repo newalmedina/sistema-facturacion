@@ -87,6 +87,39 @@ class AdminDashboardPremissionSeeder  extends BaseSeeder
                 'description' => 'Dashboard - Resumen Ganancias'
             ],
 
+            // visitas de hoy
+            [
+                'display_name' => 'Dashboard - Visitas Programadas Hoy Todas',
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-all'),
+                'description' => 'Dashboard - Visitas Programadas Hoy Todas'
+            ],
+            [
+                'display_name' => 'Dashboard - Visitas Programadas Hoy (Solo las Asignadas a mi como doctor)',
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today'),
+                'description' => 'Dashboard - Visitas Programadas Hoy (Solo las Asignadas a mi como doctor)'
+            ],
+            [
+                'display_name' => 'Dashboard - Visitas Programadas Hoy Facturar Todas',
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-facturar-all'),
+                'description' => 'Dashboard - Visitas Programadas Hoy Facturar Todas'
+            ],
+            [
+                'display_name' => 'Dashboard - Visitas Programadas Hoy Facturar (Solo las Asignadas a mi como doctor)',
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-facturar'),
+                'description' => 'Dashboard - Visitas Programadas Hoy Facturar (Solo las Asignadas a mi como doctor)'
+            ],
+
+            [
+                'display_name' => 'Dashboard - Visitas Programadas Hoy Finalizar Todas',
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-end-all'),
+                'description' => 'Dashboard - Visitas Programadas Hoy Finalizar Todas'
+            ],
+            [
+                'display_name' => 'Dashboard - Visitas Programadas Hoy Finalizar (Solo las Asignadas a mi como doctor)',
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-end'),
+                'description' => 'Dashboard - Visitas Programadas Hoy Finalizar (Solo las Asignadas a mi como doctor)'
+            ],
+
 
         ];
 

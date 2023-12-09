@@ -82,20 +82,22 @@
                 </div>
                 <div  class="modal-body" style="min-height: 100px">
                     <form id="formDataAppointment" wire:submit.prevent="addevent">
+                        @if (!empty($appointment->paid_at))
+                        <div class="col-12 d-flex justify-content-end">
+                            <span class="badge badge-success"><b>Facturado</b></span>
+                        </div>
+                        @endif
+                        
                         @if (!empty($appointment->id) && empty($disabledForm))                      
                             <div class="row mb-3">
-                                @if (!$appointment->paid)
+                                @if (empty($appointment->paid_at))
                                 <div class="col-12 d-flex justify-content-between">
                                     @if (auth()->user()->isAbleTo("admin-appointments-delete-all") && empty($disabledForm) || auth()->user()->isAbleTo("admin-appointments-delete") && empty($disabledForm))
                                         <button type="button" wire:click='openDeleteModal' class="btn btn-danger btn-sm"><i class="fas fa-trash me-2"></i>Eliminar</button>
                                     @endif
                                         <button type="button" wire:click='openFacturarModal' class="btn btn-warning btn-sm"><i class="fas fa-dollar-sign me-2"></i>Facturar</button>
                                 </div>
-                                @else
-                                
-                                <div class="col-12 d-flex justify-content-end">
-                                    <span class="badge badge-success"><b>Facturado</b></span>
-                                </div>
+                               
                                 @endif
                                 
                             </div>

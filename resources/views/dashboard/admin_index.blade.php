@@ -21,6 +21,11 @@
    </div>
    <livewire:dashboard.visitas />
    <livewire:dashboard.doctor-patient />
+   
+   <div class="row">
+       <livewire:dashboard.ganancias />
+       <livewire:dashboard.tabla-visitas />
+   </div>
     <!-- end: page -->
 </section>   
 @endsection

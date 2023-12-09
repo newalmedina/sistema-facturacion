@@ -26,7 +26,7 @@ class StoragePathWork
         $this->pathRoot = ($pathRoot != '') ? $pathRoot : "app";
 
         if (!Storage::makeDirectory("/" . $this->pathWork)) {
-            Storage::createDir("/" . $this->pathWork);
+            Storage::makeDirectory("/" . $this->pathWork);
         }
     }
 
