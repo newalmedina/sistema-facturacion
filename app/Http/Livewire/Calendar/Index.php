@@ -245,6 +245,7 @@ class Index extends Component
         $this->appointment->price_with_insurance = $this->appointmentForm["price_with_insurance"];
         $this->appointment->total = $this->appointmentForm["total"];
         $this->appointment->comment = $this->appointmentForm["comment"];
+        $this->appointment->color = "#6c757d";
         $this->appointment->save();
         $this->getEvents();
         // $this->resetFields();
@@ -311,7 +312,7 @@ class Index extends Component
     public function facturarItem()
     {
         $this->appointment->paid_at = Carbon::now();
-        $this->appointment->color = "#47a447";
+        $this->appointment->color = "#ffc107";
         $this->appointment->save();
         $this->emit('facturarModal');
         $this->emit('eventoFacturado');

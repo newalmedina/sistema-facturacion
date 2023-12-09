@@ -20,6 +20,7 @@
             z-index: 1050; /* Ajusta el valor según sea necesario para evitar conflictos con el reloj */
         }
 
+
     </style>
     
 @stop
@@ -274,8 +275,17 @@
             </header>          
 
             <div class="card-body">  
+                <div class="row">
+                    <div class="col-12 mb-2">
+                      <div id="calendarLegend" class="text-center">
+                        <span class="legendItem badge p-2" style="background-color: #6c757d;"><span>Pendientes</span></span>
+                        <span class="legendItem badge p-2" style="background-color: #ffc107;"><span>Facturado</span></span>
+                        <span class="legendItem badge p-2" style="background-color: #28a745;"><span>Finalizado</span></span>
+                      </div>
+                    </div>
+                </div>
                 <div class="row mb-4">
-                    <div class="col-4">
+                    <div class="col-12 col-md-4">
                         <div class="form-group ">
                             <label for="doctorfilter_id"> {{ trans('appointments/admin_lang.fields.doctor_id') }}</label>
                             <select   class="form-control select2" wire:model="filtersForm.doctor_id" wire:change="filters"   name="" id="doctorfilter_id">
@@ -286,7 +296,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-12 col-md-4">
                         <div class="form-group ">
                             <label for="doctorfilter_id">Paciente</label>
                             <select   class="form-control select2" wire:model="filtersForm.patient_id" wire:change="filters"   name="" id="doctorfilter_id">
@@ -297,7 +307,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-12 col-md-4">
                         <div class="form-group ">
                             <label for="doctorfilter_id"> Facturado</label>
                             <select   class="form-control select2" wire:model="filtersForm.paid" wire:change="filters"   name="" id="doctorfilter_id">

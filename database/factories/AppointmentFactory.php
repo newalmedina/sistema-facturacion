@@ -44,8 +44,18 @@ class AppointmentFactory extends Factory
 
         // Generar una fecha dentro del año aleatorio
         $randomDate = $this->faker->dateTimeBetween("$randomYear-01-01", "$currentYear-12-31")->format('Y-m-d H:i:s');
+        $color = "#6c757d";
+        $finish_at = null;
 
+        $paid_at = $this->faker->numberBetween(0, 1) == 1 ? Carbon::now() : null;
 
+        if (!empty($paid_at)) {
+            $color = "#ffc107";
+            $finish_at = $this->faker->numberBetween(0, 1) == 1 ? Carbon::now() : null;
+            if (!empty($finish_at)) {
+                $color = "#28a745";
+            }
+        }
         return [
             "title" => "Cita medica",
             "user_id" => $user->id,
@@ -57,9 +67,10 @@ class AppointmentFactory extends Factory
             "end_at" => $randomDate,
             "price" => $service->price,
             "total" => $service->price,
-            "color" => "#6c757d",
+            "color" => $color,
             "comment" => $this->faker->paragraph(),
-            "paid_at" => $this->faker->numberBetween(0, 1) == 1 ? Carbon::now() : null,
+            "paid_at" => $paid_at,
+            "finish_at" => $finish_at,
         ];
         // Otros campos de la tabla user_profiles
 
