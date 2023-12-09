@@ -36,10 +36,15 @@ class AppointmentFactory extends Factory
 
         $center = Center::inRandomOrder()->first();
         $service = Service::inRandomOrder()->first();
-        $fechaInicio = '0 years'; // Hace 30 años hacia atrás
-        $fechaFin = '0 years'; // Hace 18 años hacia atrás
+        // Obtener el año actual
+        $currentYear = Carbon::now()->year;
 
-        $fecha = $this->faker->dateTimeThisYear();
+        // Generar un año aleatorio entre el año actual y dos años atrás
+        $randomYear = $this->faker->numberBetween($currentYear - 2, $currentYear);
+
+        // Generar una fecha dentro del año aleatorio
+        $randomDate = $this->faker->dateTimeBetween("$randomYear-01-01", "$currentYear-12-31")->format('Y-m-d H:i:s');
+
 
         return [
             "title" => "Cita medica",
@@ -47,13 +52,14 @@ class AppointmentFactory extends Factory
             "center_id" => $center->id,
             "created_by" => 1,
             "doctor_id" => 1,
-            "start_at" => $fecha,
-            "end_at" => $fecha,
+            "service_id" => $service->id,
+            "start_at" => $randomDate,
+            "end_at" => $randomDate,
             "price" => $service->price,
             "total" => $service->price,
             "color" => "#47a447",
             "comment" => $this->faker->paragraph(),
-            "paid" => $this->faker->numberBetween(0, 1),
+            "paid_at" => $this->faker->numberBetween(0, 1) == 1 ? Carbon::now() : null,
         ];
         // Otros campos de la tabla user_profiles
 

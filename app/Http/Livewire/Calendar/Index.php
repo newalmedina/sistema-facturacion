@@ -99,9 +99,9 @@ class Index extends Component
             ) {
                 abort(403);
             }
-            if (auth()->user()->isAbleTo("admin-appointments-update-all") && !$this->appointment->paid) {
+            if (auth()->user()->isAbleTo("admin-appointments-update-all") && empty($this->appointment->paid_at)) {
                 $this->disabledForm = "";
-            } else if (auth()->user()->isAbleTo("admin-appointments-update") && !$this->appointment->paid && $this->appointment->created_by == Auth::user()->id) {
+            } else if (auth()->user()->isAbleTo("admin-appointments-update") && empty($this->appointment->paid_at) && $this->appointment->created_by == Auth::user()->id) {
                 $this->disabledForm = "";
             }
 
@@ -310,7 +310,7 @@ class Index extends Component
 
     public function facturarItem()
     {
-        $this->appointment->paid = 1;
+        $this->appointment->paid_at = Carbon::now();
         $this->appointment->color = "#47a447";
         $this->appointment->save();
         $this->emit('facturarModal');

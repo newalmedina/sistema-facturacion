@@ -31,10 +31,10 @@ class PatientMedicalStudiesFactory extends Factory
         $user = User::select("users.*")->inRandomOrder()->patients()->first();
 
         $center = Center::inRandomOrder()->first();
-        $fechaInicio = '-2 years'; // Hace 30 años hacia atrás
-        $fechaFin = '-1 years'; // Hace 18 años hacia atrás
+        $year = date('Y');
 
-        $fecha = $this->faker->dateTimeBetween($fechaInicio, $fechaFin)->format('Y-m-d');
+        // Generamos una fecha aleatoria dentro del año actual
+        $fecha = $this->faker->dateTimeBetween($year . '-01-01', $year . '-12-31')->format('Y-m-d');
 
         return [
             "user_id" => $user->id,

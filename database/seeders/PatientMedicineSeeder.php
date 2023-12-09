@@ -26,10 +26,10 @@ class PatientMedicineSeeder extends Seeder
             $doctor = User::inRandomOrder()->clinicPersonal()->active()->first();
             $center = Center::inRandomOrder()->first();
 
-            $fechaInicio = '-2 years'; // Hace 30 años hacia atrás
-            $fechaFin = '-1 years'; // Hace 18 años hacia atrás
+            $year = date('Y');
 
-            $fecha = $faker->dateTimeBetween($fechaInicio, $fechaFin)->format('Y-m-d');
+            // Generamos una fecha aleatoria dentro del año actual
+            $fecha = $faker->dateTimeBetween($year . '-01-01', $year . '-12-31')->format('Y-m-d');
 
             $medicine = new PatientMedicine();
             $medicine->date = $fecha;
