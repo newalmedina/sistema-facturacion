@@ -35,13 +35,17 @@ class Index extends Component
     public $appointmentForm;
     public Appointment $appointment;
 
-    protected $listeners = ['clickCalendar' => 'clickCalendar'];
+    protected $listeners = [
+        'clickCalendar' => 'clickCalendar',
+        'reloadCalendar' => 'reloadCalendar'
+    ];
+
 
     public function mount()
     {
 
         $this->resetFields();
-        $this->getEvents();
+        $this->reloadCalendar();
         $this->updateSelects();
     }
 
@@ -143,6 +147,13 @@ class Index extends Component
         $this->emit('toggleModal');
     }
 
+    public function reloadCalendar()
+    {
+        $this->getEvents();
+
+        $this->emit('reloadEvents');
+    }
+
     public function getevent()
     {
 
@@ -182,9 +193,7 @@ class Index extends Component
     public function filters()
     {
 
-        $this->getEvents();
-
-        $this->emit('reloadEvents');
+        $this->reloadCalendar();
     }
 
     public function calculatePrices()
@@ -273,7 +282,7 @@ class Index extends Component
         $this->appointment->comment = $this->appointmentForm["comment"];
         $this->appointment->color = "#6c757d";
         $this->appointment->save();
-        $this->getEvents();
+        $this->reloadCalendar();
         // $this->resetFields();
         // $this->emit('toggleModal');
         $this->emit('eventoAgregado');
@@ -359,7 +368,7 @@ class Index extends Component
         $this->emit('deteleModal');
         $this->emit('toggleModal');
         $this->emit('eventoEliminado');
-        $this->getEvents();
+        $this->reloadCalendar();
     }
 
     public function facturarItem()

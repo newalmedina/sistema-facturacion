@@ -95,8 +95,28 @@ class AdminDashboardPremissionSeeder  extends BaseSeeder
             ],
             [
                 'display_name' => 'Dashboard - Visitas Programadas Hoy (Solo las Asignadas a mi como doctor)',
-                'name' => Str::slug('admin-dashboard-appointment-programadas-today'),
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-doctor'),
                 'description' => 'Dashboard - Visitas Programadas Hoy (Solo las Asignadas a mi como doctor)'
+            ],
+            [
+                'display_name' => 'Dashboard - Visitas Programadas Hoy (Creadas por el usuario)',
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-created-by-user'),
+                'description' => 'Dashboard - Visitas Programadas Hoy (Creadas por el usuario)'
+            ],
+            [
+                'display_name' => 'Dashboard - Visitas Programadas Hoy Info Básica Todas',
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-info-basica-all'),
+                'description' => 'Dashboard - Visitas Programadas Hoy Info Básica Todas'
+            ],
+            [
+                'display_name' => 'Dashboard - Visitas Programadas Hoy Info Básica (Solo las Asignadas a mi como doctor)',
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-info-basica-doctor'),
+                'description' => 'Dashboard - Visitas Programadas Hoy Info Básica (Solo las Asignadas a mi como doctor)'
+            ],
+            [
+                'display_name' => 'Dashboard - Visitas Programadas Hoy Info Básica (Creadas por el usuario)',
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-info-basica-created-by-user'),
+                'description' => 'Dashboard - Visitas Programadas Hoy Info Básica (Creadas por el usuario)'
             ],
             [
                 'display_name' => 'Dashboard - Visitas Programadas Hoy Facturar Todas',
@@ -105,8 +125,13 @@ class AdminDashboardPremissionSeeder  extends BaseSeeder
             ],
             [
                 'display_name' => 'Dashboard - Visitas Programadas Hoy Facturar (Solo las Asignadas a mi como doctor)',
-                'name' => Str::slug('admin-dashboard-appointment-programadas-today-facturar'),
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-facturar-doctor'),
                 'description' => 'Dashboard - Visitas Programadas Hoy Facturar (Solo las Asignadas a mi como doctor)'
+            ],
+            [
+                'display_name' => 'Dashboard - Visitas Programadas Hoy Facturar (Creadas por el usuario)',
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-facturar-created-by-user'),
+                'description' => 'Dashboard - Visitas Programadas Hoy Facturar (Creadas por el usuario)'
             ],
 
             [
@@ -116,8 +141,13 @@ class AdminDashboardPremissionSeeder  extends BaseSeeder
             ],
             [
                 'display_name' => 'Dashboard - Visitas Programadas Hoy Finalizar (Solo las Asignadas a mi como doctor)',
-                'name' => Str::slug('admin-dashboard-appointment-programadas-today-end'),
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-end-doctor'),
                 'description' => 'Dashboard - Visitas Programadas Hoy Finalizar (Solo las Asignadas a mi como doctor)'
+            ],
+            [
+                'display_name' => 'Dashboard - Visitas Programadas Hoy Finalizar (Creadas por el usuario)',
+                'name' => Str::slug('admin-dashboard-appointment-programadas-today-end-created-by-user'),
+                'description' => 'Dashboard - Visitas Programadas Hoy Finalizar (Creadas por el usuario)'
             ],
 
 

@@ -3,7 +3,7 @@ Auth::user()->isAbleTo("admin-dashboard-center-profits")
 )
     @if (Auth::user()->hasSelectedCenter() )
             <div class="col-12 ">
-                <section class="card card-featured-top card-featured-primary">
+                <section class="card card-featured-top card-featured-primary card-collapsed">
                     <header class="card-header">
                         <div class="card-actions">
                             <a href="#" class="card-action card-action-toggle" data-card-toggle=""></a>

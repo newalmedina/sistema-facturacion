@@ -45,11 +45,11 @@ class AdminPatientsPremissionSeeder  extends BaseSeeder
                 'name' => Str::slug('admin-patients-update'),
                 'description' => 'Pacientes - actualizar'
             ],
-            [
-                'display_name' => 'Pacientes - actualizar todos',
-                'name' => Str::slug('admin-patients-update-all'),
-                'description' => 'Pacientes - actualizar todos'
-            ],
+            // [
+            //     'display_name' => 'Pacientes - actualizar todos',
+            //     'name' => Str::slug('admin-patients-update-all'),
+            //     'description' => 'Pacientes - actualizar todos'
+            // ],
             [
                 'display_name' => 'Pacientes - ver',
                 'name' => Str::slug('admin-patients-read'),

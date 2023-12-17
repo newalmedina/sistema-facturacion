@@ -326,8 +326,8 @@
                 <div class="row mb-4">
                     <div class="col-12 col-md-4">
                         <div class="form-group ">
-                            <label for="doctorfilter_id"> {{ trans('appointments/admin_lang.fields.doctor_id') }}</label>
-                            <select   class="form-control select2" wire:model="filtersForm.doctor_id" wire:change="filters"   name="" id="doctorfilter_id">
+                            <label for="filter-doctor"> {{ trans('appointments/admin_lang.fields.doctor_id') }}</label>
+                            <select   class="form-control filter_select2" wire:model="filtersForm.doctor_id" data-id="filtersForm.doctor_id"    name="" id="filter-doctor">
                                 <option value=""> {{ trans('appointments/admin_lang.fields.doctor_id_all') }}</option>
                                 @foreach ($doctorListFilter as $doctor)
                                     <option value="{{  $doctor->id }}">{{  $doctor->userProfile->fullName }}</option>
@@ -337,8 +337,8 @@
                     </div>
                     <div class="col-12 col-md-4">
                         <div class="form-group ">
-                            <label for="doctorfilter_id">Paciente</label>
-                            <select   class="form-control select2" wire:model="filtersForm.patient_id" wire:change="filters"   name="" id="doctorfilter_id">
+                            <label for="filter-paciente">Paciente</label>
+                            <select   class="form-control filter_select2" wire:model="filtersForm.patient_id" data-id="filtersForm.patient_id"    name="" id="filter-paciente">
                                 <option value=""> Todos</option>
                                 @foreach ($patientListFilter as $patiet)
                                     <option value="{{  $patiet->id }}">{{  $patiet->userProfile->fullName }}</option>
@@ -348,8 +348,8 @@
                     </div>
                     <div class="col-12 col-md-4">
                         <div class="form-group ">
-                            <label for="doctorfilter_id"> Estado</label>
-                            <select   class="form-control select2" wire:model="estado" wire:change="filters"   name="" id="doctorfilter_id">
+                            <label for="filter-estado"> Estado</label>
+                            <select   class="form-control filter_select2" wire:model="estado" data-id="filtersForm.estado"   name="" id="filter-estado">
                                 <option value="">Todos los Estados</option>
                                 <option value="pend">Pendiente</option>
                                 <option value="fact">facturado</option>
@@ -375,19 +375,32 @@
     $(document).ready(function() {
         $('.select2').select2(); 
     });
-
+    
 </script> --}}
 <script src="{{ asset('/assets/admin/vendor/fullcalendar/fullcalendar.min.js') }}"></script>
 <script src="{{ asset('/assets/admin/vendor/fullcalendar/locales-all.min.js') }}"></script>
 <script>  
+    $(document).ready(function() {
+        $('.filter_select2').select2(); 
+    });
     document.addEventListener('livewire:load', function() {
+
+        $('.filter_select2').on('change', function (e) {
+            let model=$(this).data('id');
+            
+            @this.set(model, e.target.value);
+            // Dispara un evento de Livewire después de cambiar la selección
+            Livewire.emit('reloadCalendar');
+
+        });
+
         @if (!empty($successSaved))             
             toastr.success(" {{ $successSaved }}")
         @endif
    
-        $('#modal_appointment').on('shown.bs.modal', function () {        
-            // $('.select2').select2();
-        });
+        // $('#modal_appointment').on('shown.bs.modal', function () {        
+        //     $('#filter-paciente #filter-doctor #filter-estado').select2();
+        // });
 
      
         $('.datepicker').datepicker(
@@ -496,7 +509,10 @@
         Livewire.on('reloadEvents', function () {
             loadCalendar();// Recarga los eventos del calendario
         });
-
+        Livewire.on('accionCompletada', () => {
+        // Cuando se complete la acción en Livewire, muestra un alert
+        alert('La acción ha sido completada');
+    });
       
         
 
