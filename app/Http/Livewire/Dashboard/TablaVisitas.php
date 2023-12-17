@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 use Livewire\WithPagination;
+use stdClass;
 
 class TablaVisitas extends Component
 {
@@ -37,21 +38,50 @@ class TablaVisitas extends Component
 
     public function facturarCita($id)
     {
-        $apointment = Appointment::find($id);
-        $apointment->paid_at = Carbon::now();
-        $apointment->save();
+        $appointment = Appointment::find($id);
+        $appointment->paid_at = Carbon::now();
+        $appointment->color = "#ffc107";
+        $appointment->save();
     }
 
     public function finalizarCita($id)
     {
-        $apointment = Appointment::find($id);
-        $apointment->finish_at = Carbon::now();
-        $apointment->save();
+        $appointment = Appointment::find($id);
+        $appointment->finish_at = Carbon::now();
+        $appointment->color = "#28a745";
+        $appointment->save();
+    }
+
+    public function getPatientInfo($id)
+    {
+        $appointment = Appointment::find($id);
+        $objeto = new stdClass();
+
+        // Asignar propiedades al objeto
+        $objeto->nombre = $appointment->patient->userProfile->fullName;
+        $objeto->edad = $appointment->patient->userProfile->years;
+        $objeto->phone = $appointment->patient->userProfile->phone . "/" . $appointment->patient->userProfile->mobile;
+        $objeto->email = $appointment->patient->email;
+        $objeto->seguro = !empty($appointment->insurance) ? $appointment->insurance->name : "";
+        $objeto->poliza = "";
+
+        if (!empty($appointment->insurance)) {
+            $patientSeguro = DB::table("patient_insurance_carriers")
+                ->where("patient_insurance_carriers.insurance_carrier_id",  $appointment->insurance->id)
+                ->where("patient_insurance_carriers.user_id",  $appointment->user_id)
+                ->first();
+            $objeto->poliza = !empty($patientSeguro->poliza) ? $patientSeguro->poliza : null;
+        }
+        dd($objeto);
+
+
+        $this->emit('obtenerInformacionPaciente', $objeto);
     }
 
     public function getConsulta()
     {
         $datos = Appointment::with($this->with)
+            ->canshowDashboard()
             ->when(data_get($this->filtros, 'paciente'), fn ($q, $keyword) => $q->whereHas('patient.userProfile', fn ($q) => $q->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', '%' . $keyword . '%')))
             ->when(data_get($this->filtros, 'doctor'), fn ($q, $keyword) => $q->whereHas('doctor.userProfile', fn ($q) => $q->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', '%' . $keyword . '%')))
             ->when(data_get($this->filtros, 'created_by'), fn ($q, $keyword) => $q->whereHas('createdBy.userProfile', fn ($q) => $q->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', '%' . $keyword . '%')))
@@ -63,13 +93,6 @@ class TablaVisitas extends Component
             ->where("appointments.start_at", ">=", Carbon::now()->startOfDay()->format("Y-m-d H:i:s"))
             ->where("appointments.start_at", "<=", Carbon::now()->endOfDay()->format("Y-m-d H:i:s"));
 
-        if (!auth()->user()->isAbleTo('admin-dashboard-appointment-programadas-today-all') && !auth()->user()->isAbleTo('admin-dashboard-appointment-programadas-today')) {
-
-            return  Appointment::whereNull("id");
-        } else if (!auth()->user()->isAbleTo('admin-dashboard-appointment-programadas-today-all') && auth()->user()->isAbleTo('admin-dashboard-appointment-programadas-today')) {
-
-            $datos->where("appointments.doctor_id", Auth::user()->id);
-        }
         if (!empty($this->estado)) {
             switch ($this->estado) {
                 case "pend":

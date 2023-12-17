@@ -275,15 +275,33 @@
         });
     }
 
-    function deleteElement(url) {
-        var strBtn = "";
+    // function deleteElement(url) {
+    //     var strBtn = "";
 
-        $("#confirmModalLabel").html("{{ trans('general/admin_lang.delete') }}");
-        $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
-        strBtn+= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('general/admin_lang.close') }}</button>';
-        strBtn+= '<button type="button" class="btn btn-primary" onclick="javascript:deleteinfo(\''+url+'\');">{{ trans('general/admin_lang.yes_delete') }}</button>';
-        $("#confirmModalFooter").html(strBtn);
-        $('#modal_confirm').modal('toggle');
+    //     $("#confirmModalLabel").html("{{ trans('general/admin_lang.delete') }}");
+    //     $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
+    //     strBtn+= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('general/admin_lang.close') }}</button>';
+    //     strBtn+= '<button type="button" class="btn btn-primary" onclick="javascript:deleteinfo(\''+url+'\');">{{ trans('general/admin_lang.yes_delete') }}</button>';
+    //     $("#confirmModalFooter").html(strBtn);
+    //     $('#modal_confirm').modal('toggle');
+    // }
+
+
+    function deleteElement(url) {
+        Swal.fire({
+        title: "{{ trans('general/admin_lang.delete') }}",
+        text: 'Esta acción no se puede deshacer',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "{{ trans('general/admin_lang.yes_delete') }}",
+        cancelButtonText: "{{ trans('general/admin_lang.close') }}"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteinfo(url);
+            }
+        });
     }
 
     function deleteinfo(url) {

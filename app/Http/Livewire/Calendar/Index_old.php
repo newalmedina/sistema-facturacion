@@ -12,11 +12,10 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Illuminate\Support\Facades\Session;
 
-class Index extends Component
+class Index_old extends Component
 {
     public $events = '';
     public $modalTitle;
-    public $selectedService;
     public $servicesList = [];
     public $doctorList = [];
     public $doctorListFilter = [];
@@ -25,7 +24,6 @@ class Index extends Component
     public $patientList = [];
     public $successSaved = null;
     public $disabledForm = null;
-    public $estado;
 
     public $filtersForm = [
         "doctor_id" => "",
@@ -35,17 +33,13 @@ class Index extends Component
     public $appointmentForm;
     public Appointment $appointment;
 
-    protected $listeners = [
-        'clickCalendar' => 'clickCalendar',
-        'reloadCalendar' => 'reloadCalendar'
-    ];
-
+    protected $listeners = ['clickCalendar' => 'clickCalendar'];
 
     public function mount()
     {
 
         $this->resetFields();
-        $this->reloadCalendar();
+        $this->getEvents();
         $this->updateSelects();
     }
 
@@ -125,6 +119,7 @@ class Index extends Component
             }
 
 
+
             $this->modalTitle = "Editar cita";
             $this->appointmentForm = [
                 "start_at" =>  Carbon::parse($this->appointment->start_at)->format("Y-m-d"),
@@ -147,13 +142,6 @@ class Index extends Component
         $this->emit('toggleModal');
     }
 
-    public function reloadCalendar()
-    {
-        $this->getEvents();
-
-        $this->emit('reloadEvents');
-    }
-
     public function getevent()
     {
 
@@ -162,19 +150,12 @@ class Index extends Component
         return  json_encode($events);
     }
 
-    public function changePatient()
-    {
-        $this->appointmentForm["insurance_carrier_id"] = "";
-        $this->appointmentForm["applicated_insurance"] = 0;
-        $this->getInsurance();
-    }
-
     public function getInsurance()
     {
-
+        $this->appointmentForm["insurance_carrier_id"] = "";
         $this->appointmentForm["price_with_insurance"] = 0;
+        $this->appointmentForm["total"] = 0;
         $this->appointmentForm["poliza"] = "";
-        $this->appointmentForm["total"] = !empty($this->selectedService->id) ? $this->selectedService->price : 0;
         // dd($this->appointmentForm["user_id"]);
         if (!empty($this->appointmentForm["insurance_carrier_id"])) {
             $this->insuranceList = InsuranceCarrier::active()
@@ -193,7 +174,9 @@ class Index extends Component
     public function filters()
     {
 
-        $this->reloadCalendar();
+        $this->getEvents();
+
+        $this->emit('reloadEvents');
     }
 
     public function calculatePrices()
@@ -201,9 +184,8 @@ class Index extends Component
         $this->appointmentForm["price_with_insurance"] = 0;
         $this->appointmentForm["total"] = 0;
 
-        $this->selectedService = Service::find($this->appointmentForm["service_id"]);
-
-        $this->appointmentForm["price"] = !empty($this->selectedService->id) ? $this->selectedService->price : 0;
+        $service = Service::find($this->appointmentForm["service_id"]);
+        $this->appointmentForm["price"] = !empty($service->id) ? $service->price : 0;
 
         $seguroPrecio = DB::table("service_insurance_carriers")
             ->select("service_insurance_carriers.id", "service_insurance_carriers.price", "patient_insurance_carriers.poliza")
@@ -212,8 +194,6 @@ class Index extends Component
             ->where("service_insurance_carriers.service_id",  $this->appointmentForm["service_id"])
             ->where("patient_insurance_carriers.user_id",  $this->appointmentForm["user_id"])
             ->first();
-
-        // dd($this->appointmentForm["insurance_carrier_id"]);
 
         $miPoliza = !empty($seguroPrecio->id) ? $seguroPrecio->poliza : "";
 
@@ -230,8 +210,8 @@ class Index extends Component
         }
 
         $this->appointmentForm["poliza"] = $miPoliza;
-        $this->appointmentForm["total"] = !empty($this->selectedService->id) ? $this->selectedService->price : 0;
-        // dd($seguroPrecio->id);
+        $this->appointmentForm["total"] = !empty($service->id) ? $service->price : 0;
+
         if (!empty($seguroPrecio->id)) {
             $this->appointmentForm["price_with_insurance"] = $seguroPrecio->price;
 
@@ -276,13 +256,13 @@ class Index extends Component
         $this->appointment->service_id = $this->appointmentForm["service_id"];
         $this->appointment->price = $this->appointmentForm["price"];
         $this->appointment->insurance_carrier_id = !empty($this->appointmentForm["insurance_carrier_id"]) ? $this->appointmentForm["insurance_carrier_id"] : null;
-        $this->appointment->applicated_insurance = !empty($this->appointmentForm["applicated_insurance"]) &&  !empty($this->appointment->insurance_carrier_id) ? $this->appointmentForm["applicated_insurance"] : 0;
+        $this->appointment->applicated_insurance = !empty($this->appointmentForm["applicated_insurance"]) ? $this->appointmentForm["applicated_insurance"] : 0;
         $this->appointment->price_with_insurance = $this->appointmentForm["price_with_insurance"];
         $this->appointment->total = $this->appointmentForm["total"];
         $this->appointment->comment = $this->appointmentForm["comment"];
         $this->appointment->color = "#6c757d";
         $this->appointment->save();
-        $this->reloadCalendar();
+        $this->getEvents();
         // $this->resetFields();
         // $this->emit('toggleModal');
         $this->emit('eventoAgregado');
@@ -317,29 +297,6 @@ class Index extends Component
             if ($this->filtersForm["paid"] || $this->filtersForm["paid"] == 0) {
                 $events->where("paid", $this->filtersForm["paid"]);
             }
-            if (!empty($this->estado)) {
-                switch ($this->estado) {
-                    case "pend":
-                        $events
-                            ->whereNull("appointments.finish_at")
-                            ->whereNull("appointments.paid_at");
-                        break;
-                    case "fact":
-                        $events
-                            ->whereNull("appointments.finish_at")
-                            ->whereNotNull("appointments.paid_at");
-                        break;
-                    case "fin":
-                        $events
-                            ->whereNotNull("appointments.finish_at");
-                        # code...
-                        break;
-
-                    default:
-                        # codsadsadsadsasadsade...
-                        break;
-                }
-            }
         } else {
             $events = Appointment::select('id', 'title', 'start_at as start', "end_at as end", 'color')->whereNull("id");
         }
@@ -353,10 +310,6 @@ class Index extends Component
     {
         $this->emit('facturarModal');
     }
-    public function openFinalizarModal()
-    {
-        $this->emit('finalizarModal');
-    }
     public function openDeleteModal()
     {
         $this->emit('deteleModal');
@@ -368,7 +321,7 @@ class Index extends Component
         $this->emit('deteleModal');
         $this->emit('toggleModal');
         $this->emit('eventoEliminado');
-        $this->reloadCalendar();
+        $this->getEvents();
     }
 
     public function facturarItem()
@@ -378,14 +331,6 @@ class Index extends Component
         $this->appointment->save();
         $this->emit('facturarModal');
         $this->emit('eventoFacturado');
-    }
-    public function finalizarItem()
-    {
-        $this->appointment->finish_at = Carbon::now();
-        $this->appointment->color = "#28a745";
-        $this->appointment->save();
-        $this->emit('finalizarModal');
-        $this->emit('eventoFinalizado');
     }
 
     public function updateSelects()

@@ -1,6 +1,8 @@
 @if(
+
 Auth::user()->isAbleTo("admin-dashboard-appointment-programadas-today-all") ||
-Auth::user()->isAbleTo("admin-dashboard-appointment-programadas-today") 
+Auth::user()->isAbleTo("admin-dashboard-appointment-programadas-today-doctor") ||
+Auth::user()->isAbleTo('admin-dashboard-appointment-programadas-today-created-by-user')
 )
 
     @if (Auth::user()->hasSelectedCenter() )
@@ -14,7 +16,9 @@ Auth::user()->isAbleTo("admin-dashboard-appointment-programadas-today")
                         </div>
         
                        <span>
-                        <h2 class="card-title">Visitas Programadas Hoy <small>{{ $actualDate }}</small></h2>
+                        <h2 class="card-title">Visitas Programadas Hoy <small>{{ $actualDate }}</small>
+                            <span class="ms-2 badge bg-secondary badge-circle">{{ $appointments->count() }}</span>
+                        </h2>
                
                        </span>
                     </header>          
@@ -90,7 +94,33 @@ Auth::user()->isAbleTo("admin-dashboard-appointment-programadas-today")
                                        <span class="badge {{ $colorState }}">{{ $labelState }}</span>
                                     </td>                                       
                                     <td>
-                                        @switch( $state)
+                                        
+                                        @if ($appointment->canInfoBasicaDashboard())
+                                            <button wire:click="getPatientInfo({{ $appointment->id }})" class="btn btn-primary btn-xs">
+                                                <i class="fas fa-sticky-note"></i>
+                                            </button>
+                                        @endif
+                                        @if(Auth::user()->isAbleTo('admin-patients-update'))
+                                            <a href="{{ route('admin.patients.edit', $appointment->user_id) }}" class="btn btn-info btn-xs" target="_blank">
+                                            <i class="fas fa-user-injured" aria-hidden="true"></i>
+                                            </a>
+                                        @elseif(Auth::user()->isAbleTo('admin-patients-read'))
+                                            <a href="{{ route('admin.patients.show', $appointment->user_id) }}" class="btn btn-info btn-xs" target="_blank">
+                                                <i class="fas fa-user-injured" aria-hidden="true"></i>
+                                            </a>
+                                        @endif
+
+                                        @if ($appointment->canFacturarDashboard())
+                                            <button onclick="facturar({{ $appointment->id }})" class="btn btn-default btn-xs">
+                                                <i class="fas fa-dollar-sign"></i>
+                                            </button>
+                                        @endif
+                                        @if ($appointment->canFinalizarDashboard())
+                                        <button onclick="finalizar({{ $appointment->id }})" class="btn btn-success btn-xs">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        @endif
+                                        {{-- @switch( $state)
                                             @case(1)
                                                 @if(Auth::user()->isAbleTo('admin-dashboard-appointment-programadas-today-end-all'))
                                                     <button onclick="finalizar({{ $appointment->id }})" class="btn btn-success btn-xs">
@@ -117,7 +147,7 @@ Auth::user()->isAbleTo("admin-dashboard-appointment-programadas-today")
                                                     </button>
                                                 @endif
                                                 
-                                        @endswitch
+                                        @endswitch --}}
                                     </td>                                       
                                  
                                 </tr>
@@ -171,8 +201,29 @@ Auth::user()->isAbleTo("admin-dashboard-appointment-programadas-today")
                     Livewire.emit('finalizarCita', id); 
                 }
             });
-        }       
+        }      
+        
+        Livewire.on('obtenerInformacionPaciente', function (datos) {
+           
+              
+                Swal.fire({
+                title: 'Información del Paciente',
+                html: `
+                    <p><strong>Nombre:</strong> ${datos.id}</p>
+                    <p><strong>Edad:</strong> ${datos.id}</p>
+                    <p><strong>Enfermedad:</strong> ${datos.id}</p>
+                    <!-- Agrega más detalles del paciente según sea necesario -->
+                `,
+                confirmButtonText: 'Cerrar'
+                });
+            
+            
+        });
 
+
+         
+           
+        
       
 </script>
 @endpush
