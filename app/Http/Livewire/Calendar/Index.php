@@ -374,6 +374,8 @@ class Index extends Component
     public function facturarItem()
     {
         $this->appointment->paid_at = Carbon::now();
+        $this->appointment->paid_by = Auth::user()->id;
+
         $this->appointment->color = "#ffc107";
         $this->appointment->save();
         $this->emit('facturarModal');
@@ -382,6 +384,7 @@ class Index extends Component
     public function finalizarItem()
     {
         $this->appointment->finish_at = Carbon::now();
+        $this->appointment->finish_by = Auth::user()->id;
         $this->appointment->color = "#28a745";
         $this->appointment->save();
         $this->emit('finalizarModal');
