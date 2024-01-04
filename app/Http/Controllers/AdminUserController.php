@@ -186,9 +186,11 @@ class AdminUserController extends Controller
             DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as fullname'),
 
         ])
-            ->notPatients()
+           // ->notPatients()
             ->distinct()
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
+            ->leftJoin("role_user", "role_user.user_id", "=", "users.id")
+            ->leftJoin("roles", "roles.id", "=", "role_user.role_id")
             ->leftJoin("user_centers", "user_centers.user_id", "=", "users.id");
 
         $this->addFilter($query);

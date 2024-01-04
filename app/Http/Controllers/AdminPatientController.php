@@ -251,6 +251,7 @@ class AdminPatientController extends Controller
             if (empty($patient->patientProfile)) {
                 $patientProfile = new PatientProfile();
                 $patientProfile->user_id = $patient->id;
+                $patientProfile->created_by = Auth::user()->id;
             } else {
                 $patientProfile = PatientProfile::where('user_id', $patient->id)->first();
             }

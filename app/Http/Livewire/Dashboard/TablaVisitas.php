@@ -64,7 +64,9 @@ class TablaVisitas extends Component
         $objeto->email = $appointment->patient->email;
         $objeto->seguro = !empty($appointment->insurance) ? $appointment->insurance->name : "";
         $objeto->poliza = "";
+        $objeto->photo = !empty( $appointment->patient->userProfile->photo)?url('admin/profile/getphoto/'.$appointment->patient->userProfile->photo):null;
 
+        
         if (!empty($appointment->insurance)) {
             $patientSeguro = DB::table("patient_insurance_carriers")
                 ->where("patient_insurance_carriers.insurance_carrier_id",  $appointment->insurance->id)
@@ -72,7 +74,7 @@ class TablaVisitas extends Component
                 ->first();
             $objeto->poliza = !empty($patientSeguro->poliza) ? $patientSeguro->poliza : null;
         }
-        dd($objeto);
+
 
 
         $this->emit('obtenerInformacionPaciente', $objeto);
