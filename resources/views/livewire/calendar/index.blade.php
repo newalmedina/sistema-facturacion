@@ -327,7 +327,7 @@
                     <div class="col-12 col-md-4">
                         <div class="form-group ">
                             <label for="filter-doctor"> {{ trans('appointments/admin_lang.fields.doctor_id') }}</label>
-                            <select   class="form-control filter_select2" wire:model="filtersForm.doctor_id" data-id="filtersForm.doctor_id"    name="" id="filter-doctor">
+                            <select   class="form-control filter_select2" wire:model="filtersForm.doctor_id" data-id="filtersForm.doctor_id"    name="" id="filtersForm.doctor_id">
                                 <option value=""> {{ trans('appointments/admin_lang.fields.doctor_id_all') }}</option>
                                 @foreach ($doctorListFilter as $doctor)
                                     <option value="{{  $doctor->id }}">{{  $doctor->userProfile->fullName }}</option>
@@ -338,7 +338,7 @@
                     <div class="col-12 col-md-4">
                         <div class="form-group ">
                             <label for="filter-paciente">Paciente</label>
-                            <select   class="form-control filter_select2" wire:model="filtersForm.patient_id" data-id="filtersForm.patient_id"    name="" id="filter-paciente">
+                            <select   class="form-control filter_select2" wire:model="filtersForm.patient_id" data-id="filtersForm.patient_id"    name="" id="filtersForm.patient_id">
                                 <option value=""> Todos</option>
                                 @foreach ($patientListFilter as $patiet)
                                     <option value="{{  $patiet->id }}">{{  $patiet->userProfile->fullName }}</option>
@@ -349,7 +349,7 @@
                     <div class="col-12 col-md-4">
                         <div class="form-group ">
                             <label for="filter-estado"> Estado</label>
-                            <select   class="form-control filter_select2" wire:model="estado" data-id="filtersForm.estado"   name="" id="filter-estado">
+                            <select   class="form-control filter_select2" wire:model="filtersForm.estado" data-id="filtersForm.estado"   name="" id="filtersForm.estado">
                                 <option value="">Todos los Estados</option>
                                 <option value="pend">Pendiente</option>
                                 <option value="fact">facturado</option>
@@ -382,6 +382,9 @@
 <script>  
     $(document).ready(function() {
         $('.filter_select2').select2(); 
+         Livewire.hook('message.processed', function () {
+            $('select').select2();
+        });
     });
     document.addEventListener('livewire:load', function() {
 

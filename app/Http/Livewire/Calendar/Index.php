@@ -29,7 +29,7 @@ class Index extends Component
 
     public $filtersForm = [
         "doctor_id" => "",
-        "paid" => "",
+        "estado" => "",
         "patient_id" => ""
     ];
     public $appointmentForm;
@@ -314,11 +314,9 @@ class Index extends Component
             if (!empty($this->filtersForm["patient_id"])) {
                 $events->where("user_id", $this->filtersForm["patient_id"]);
             }
-            if ($this->filtersForm["paid"] || $this->filtersForm["paid"] == 0) {
-                $events->where("paid", $this->filtersForm["paid"]);
-            }
-            if (!empty($this->estado)) {
-                switch ($this->estado) {
+          
+            if (!empty($this->filtersForm["estado"])) {
+                switch ($this->filtersForm["estado"]) {
                     case "pend":
                         $events
                             ->whereNull("appointments.finish_at")
