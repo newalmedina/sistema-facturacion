@@ -66,6 +66,7 @@ class TablaVisitas extends Component
         $objeto->email = $appointment->patient->email;
         $objeto->seguro = !empty($appointment->insurance) ? $appointment->insurance->name : "";
         $objeto->poliza = "";
+ 
         $objeto->photo = !empty( $appointment->patient->userProfile->photo)?url('admin/profile/getphoto/'.$appointment->patient->userProfile->photo):null;
 
         

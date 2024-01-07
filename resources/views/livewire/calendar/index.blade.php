@@ -127,8 +127,7 @@
                                             <button type="button" wire:click='openDeleteModal' class="btn btn-danger btn-sm"><i class="fas fa-trash me-2"></i>Eliminar</button>
                                         @endif
                                             <button type="button" wire:click='openFacturarModal' class="btn btn-warning btn-sm"><i class="fas fa-dollar-sign me-2"></i>Facturar</button>
-                                        </div>
-                              
+                                        </div>                              
                                 @endif
                                 
                             </div>
@@ -178,14 +177,15 @@
                                 
                             </div> 
                             <div class="col-12 col-md-6">
-                                <div class="form-group ">
-                                    <label for="user_id"> {{ trans('appointments/admin_lang.fields.user_id') }}<span class="text-danger">*</span></label>
-                                    <select {{ $disabledForm }}  class="form-control " wire:model="appointmentForm.user_id" wire:change="changePatient"  name="" id="user_id">
-                                        <option value=""> {{ trans('appointments/admin_lang.fields.user_id_helper') }}</option>
-                                        @foreach ($patientList as $patient)
-                                            <option value="{{  $patient->id }}">{{  $patient->userProfile->fullName }}</option>
-                                        @endforeach
-                                    </select>
+                                <div  class="form-group ">
+                                    <label for="user_id"> {{ trans('appointments/admin_lang.fields.user_id') }}<span class="text-danger">*</span></label>                                  
+                                        <select {{ $disabledForm}}  class="form-control form_select_modal" wire:model="appointmentForm.user_id" wire:change="changePatient()" data-id="appointmentForm.user_id"  name="appointmentForm.user_id" id="patient_form">
+                                            <option value=""> {{ trans('appointments/admin_lang.fields.user_id_helper') }}</option>
+                                            @foreach ($patientList as $patient)
+                                                <option value="{{  $patient->id }}">{{  $patient->userProfile->fullName }}</option>
+                                            @endforeach
+                                        </select>
+                                       
                                     @error('appointmentForm.user_id') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                                
@@ -195,9 +195,9 @@
                         <div class="row form-group mb-3">                                
                             <div class="col-12 col-md-6">
                                 
-                                <div class="form-group ">
+                                <div  class="form-group ">
                                     <label for="doctor_id"> {{ trans('appointments/admin_lang.fields.doctor_id') }}<span class="text-danger">*</span></label>
-                                    <select {{ $disabledForm }}   class="form-control select2" wire:model="appointmentForm.doctor_id"   name="" id="doctor_id">
+                                    <select  {{ $disabledForm }}   class="form-control  " wire:model="appointmentForm.doctor_id"  >
                                         <option value=""> {{ trans('appointments/admin_lang.fields.doctor_id_helper') }}</option>
                                         @foreach ($doctorList as $doctor)
                                             <option value="{{  $doctor->id }}">{{  $doctor->userProfile->fullName }}</option>
@@ -208,10 +208,10 @@
                             </div>      
                             <div class="col-12 col-md-6">
                                 
-                                <div class="form-group ">
+                                <div   class="form-group ">
                                     <label for="service_id"> {{ trans('appointments/admin_lang.fields.service_id') }}<span class="text-danger">*</span></label>
 
-                                    <select {{ $disabledForm }}    class="form-control select2" wire:model="appointmentForm.service_id"  wire:change='calculatePrices'   name="" id="service_id">
+                                    <select {{ $disabledForm }}    class="form-control" wire:model="appointmentForm.service_id" wire:change='calculatePrices()'   >
                                         <option value=""> {{ trans('appointments/admin_lang.fields.service_id_helper') }}</option>
                                         @foreach ($servicesList as $service)
                                         <option value="{{  $service->id }}">{{  $service->name }} ({{  $service->price }} RD$)</option>
@@ -225,11 +225,11 @@
                         <div class="row form-group mb-3">                                
                             <div class="col-12 col-md-6">
                                 
-                                <div class="form-group ">
+                                <div   class="form-group ">
                                     <label for="insurance_carrier_id"> {{ trans('appointments/admin_lang.fields.insurance_carrier_id') }}</label>
-                                    <select {{ $disabledForm }}    class="form-control select2" wire:model="appointmentForm.insurance_carrier_id"  wire:change='calculatePrices'   name="" id="insurance_carrier_id" >
+                                    <select {{ $disabledForm }}    class="form-control"  wire:model="appointmentForm.insurance_carrier_id"   wire:change='calculatePrices()'    >
                                         <option value=""> {{ trans('appointments/admin_lang.fields.insurance_carrier_id_helper') }}</option>
-                                        @foreach ($insuranceList as $insurance)
+                                            @foreach ($insuranceList as $insurance)
                                         <option value="{{  $insurance->id }}">{{  $insurance->name }} </option>
                                             
                                         @endforeach
@@ -339,7 +339,7 @@
                         <div class="form-group ">
                             <label for="filter-paciente">Paciente</label>
                             <select   class="form-control filter_select2" wire:model="filtersForm.patient_id" data-id="filtersForm.patient_id"    name="" id="filtersForm.patient_id">
-                                <option value=""> Todos</option>
+                                <option value=""> Todos los pacientes</option>
                                 @foreach ($patientListFilter as $patiet)
                                     <option value="{{  $patiet->id }}">{{  $patiet->userProfile->fullName }}</option>
                                 @endforeach
@@ -368,6 +368,7 @@
         </section>
     </div>
 </div>
+
 @section('foot_page')
 <!-- DataTables -->
 
@@ -382,28 +383,35 @@
 <script>  
     $(document).ready(function() {
         $('.filter_select2').select2(); 
-         Livewire.hook('message.processed', function () {
-            $('select').select2();
+      
+            
+        Livewire.hook('message.processed', function () {
+           $('.filter_select2').select2(); 
+           
         });
+        
     });
-    document.addEventListener('livewire:load', function() {
+  
+
+    document.addEventListener('livewire:load', function() {    
 
         $('.filter_select2').on('change', function (e) {
-            let model=$(this).data('id');
-            
+            let model=$(this).data('id');            
             @this.set(model, e.target.value);
             // Dispara un evento de Livewire después de cambiar la selección
             Livewire.emit('reloadCalendar');
 
         });
+       
+        
+    
 
         @if (!empty($successSaved))             
             toastr.success(" {{ $successSaved }}")
         @endif
    
-        // $('#modal_appointment').on('shown.bs.modal', function () {        
-        //     $('#filter-paciente #filter-doctor #filter-estado').select2();
-        // });
+       
+        
 
      
         $('.datepicker').datepicker(

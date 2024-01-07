@@ -218,10 +218,17 @@ Auth::user()->isAbleTo('admin-dashboard-appointment-programadas-today-created-by
                     <p><strong>Edad:</strong> ${datos.edad}</p>
                     <p><strong>Telefono:</strong> ${datos.phone}</p>
                     <p><strong>Email:</strong> ${datos.email}</p>
-                    <p><strong>Seguro:</strong> ${datos.seguro}</p>
-                    <p><strong>Poliza:</strong> ${datos.poliza}</p>
+                    
                     <!-- Agrega más detalles del paciente según sea necesario -->
                 `;
+        if (datos.seguro) {
+            htmlText += `
+           <p><strong>Seguro:</strong> ${datos.seguro}</p>
+                    <p><strong>Poliza:</strong> ${datos.poliza}</p>`;
+        }else{
+              htmlText += `
+           <h3 class='text-warning'><strong>Consulta sin segro`;
+        }
         Swal.fire({
             title: 'Información del Paciente'
             , html: htmlText
