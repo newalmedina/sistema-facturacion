@@ -171,6 +171,7 @@ class Index extends Component
         $this->appointmentForm["poliza"] = "";
         $this->appointmentForm["applicated_insurance"] = 0;
         $this->getInsurance();
+        
     }
 
     public function getInsurance()
@@ -402,6 +403,7 @@ class Index extends Component
         $this->emit('facturarModal');
         $this->emit('eventoFacturado');
         $this->disabledForm = "disabled";
+        $this->reloadCalendar();
     }
     public function finalizarItem()
     {
@@ -412,6 +414,7 @@ class Index extends Component
         $this->emit('finalizarModal');
         $this->emit('eventoFinalizado');
         $this->disabledForm = "disabled";
+        $this->reloadCalendar();
     }
 
     public function updateSelects()

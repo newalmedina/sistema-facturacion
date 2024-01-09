@@ -48,10 +48,33 @@
     <link rel="stylesheet" href="{{ asset('assets/admin/vendor/select2/select2.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/admin/vendor/toast/toast.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/admin/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}">
-    
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" rel="stylesheet">
+  
     <!-- Head Libs -->
     <script src="{{ asset('assets/admin/vendor/modernizr/modernizr.js')}}"></script>
     <style>
+    /* Estilos personalizados para bootstrap-select */
+    .bootstrap-select .btn {
+      width: 100%;
+      padding: 0.375rem 0.75rem;
+       height: 38px;
+        line-height: inherit;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .bootstrap-select .dropdown-toggle::after {
+      display: none;
+    }
+    .bootstrap-select .dropdown-toggle::before {
+      content: '\f107';
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      padding-right: 0.5em;
+    }
         .select2-container--default .select2-selection--single {
         /* Ajusta la altura a tu preferencia */
         height: 38px;
@@ -142,7 +165,10 @@
     <script src="{{ asset('assets/admin/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{ asset('assets/admin/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js')}}"></script>
     <script src="{{ asset('assets/admin/vendor/toast/toast.min.js')}}"></script>
-    
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
+
+
     <script>
         //  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

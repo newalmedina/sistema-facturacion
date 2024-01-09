@@ -177,14 +177,21 @@
                                 
                             </div> 
                             <div class="col-12 col-md-6">
-                                <div  class="form-group ">
+                                <div wire:ignore class="form-group ">
                                     <label for="user_id"> {{ trans('appointments/admin_lang.fields.user_id') }}<span class="text-danger">*</span></label>                                  
-                                        <select {{ $disabledForm}}  class="form-control form_select_modal" wire:model="appointmentForm.user_id" wire:change="changePatient()" data-id="appointmentForm.user_id"  name="appointmentForm.user_id" id="patient_form">
+                                        <select {{ $disabledForm}}    class=" select-picker form-control dropup"  
+                                            data-live-search="true" wire:model="appointmentForm.user_id" data-id="appointmentForm.user_id"  wire:change="changePatient()" >
                                             <option value=""> {{ trans('appointments/admin_lang.fields.user_id_helper') }}</option>
                                             @foreach ($patientList as $patient)
                                                 <option value="{{  $patient->id }}">{{  $patient->userProfile->fullName }}</option>
                                             @endforeach
                                         </select>
+                                        {{-- <select {{ $disabledForm}}  class="form-control form_select_modal" wire:model="appointmentForm.user_id" wire:change="changePatient()" data-id="appointmentForm.user_id"  name="appointmentForm.user_id" id="patient_form">
+                                            <option value=""> {{ trans('appointments/admin_lang.fields.user_id_helper') }}</option>
+                                            @foreach ($patientList as $patient)
+                                                <option value="{{  $patient->id }}">{{  $patient->userProfile->fullName }}</option>
+                                            @endforeach
+                                        </select> --}}
                                        
                                     @error('appointmentForm.user_id') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
@@ -195,29 +202,43 @@
                         <div class="row form-group mb-3">                                
                             <div class="col-12 col-md-6">
                                 
-                                <div  class="form-group ">
+                                <div wire:ignore class="form-group ">
                                     <label for="doctor_id"> {{ trans('appointments/admin_lang.fields.doctor_id') }}<span class="text-danger">*</span></label>
-                                    <select  {{ $disabledForm }}   class="form-control  " wire:model="appointmentForm.doctor_id"  >
+                                     <select {{ $disabledForm}}    class=" select-picker form-control dropup"  
+                                            data-live-search="true" wire:model="appointmentForm.doctor_id" >
+                                            <option value=""> {{ trans('appointments/admin_lang.fields.doctor_id_helper') }}</option>
+                                            @foreach ($doctorList as $doctor)
+                                                <option value="{{  $doctor->id }}">{{  $doctor->userProfile->fullName }}</option>
+                                            @endforeach
+                                        </select>
+                                    {{-- <select  {{ $disabledForm }}   class="form-control  " wire:model="appointmentForm.doctor_id"  >
                                         <option value=""> {{ trans('appointments/admin_lang.fields.doctor_id_helper') }}</option>
                                         @foreach ($doctorList as $doctor)
                                             <option value="{{  $doctor->id }}">{{  $doctor->userProfile->fullName }}</option>
                                         @endforeach
-                                    </select>
+                                    </select> --}}
                                     @error('appointmentForm.doctor_id') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div>      
                             <div class="col-12 col-md-6">
                                 
-                                <div   class="form-group ">
+                                <div wire:ignore  class="form-group ">
                                     <label for="service_id"> {{ trans('appointments/admin_lang.fields.service_id') }}<span class="text-danger">*</span></label>
-
-                                    <select {{ $disabledForm }}    class="form-control" wire:model="appointmentForm.service_id" wire:change='calculatePrices()'   >
+                                        <select {{ $disabledForm}}    class=" select-picker form-control dropup"  
+                                            data-live-search="true" wire:model="appointmentForm.service_id" wire:change='calculatePrices()' >
+                                            <option value=""> {{ trans('appointments/admin_lang.fields.service_id_helper') }}</option>
+                                            @foreach ($servicesList as $service)
+                                            <option value="{{  $service->id }}">{{  $service->name }} ({{  $service->price }} RD$)</option>
+                                                
+                                            @endforeach
+                                        </select>
+                                    {{-- <select {{ $disabledForm }}    class="form-control" wire:model="appointmentForm.service_id" wire:change='calculatePrices()'   >
                                         <option value=""> {{ trans('appointments/admin_lang.fields.service_id_helper') }}</option>
                                         @foreach ($servicesList as $service)
                                         <option value="{{  $service->id }}">{{  $service->name }} ({{  $service->price }} RD$)</option>
                                             
                                         @endforeach
-                                    </select>
+                                    </select> --}}
                                     @error('appointmentForm.service_id') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div>      
@@ -227,13 +248,19 @@
                                 
                                 <div   class="form-group ">
                                     <label for="insurance_carrier_id"> {{ trans('appointments/admin_lang.fields.insurance_carrier_id') }}</label>
-                                    <select {{ $disabledForm }}    class="form-control"  wire:model="appointmentForm.insurance_carrier_id"   wire:change='calculatePrices()'    >
+                                    <select {{ $disabledForm}}    class="  form-control dropup"  
+                                        data-live-search="true"  wire:model="appointmentForm.insurance_carrier_id"  id="insurance_form"  wire:change='calculatePrices()'>
                                         <option value=""> {{ trans('appointments/admin_lang.fields.insurance_carrier_id_helper') }}</option>
-                                            @foreach ($insuranceList as $insurance)
-                                        <option value="{{  $insurance->id }}">{{  $insurance->name }} </option>
-                                            
+                                        @foreach ($insuranceList as $insurance)
+                                            <option value="{{  $insurance->id }}">{{  $insurance->name }} </option>                                            
                                         @endforeach
                                     </select>
+                                    {{-- <select {{ $disabledForm }}    class="form-control"  wire:model="appointmentForm.insurance_carrier_id"   wire:change='calculatePrices()'    >
+                                        <option value=""> {{ trans('appointments/admin_lang.fields.insurance_carrier_id_helper') }}</option>
+                                        @foreach ($insuranceList as $insurance)
+                                            <option value="{{  $insurance->id }}">{{  $insurance->name }} </option>                                            
+                                        @endforeach
+                                    </select> --}}
                                    
                                 </div>
                             </div>      
@@ -303,6 +330,8 @@
     </div>
 
     <div class="col">
+   
+
         <section class="card card-featured-top card-featured-primary">
             <header class="card-header">
                 <div class="card-actions">
@@ -315,8 +344,11 @@
 
             <div class="card-body">  
                 <div class="row">
+
+               
                     <div class="col-12 mb-2">
                       <div id="calendarLegend" class="text-center">
+                    
                         <span class="legendItem badge p-2" style="background-color: #6c757d;"><span>Pendiente</span></span>
                         <span class="legendItem badge p-2" style="background-color: #ffc107;"><span>Facturado</span></span>
                         <span class="legendItem badge p-2" style="background-color: #28a745;"><span>Finalizado</span></span>
@@ -378,16 +410,20 @@
     });
     
 </script> --}}
+
+
 <script src="{{ asset('/assets/admin/vendor/fullcalendar/fullcalendar.min.js') }}"></script>
 <script src="{{ asset('/assets/admin/vendor/fullcalendar/locales-all.min.js') }}"></script>
 <script>  
+ $(function () {
+  
+  });
     $(document).ready(function() {
         $('.filter_select2').select2(); 
-      
             
         Livewire.hook('message.processed', function () {
            $('.filter_select2').select2(); 
-           
+            $('.select-picker').selectpicker();
         });
         
     });
@@ -423,9 +459,6 @@
             }
         );   
 
-        $('.datepicker').on('change', function () {        
-          
-        });
 
         var Calendar = FullCalendar.Calendar;
         var Draggable = FullCalendar.Draggable;
@@ -491,6 +524,7 @@
               
         Livewire.on('toggleModal', function () {
             $('#modal_appointment').modal('toggle'); 
+            $('.select-picker').selectpicker();
         });
         Livewire.on('deteleModal', function () {
             $('#modal_delete').modal('toggle'); 
@@ -507,11 +541,12 @@
         });
         Livewire.on('eventoFacturado', function () {
             toastr.success("Evento facturado Correctamente")
-          
+           loadCalendar();
         });
+       
         Livewire.on('eventoFinalizado', function () {
             toastr.success("Evento finalizado Correctamente")
-          
+           loadCalendar();
         });
         Livewire.on('eventoEliminado', function () {
             toastr.success("Evento eliminado Correctamente")
