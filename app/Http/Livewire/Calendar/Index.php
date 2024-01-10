@@ -85,6 +85,7 @@ class Index extends Component
 
     public function clickCalendar($data)
     {
+        $this->resetValidation();
         $time = $data[0];
         $id = $data[1];
         $this->resetFields();

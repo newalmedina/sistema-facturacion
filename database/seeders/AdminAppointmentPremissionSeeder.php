@@ -30,41 +30,110 @@ class AdminAppointmentPremissionSeeder  extends BaseSeeder
                 'name' => Str::slug('admin-appointments'),
                 'description' => 'Citas - Módulo'
             ],
+
             [
-                'display_name' => 'Citas - listado',
-                'name' => Str::slug('admin-appointments-list'),
-                'description' => 'Citas - lista'
+                'display_name' => 'Citas - listado todas',
+                'name' => Str::slug('admin-appointments-list-all'),
+                'description' => 'Citas - listado todas'
             ],
+            [
+                'display_name' => 'Citas - listado (Creadas por el usuario',
+                'name' => Str::slug('admin-appointments-list-created-by-user'),
+                'description' => 'Citas - listado (Creadas por el usuario'
+            ],
+            [
+                'display_name' => 'Citas - listado (Solo las Asignadas a mi como doctor)',
+                'name' => Str::slug('admin-appointments-list-doctor'),
+                'description' => 'Citas - listado (Solo las Asignadas a mi como doctor)'
+            ],  
+
+            
+
             [
                 'display_name' => 'Citas - crear',
                 'name' => Str::slug('admin-appointments-create'),
                 'description' => 'Citas - crear'
             ],
+
             [
-                'display_name' => 'Citas - actualizar',
-                'name' => Str::slug('admin-appointments-update'),
-                'description' => 'Citas - actualizar'
-            ],
-            [
-                'display_name' => 'Citas - actualizar todos',
+                'display_name' => 'Citas - actualizar todas',
                 'name' => Str::slug('admin-appointments-update-all'),
-                'description' => 'Citas - actualizar todos'
+                'description' => 'Citas - actualizar todas'
             ],
             [
-                'display_name' => 'Citas - ver',
-                'name' => Str::slug('admin-appointments-read'),
-                'description' => 'Citas - ver'
+                'display_name' => 'Citas - actualizar (Creadas por el usuario',
+                'name' => Str::slug('admin-appointments-update-created-by-user'),
+                'description' => 'Citas - actualizar (Creadas por el usuario'
             ],
             [
-                'display_name' => 'Citas - borrar',
-                'name' => Str::slug('admin-appointments-delete'),
-                'description' => 'Citas - borrar'
+                'display_name' => 'Citas - actualizar (Solo las Asignadas a mi como doctor)',
+                'name' => Str::slug('admin-appointments-update-doctor'),
+                'description' => 'Citas - actualizar (Solo las Asignadas a mi como doctor)'
+            ],  
+
+            [
+                'display_name' => 'Citas - ver todas',
+                'name' => Str::slug('admin-appointments-read-all'),
+                'description' => 'Citas - ver todas'
             ],
             [
-                'display_name' => 'Citas - borrar todos',
+                'display_name' => 'Citas - ver (Creadas por el usuario',
+                'name' => Str::slug('admin-appointments-read-created-by-user'),
+                'description' => 'Citas - ver (Creadas por el usuario'
+            ],
+            [
+                'display_name' => 'Citas - ver (Solo las Asignadas a mi como doctor)',
+                'name' => Str::slug('admin-appointments-read-doctor'),
+                'description' => 'Citas - ver (Solo las Asignadas a mi como doctor)'
+            ],  
+
+            [
+                'display_name' => 'Citas - facturar todas',
+                'name' => Str::slug('admin-appointments-facturar-all'),
+                'description' => 'Citas - facturar todas'
+            ],
+            [
+                'display_name' => 'Citas - facturar (Creadas por el usuario',
+                'name' => Str::slug('admin-appointments-facturar-created-by-user'),
+                'description' => 'Citas - facturar (Creadas por el usuario'
+            ],
+            [
+                'display_name' => 'Citas - facturar (Solo las Asignadas a mi como doctor)',
+                'name' => Str::slug('admin-appointments-facturar-doctor'),
+                'description' => 'Citas - facturar (Solo las Asignadas a mi como doctor)'
+            ],  
+
+            [
+                'display_name' => 'Citas - finalizar todas',
+                'name' => Str::slug('admin-appointments-end-all'),
+                'description' => 'Citas - finalizar todas'
+            ],
+            [
+                'display_name' => 'Citas - finalizar (Creadas por el usuario',
+                'name' => Str::slug('admin-appointments-end-created-by-user'),
+                'description' => 'Citas - finalizar (Creadas por el usuario'
+            ],
+            [
+                'display_name' => 'Citas - finalizar (Solo las Asignadas a mi como doctor)',
+                'name' => Str::slug('admin-appointments-end-doctor'),
+                'description' => 'Citas - finalizar (Solo las Asignadas a mi como doctor)'
+            ],  
+
+            [
+                'display_name' => 'Citas - eliminar todas',
                 'name' => Str::slug('admin-appointments-delete-all'),
-                'description' => 'Citas - borrar Todos'
+                'description' => 'Citas - eliminar todas'
             ],
+            [
+                'display_name' => 'Citas - eliminar (Creadas por el usuario',
+                'name' => Str::slug('admin-appointments-delete-created-by-user'),
+                'description' => 'Citas - eliminar (Creadas por el usuario'
+            ],
+            [
+                'display_name' => 'Citas - eliminar (Solo las Asignadas a mi como doctor)',
+                'name' => Str::slug('admin-appointments-delete-doctor'),
+                'description' => 'Citas - eliminar (Solo las Asignadas a mi como doctor)'
+            ],  
 
 
 
