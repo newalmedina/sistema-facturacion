@@ -48,8 +48,7 @@
     <link rel="stylesheet" href="{{ asset('assets/admin/vendor/select2/select2.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/admin/vendor/toast/toast.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/admin/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}">
- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" rel="stylesheet">
-  
+
     <!-- Head Libs -->
     <script src="{{ asset('assets/admin/vendor/modernizr/modernizr.js')}}"></script>
     <style>
@@ -166,8 +165,6 @@
     <script src="{{ asset('assets/admin/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js')}}"></script>
     <script src="{{ asset('assets/admin/vendor/toast/toast.min.js')}}"></script>
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
-
 
     <script>
         //  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

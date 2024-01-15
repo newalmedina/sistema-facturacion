@@ -93,39 +93,29 @@ class Index extends Component
 
         if (empty($id)) {
             if (!auth()->user()->isAbleTo("admin-appointments-create")) {
-                abort(403);
+                $this->emit('sinPermisos',"No tienes permisos para crear citas");
+                return false;
             }
+
             $this->appointment = new Appointment();
             $this->appointmentForm["start_at"] = $time;
             $this->modalTitle = "Nueva cita";
+
         } else {
             $this->appointment =  Appointment::find($id);
+
             $this->disabledForm = "disabled";
             if (
-                !auth()->user()->isAbleTo("admin-appointments-update-all") &&
-                !auth()->user()->isAbleTo("admin-appointments-read") &&
-                !auth()->user()->isAbleTo("admin-appointments-update")
-            ) {
-                abort(403);
-            }
-            if (auth()->user()->isAbleTo("admin-appointments-update-all") && empty($this->appointment->paid_at)) {
+                !$this->appointment->canEdit()
+                && !$this->appointment->canShow()
+                ) {
+                    $this->emit('sinPermisos',"No tienes permisos para acceder a esta cita");
+                    return false;
+                }
+               
+            if( $this->appointment->canEdit() && $this->appointment->state=="pendiente"){
                 $this->disabledForm = "";
-            } else if (auth()->user()->isAbleTo("admin-appointments-update") && empty($this->appointment->paid_at) && $this->appointment->created_by == Auth::user()->id) {
-                $this->disabledForm = "";
-            }
-
-
-
-            if (auth()->user()->isAbleTo("admin-appointments-update") &&  $this->appointment->created_by != auth()->user()->id && auth()->user()->isAbleTo("admin-appointments-read")) {
-                $this->disabledForm = "disabled";
-            }
-            if (
-                !auth()->user()->isAbleTo("admin-appointments-update-all") &&
-                auth()->user()->isAbleTo("admin-appointments-read") &&
-                !auth()->user()->isAbleTo("admin-appointments-update")
-            ) {
-                $this->disabledForm = "disabled";
-            }
+            }           
 
 
             $this->modalTitle = "Editar cita";
@@ -141,7 +131,8 @@ class Index extends Component
                 "price_with_insurance" => 0,
                 "price" => 0,
                 "total" => 0,
-                "poliza" => ""
+                "poliza" => "",
+                "delete_coment" => $this->appointment->delete_coment
             ];
         }
 
@@ -278,6 +269,7 @@ class Index extends Component
 
             $this->appointment = new Appointment();
             $this->appointment->created_by = Auth::user()->id;
+            $this->appointment->state = "pendiente";
             $this->appointment->center_id = Auth::user()->hasSelectedCenter();
         } else {
             if (!empty($this->disabledForm)) {
@@ -325,13 +317,15 @@ class Index extends Component
 
     public function getEvents()
     {
-        if (auth()->user()->isAbleTo('admin-appointments-list')) {
-            $events = Appointment::select('appointments.id', 
+        
+            $events = Appointment::canList()
+            ->select('appointments.id', 
             DB::raw("CONCAT(user_profiles.first_name, ' ', user_profiles.last_name,' / ',doctor.first_name, ' ', doctor.last_name ) as title"), 
             'start_at as start', 
             "end_at as end", 'color')
             ->leftJoin("user_profiles","user_profiles.user_id","=","appointments.user_id")
-            ->leftJoin("user_profiles as doctor","doctor.user_id","=","appointments.doctor_id");
+            ->leftJoin("user_profiles as doctor","doctor.user_id","=","appointments.doctor_id")
+            ->selectedCenter();
 
             if (!empty($this->filtersForm["doctor_id"])) {
                 $events->where("appointments.doctor_id", $this->filtersForm["doctor_id"]);
@@ -344,17 +338,15 @@ class Index extends Component
                 switch ($this->filtersForm["estado"]) {
                     case "pend":
                         $events
-                            ->whereNull("appointments.finish_at")
-                            ->whereNull("appointments.paid_at");
-                        break;
-                    case "fact":
-                        $events
-                            ->whereNull("appointments.finish_at")
-                            ->whereNotNull("appointments.paid_at");
-                        break;
-                    case "fin":
-                        $events
-                            ->whereNotNull("appointments.finish_at");
+                            ->where("appointments.state","pendiente");
+                            break;
+                            case "fact":
+                                $events
+                                ->where("appointments.state","facturado");
+                                break;
+                                case "fin":
+                                    $events
+                                    ->where("appointments.state","finalizado");
                         # code...
                         break;
 
@@ -363,9 +355,7 @@ class Index extends Component
                         break;
                 }
             }
-        } else {
-            $events = Appointment::select('id', 'title', 'start_at as start', "end_at as end", 'color')->whereNull("id");
-        }
+      
 
         $this->events = json_encode($events->get());
         // dd($this->events);
@@ -386,19 +376,48 @@ class Index extends Component
 
     public function deleteItem()
     {
+        if (
+        !$this->appointment->canDelete()
+        ) {
+            $this->emit('sinPermisos',"No tienes permisos para eliminar esta cita");
+            return false;
+        }
+    
+        if($this->appointment->state!="pendiente"){
+           $this->validate([
+            'appointmentForm.delete_coment' => 'required', // Puedes personalizar estas reglas según tus necesidades
+            ],
+        [
+            'appointmentForm.delete_coment' => 'El comentario o motivo de la eliminación es obligatorio',
+        ]);
+        $this->appointment->delete_coment=$this->appointmentForm["delete_coment"];
+    }
+    $this->appointment->deleted_at=Carbon::now();
+    $this->appointment->save();    
+
         $this->appointment->delete();
         $this->emit('deteleModal');
         $this->emit('toggleModal');
         $this->emit('eventoEliminado');
+        $this->getEvents();
         $this->reloadCalendar();
+        
     }
 
     public function facturarItem()
     {
+        if (
+        !$this->appointment->canFacturar()
+        ) {
+            $this->emit('sinPermisos',"No tienes permisos para facturar esta cita");
+            return false;
+        }
+
         $this->appointment->paid_at = Carbon::now();
         $this->appointment->paid_by = Auth::user()->id;
 
         $this->appointment->color = "#ffc107";
+        $this->appointment->state = "facturado";
         $this->appointment->save();
         
         $this->emit('facturarModal');
@@ -408,9 +427,17 @@ class Index extends Component
     }
     public function finalizarItem()
     {
+        if (
+        !$this->appointment->canFinalizar()
+        ) {
+            $this->emit('sinPermisos',"No tienes permisos para finalizar esta cita");
+            return false;
+        }
         $this->appointment->finish_at = Carbon::now();
         $this->appointment->finish_by = Auth::user()->id;
         $this->appointment->color = "#28a745";
+        
+        $this->appointment->state = "finalizado";
         $this->appointment->save();
         $this->emit('finalizarModal');
         $this->emit('eventoFinalizado');
@@ -432,10 +459,14 @@ class Index extends Component
         $this->doctorList = User::active()
             ->clinicPersonal()
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
+            ->leftJoin("user_centers", "user_centers.user_id", "=", "users.id")
+            ->where("user_centers.center_id",auth()->user()->userProfile->center->id)
             ->get();
         $this->doctorListFilter = User::active()
             ->clinicPersonal()
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
+            ->leftJoin("user_centers", "user_centers.user_id", "=", "users.id")
+            ->where("user_centers.center_id",auth()->user()->userProfile->center->id)
             ->get();
     }
 
@@ -454,7 +485,8 @@ class Index extends Component
             "price_with_insurance" => 0,
             "price" => 0,
             "total" => 0,
-            "poliza" => ""
+            "poliza" => "",
+            "delete_coment" => ""
         ];
     }
 }

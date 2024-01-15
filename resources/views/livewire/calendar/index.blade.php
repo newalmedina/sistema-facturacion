@@ -2,6 +2,7 @@
     <!-- Incluir Moment.js para Bootstrap Datetimepicker -->
 
     <style>
+    
         #calendar-container{
             width: 100%;
         }
@@ -36,7 +37,7 @@
     
                 </div>
                 <div  class="modal-body" style="min-height: 100px">
-                    <h4 class="d-flex align-items-center"><span style="font-size: 50px"><i class="fas fa-question-circle me-2 text-primary" ></i></span> <span>¿Seguro que qieres finalizar esta cita?</span></h4>
+                    <h4 class="d-flex align-items-center"><span style="font-size: 50px"><i class="fas fa-question-circle me-2 text-primary" ></i></span> <span>¿Seguro que quieres finalizar esta cita?</span></h4>
                 </div>
                 <div  class="modal-footer">
                     <button type="button" class=" btn  btn-default pull-right" data-bs-dismiss="modal" aria-label="Close">{{ trans('general/admin_lang.close') }}</button>
@@ -58,7 +59,7 @@
     
                 </div>
                 <div  class="modal-body" style="min-height: 100px">
-                    <h4 class="d-flex align-items-center"><span style="font-size: 50px"><i class="fas fa-question-circle me-2 text-primary" ></i></span> <span>¿Seguro que qieres facturar esta cita?</span></h4>
+                    <h4 class="d-flex align-items-center"><span style="font-size: 50px"><i class="fas fa-question-circle me-2 text-primary" ></i></span> <span>¿Seguro que quieres facturar esta cita?</span></h4>
                 </div>
                 <div  class="modal-footer">
                     <button type="button" class=" btn  btn-default pull-right" data-bs-dismiss="modal" aria-label="Close">{{ trans('general/admin_lang.close') }}</button>
@@ -82,7 +83,16 @@
                 </div>
                 <div  class="modal-body" style="min-height: 100px">
                     <h4 class="d-flex align-items-center"><span style="font-size: 50px"><i class="fas fa-question-circle me-2 text-primary" ></i></span> <span>{{ trans('general/admin_lang.delete_question') }}</span></h4>
+                     
+                     @if(!empty($appointment->id))
+                        @if(!empty($appointment->state!="pendiente"))
+                            <label for="start_at"> Escribe un comentario<span class="text-danger">*</span></label>                                            
+                            <textarea class="form-control" wire:model="appointmentForm.delete_coment"></textarea>
+                               @error('appointmentForm.delete_coment') <span class="text-danger">{{ $message }}</span> @enderror
+                        @endif
+                     @endif
                 </div>
+
                 <div  class="modal-footer">
                     <button type="button" class=" btn  btn-default pull-right" data-bs-dismiss="modal" aria-label="Close">{{ trans('general/admin_lang.close') }}</button>
                     <button type="button" wire:click='deleteItem' form="eliminar" class="btn btn-success">{{ trans('general/admin_lang.yes_delete') }}</button>   
@@ -109,40 +119,27 @@
                     <form id="formDataAppointment" wire:submit.prevent="addevent">
                         @if (!empty($appointment->id) )      
                             <div class="col-12 d-flex justify-content-end mb-3">
-                                @if (!empty($appointment->finish_at))
-                                <span class=" badge p-2" style="background-color: #28a745;">Finalizado</span>
-                                @elseif (!empty($appointment->paid_at))
-                                <span class=" badge p-2" style="background-color: #ffc107;">Facturado</span>
-                                @else
-                                <span class=" badge p-2" style="background-color: #6c757d;">Pendientes</span>
-                                @endif
-                            </div>
-                        @endif
-                        
-                        @if (!empty($appointment->id) && empty($disabledForm))                      
-                            <div class="row mb-3">
-                                @if (empty($appointment->paid_at))
-                                    <div class="col-12 d-flex justify-content-between">
-                                        @if (auth()->user()->isAbleTo("admin-appointments-delete-all") && empty($disabledForm) || auth()->user()->isAbleTo("admin-appointments-delete") && empty($disabledForm))
-                                            <button type="button" wire:click='openDeleteModal' class="btn btn-danger btn-sm"><i class="fas fa-trash me-2"></i>Eliminar</button>
-                                        @endif
-                                            <button type="button" wire:click='openFacturarModal' class="btn btn-warning btn-sm"><i class="fas fa-dollar-sign me-2"></i>Facturar</button>
-                                        </div>                              
-                                @endif
+                            
+                                <span class=" badge p-2" style="background-color: {{$appointment->getStateColor()}};">{{$appointment->getState()}}</span>
                                 
                             </div>
-                            {{-- --}}
-                        @elseif(!empty($appointment->id))
-                            @if (auth()->user()->isAbleTo("admin-appointments-delete-all") || auth()->user()->isAbleTo("admin-appointments-delete") && $appointment->created_by==auth()->user()->id )
-                                <button type="button" wire:click='openDeleteModal' class="btn btn-danger btn-sm"><i class="fas fa-trash me-2"></i>Eliminar</button>
-                            @else
-
-                            @endif
-                            @if(empty($appointment->finish_at))
-                                <button type="button" wire:click='openFinalizarModal' class="btn btn-success btn-sm"><i class="fas fa-dollar-sign me-2"></i>Finalizar</button>
-                        
-                            @endif                 
-                        @endif                 
+                        @endif
+                        @if (!empty($appointment->id))
+                            <div class="row mb-3">
+                                <div class="col-12 d-flex justify-content-between">
+                                    @if($appointment->canDelete())
+                                         <button type="button" wire:click='openDeleteModal' class="btn btn-danger btn-sm"><i class="fas fa-trash me-2"></i>Eliminar</button>
+                                    @endif
+                                    @if($appointment->canFacturar())
+                                        <button type="button" wire:click='openFacturarModal' class="btn btn-warning btn-sm"><i class="fas fa-dollar-sign me-2"></i>Facturar</button>
+                                    @endif
+                                    @if($appointment->canFinalizar())
+                                        <button type="button" wire:click='openFinalizarModal' class="btn btn-success btn-sm"><i class="fas fa-dollar-sign me-2"></i>Finalizar</button>
+                                    @endif
+                                </div>   
+                            </div>
+                        @endif
+                                    
                          
                         @if (!empty($appointment->created_by))              
                             <div class="row mb-3">
@@ -178,7 +175,7 @@
                                 
                             </div> 
                             <div class="col-12 col-md-6">
-                                <div wire:ignore class="form-group ">
+                                <div class="form-group ">
                                     <label for="user_id"> {{ trans('appointments/admin_lang.fields.user_id') }}<span class="text-danger">*</span></label>                                  
                                   
                                         <select {{ $disabledForm}}  class="form-control form_select_modal" wire:model="appointmentForm.user_id" wire:change="changePatient()" data-id="appointmentForm.user_id"  name="appointmentForm.user_id" id="patient_form">
@@ -197,7 +194,7 @@
                         <div class="row form-group mb-3">                                
                             <div class="col-12 col-md-6">
                                 
-                                <div wire:ignore class="form-group ">
+                                <div class="form-group ">
                                     <label for="doctor_id"> {{ trans('appointments/admin_lang.fields.doctor_id') }}<span class="text-danger">*</span></label>
                                     
                                     <select  {{ $disabledForm }}   class="form-control  " wire:model="appointmentForm.doctor_id"  >
@@ -211,7 +208,7 @@
                             </div>      
                             <div class="col-12 col-md-6">
                                 
-                                <div wire:ignore  class="form-group ">
+                                <div  class="form-group ">
                                     <label for="service_id"> {{ trans('appointments/admin_lang.fields.service_id') }}<span class="text-danger">*</span></label>
                                       
                                     <select {{ $disabledForm }}    class="form-control" wire:model="appointmentForm.service_id" wire:change='calculatePrices()'   >
@@ -323,7 +320,7 @@
 
                
                     <div class="col-12 mb-2">
-       
+      
                       <div id="calendarLegend" class="text-center">
                     
                         <span class="legendItem badge p-2" style="background-color: #6c757d;"><span>Pendiente</span></span>
@@ -388,34 +385,31 @@
     
 </script> --}}
 
-<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.min.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.min.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid/main.min.css" rel="stylesheet" />
 
-
-<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid/main.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction/main.min.js"></script>
+<link href="{{ asset('/assets/admin/vendor/fullcalendar/fullcalendar.min.css')}}" rel="stylesheet" />
+{{-- <link href="{{ asset('/assets/admin/vendor/choicejs/css/choices.min.css')}}" rel="stylesheet" /> --}}
 
 <script src="{{ asset('/assets/admin/vendor/fullcalendar/fullcalendar.min.js') }}"></script>
 <script src="{{ asset('/assets/admin/vendor/fullcalendar/locales-all.min.js') }}"></script>
+{{-- <script src="{{ asset('/assets/admin/vendor/choicejs/js/choices.min.js') }}"></script> --}}
+
 <script>  
- $(function () {
-  
-  });
+ document.addEventListener('DOMContentLoaded', function () {
+      
+    });
     $(document).ready(function() {
         $('.filter_select2').select2(); 
             
         Livewire.hook('message.processed', function () {
            $('.filter_select2').select2(); 
-            $('.select-picker').selectpicker();
+           
         });
         
     });
   
 
     document.addEventListener('livewire:load', function() {    
-
+      
         $('.filter_select2').on('change', function (e) {
             let model=$(this).data('id');            
             @this.set(model, e.target.value);
@@ -423,9 +417,6 @@
             Livewire.emit('reloadCalendar');
 
         });
-       
-        
-    
 
         @if (!empty($successSaved))             
             toastr.success(" {{ $successSaved }}")
@@ -460,18 +451,15 @@
            
             eventDisplay: 'block',
                 dateClick(info)  {
-                    @if (auth()->user()->isAbleTo("admin-appointments-create"))
                         let id="";
                         let time=info.dateStr;
-                        Livewire.emit('clickCalendar',[time,id]);          
-                    @endif                       
+                        Livewire.emit('clickCalendar',[time,id]);                    
                 },
                 eventClick: function(info) {
-                    @if (auth()->user()->isAbleTo("admin-appointments-update")|| auth()->user()->isAbleTo("admin-appointments-update-all")|| auth()->user()->isAbleTo("admin-appointments-read"))
-                    var id = info.event.id;
-                    var time= info.event.start;                   
-                    Livewire.emit('clickCalendar',[time,id]);       
-                    @endif
+                       var id = info.event.id;
+                        var time= info.event.start;                   
+                        Livewire.emit('clickCalendar',[time,id]);       
+                    
                 },
                 editable: true,
                 selectable: true,
@@ -509,7 +497,7 @@
               
         Livewire.on('toggleModal', function () {
             $('#modal_appointment').modal('toggle'); 
-            $('.select-picker').selectpicker();
+           
         });
         Livewire.on('deteleModal', function () {
             $('#modal_delete').modal('toggle'); 
@@ -524,6 +512,9 @@
             toastr.success("Evento guardado Correctamente")
             loadCalendar();// Recarga los eventos del calendario
         });
+        Livewire.on('sinPermisos', function (message) {
+            toastr.error(message)
+        });
         Livewire.on('eventoFacturado', function () {
             toastr.success("Evento facturado Correctamente")
            loadCalendar();
@@ -535,10 +526,14 @@
         });
         Livewire.on('eventoEliminado', function () {
             toastr.success("Evento eliminado Correctamente")
+           /*  setTimeout(function() {
+                location.reload();
+            }, 2000);*/
             loadCalendar();// Recarga los eventos del calendario
         });
         Livewire.on('reloadEvents', function () {
             loadCalendar();// Recarga los eventos del calendario
+            
         });
         Livewire.on('accionCompletada', () => {
         // Cuando se complete la acción en Livewire, muestra un alert
@@ -551,5 +546,5 @@
     });
 </script>
 
-<link href="{{ asset('/assets/admin/vendor/fullcalendar/fullcalendar.min.css')}}" rel="stylesheet" />
+
 @stop
