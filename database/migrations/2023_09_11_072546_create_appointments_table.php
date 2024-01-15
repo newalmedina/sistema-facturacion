@@ -35,8 +35,12 @@ return new class extends Migration
 
             $table->text('comment')->nullable();
             $table->dateTime("paid_at")->nullable();
+            $table->unsignedBigInteger("paid_by")->nullable();
             $table->string("color")->nullable();
-
+            
+            $table->dateTime("finish_at")->nullable();
+            $table->unsignedBigInteger("finish_by")->nullable();
+            
             $table->timestamps();
 
             $table->foreign('user_id')
@@ -59,6 +63,13 @@ return new class extends Migration
             $table->foreign('insurance_carrier_id')
                 ->references('id')->on('insurance_carriers')
                 ->onDelete('cascade');
+
+            $table->foreign('paid_by')
+            ->references('id')->on('users')
+            ->onDelete('cascade');  
+                $table->foreign('finish_by')
+            ->references('id')->on('users')
+            ->onDelete('cascade');
             $table->softDeletes();
         });
     }

@@ -169,6 +169,7 @@ class AdminClinicPersonalController extends Controller
         if (!auth()->user()->isAbleTo('admin-clinic-personal-list')) {
             app()->abort(403);
         }
+
         $query = User::select(
             [
                 'users.id',
@@ -179,7 +180,9 @@ class AdminClinicPersonalController extends Controller
                 DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as fullname'),
             ]
         )
-            ->clinicPersonal()->clinicPersonalSelectedCenter()
+            ->active()
+            ->clinicPersonal()
+            ->clinicPersonalSelectedCenter()
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
             ->leftJoin("doctor_profiles", "doctor_profiles.user_id", "=", "users.id")
             ->leftJoin("doctor_specializations", "doctor_specializations.user_id", "=", "users.id")

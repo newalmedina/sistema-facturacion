@@ -369,7 +369,8 @@ class Index_old extends Component
             "price_with_insurance" => 0,
             "price" => 0,
             "total" => 0,
-            "poliza" => ""
+            "poliza" => "",
+            "delete_coment"=>null
         ];
     }
 }
