@@ -8,6 +8,7 @@ use App\Models\Province;
 use App\Models\Setting;
 use App\Services\SettingsServices;
 use App\Services\StoragePathWork;
+use Illuminate\Support\Facades\File;
 
 class AdminSettingsController extends Controller
 {
@@ -54,7 +55,15 @@ class AdminSettingsController extends Controller
                         $filename = $myServiceSPW->saveFile($image, '');
                         $setting->value = $filename;
                         //guardando en la carpeta public para luego sacarla en los pdf
-                     $image->storeAs('settings', $filename, 'public');
+                        // $image->storeAs('settings', $filename, 'public');
+                    
+
+                        // Ruta de la carpeta "settings"
+                        $rutaCarpeta = public_path('settings');
+
+                        // Eliminar todos los archivos y directorios dentro de la carpeta
+                        File::cleanDirectory($rutaCarpeta);
+                        $image->move(public_path('settings'), $filename);
                     }
                 } else {
                     $setting->value = $value;

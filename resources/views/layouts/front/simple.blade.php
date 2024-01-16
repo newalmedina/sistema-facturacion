@@ -59,7 +59,7 @@
 				<div class="bounce3"></div>
 			</div>
         </div>
-		<div class="body">
+	<div class="body">
             
          @yield('content')
 			

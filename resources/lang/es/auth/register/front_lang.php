@@ -27,6 +27,6 @@ return [
         'email_incorrect_format' => 'El campo email no es válido',
         'email_unique' => 'El email ya existe en nuestros registros',
         'password_confirmed' => 'Las contraseñas no coinciden',
-        'password_min' => 'El campo contraseña debe tener almenos 8 carácteres',
+        'password_min' => 'El campo contraseña debe tener al menos 8 carácteres',
     ],
 ];

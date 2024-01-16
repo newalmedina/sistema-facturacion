@@ -39,13 +39,13 @@
                     <div class="col-md-4">                     
                         <div class="form-group">
                             <label for="start_date"> {{ trans('patient-monitorings/admin_lang.fields.start_date') }}</label>
-                            <input value="{{ $filtStartData }}" name="start_date" type="text"  class="form-control datepicker"   placeholder="{{ trans('patient-monitorings/admin_lang.fields.start_date_helper') }}">
+                            <input value="{{ $filtStartData }}" name="start_date" type="text"  autocomplete="off" class="form-control datepicker"   placeholder="{{ trans('patient-monitorings/admin_lang.fields.start_date_helper') }}">
                         </div>
                     </div>
                     <div class="col-md-4">                     
                         <div class="form-group">
                             <label for="end_date"> {{ trans('patient-monitorings/admin_lang.fields.end_date') }}</label>
-                            <input value="{{ $filtEndData }}" name="end_date" type="text"  class="form-control datepicker"   placeholder="{{ trans('patient-monitorings/admin_lang.fields.end_date_helper') }}">
+                            <input value="{{ $filtEndData }}" name="end_date" type="text"  autocomplete="off" class="form-control datepicker"   placeholder="{{ trans('patient-monitorings/admin_lang.fields.end_date_helper') }}">
                         </div>
                     </div>
                   </div>

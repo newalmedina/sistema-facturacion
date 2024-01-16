@@ -26,11 +26,10 @@ class AdminPatientsRequest extends FormRequest
      */
     public function rules()
     {
-        $user_id = auth()->user()->id;
-
+        $user_id = $this->route()->id ? $this->route()->id : null;
         return [
-            // 'email' => 'required|email|unique:users,email,' . $user_id,
-            'patient_profile.email' => 'required|email',
+            'patient_profile.email' => 'required|email|unique:users,email,' . $user_id,
+            // 'patient_profile.email' => 'required|email',
             //'active' => 'required',
             'user_profile.first_name' => 'required',
             'user_profile.last_name' => 'required',

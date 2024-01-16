@@ -15,8 +15,11 @@ $medicine =$info;
     </ul>
     <br>
     @if (!empty($medicine->comment ))
-     <b><i>{{ trans("pdfLayout/admin_recetas_lang.comments") }}</i></b><br><br>
+    <b><i>{{ trans("pdfLayout/admin_recetas_lang.comments") }}</i></b>
+      <span style="padding-left:15px;">
         {!! $medicine->comment !!}
+        
+    </span>
     @endif
 </div>
 

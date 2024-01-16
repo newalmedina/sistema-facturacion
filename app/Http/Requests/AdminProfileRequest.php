@@ -32,7 +32,7 @@ class AdminProfileRequest extends FormRequest
             'user_profile.first_name' => 'required',
             'user_profile.last_name' => 'required',
             // 'profile_image' => 'nullable|image',
-            'password' => 'nullable|same:password_confirm|min:8',
+            'password' => 'nullable|same:password_confirm|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
         ];
     }
 
@@ -56,6 +56,8 @@ class AdminProfileRequest extends FormRequest
             'password.min' => trans('profile/admin_lang.fields.password_min'),
             'profile_image.image' => trans('profile/admin_lang.fields.photo_format'),
             'profile_image.mimes' => trans('profile/admin_lang.fields.photo_mimes'),
+            
+            'password.regex' => trans('profile/admin_lang.fields.password_regex'),
         ];
     }
 }

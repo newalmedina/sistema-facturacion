@@ -56,7 +56,7 @@ Auth::user()->isAbleTo("admin-dashboard-patient-studies-number")
                                             </div>
                                             <div class="summary-footer text-start">
                                                 <labe>Seleccione mes</label>
-                                                <input   type="text"  class="form-control datepicker-doctor-patient" data-id="patientFilter" wire:model="patientFilter"  wire:change='getDatos' >
+                                                <input   type="text"  autocomplete="off" class="form-control datepicker-doctor-patient" data-id="patientFilter" wire:model="patientFilter"  wire:change='getDatos' >
                                             </div>
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@ Auth::user()->isAbleTo("admin-dashboard-patient-studies-number")
                                             </div>
                                             <div class="summary-footer text-start">
                                                 <labe>Seleccione mes</label>
-                                                <input   type="text"  class="form-control datepicker-doctor-patient" data-id="recetaFilter" wire:model="recetaFilter"  wire:change='getDatos' >
+                                                <input   type="text"  autocomplete="off" class="form-control datepicker-doctor-patient" data-id="recetaFilter" wire:model="recetaFilter"  wire:change='getDatos' >
                                             </div>
                                         </div>
                                     </div>
@@ -110,7 +110,7 @@ Auth::user()->isAbleTo("admin-dashboard-patient-studies-number")
                                             </div>
                                             <div class="summary-footer text-start">
                                                 <labe>Seleccione mes</label>
-                                                <input   type="text"  class="form-control datepicker-doctor-patient" data-id="estudiosFilter" wire:model="estudiosFilter"  wire:change='getDatos' >
+                                                <input   type="text"  autocomplete="off" class="form-control datepicker-doctor-patient" data-id="estudiosFilter" wire:model="estudiosFilter"  wire:change='getDatos' >
                                             </div>
                                             
                                         </div>
