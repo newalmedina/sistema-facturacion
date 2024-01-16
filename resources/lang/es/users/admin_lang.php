@@ -42,7 +42,8 @@ return [
         'password_helper' => 'Introduce contraseña',
         'password_required' => 'El campo contraseña es obligatorio',
         'password_confirmed' => 'Las contraseñas no coinciden',
-        'password_min' => 'El campo contraseña debe tener almenos 8 carácteres',
+        'password_min' => 'El campo contraseña debe tener al menos 8 carácteres',
+        'password_regex' => 'El campo contraseña debe tener caracteres especiales, mayusculas y minusculas',
 
         'password_confirm' => 'Repetir contraseña',
         'password_confirm_helper' => 'Introduce rçepetir contraseña',

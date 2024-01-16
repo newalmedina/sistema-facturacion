@@ -71,7 +71,7 @@
                     <div class="col-lg-6">                     
                         <div class="form-group">
                             <label for="email"> {{ trans('patients/admin_lang.fields.email') }}<span class="text-danger">*</span></label>
-                            <input value="{{ !empty($patient->patientProfile)?$patient->patientProfile->email :null}}" type="text" {{ $disabled }} class="form-control" name="patient_profile[email]"  placeholder="{{ trans('patients/admin_lang.fields.email_helper') }}">
+                            <input value="{{ !empty($patient->email)?$patient->email :null}}" type="text" {{ $disabled }} class="form-control" name="patient_profile[email]"  placeholder="{{ trans('patients/admin_lang.fields.email_helper') }}">
                         </div>
                     </div>
                 </div>

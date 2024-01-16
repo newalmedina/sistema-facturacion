@@ -153,8 +153,7 @@ class AdminPatientController extends Controller
         try {
             DB::beginTransaction();
             $patient = new User();
-            $patient->email = Str::random(8);
-            $patient->password =  Hash::make($patient->email);
+            $patient->password =  Hash::make(Str::random(8));
             $this->savePatients($patient, $request);
 
             $roles = Role::where("name", "patient")->pluck("id");
@@ -378,7 +377,7 @@ class AdminPatientController extends Controller
             [
                 'users.id',
                 'users.active',
-                'patient_profiles.email',
+                'users.email',
                 'user_profiles.phone',
                 'user_profiles.first_name',
                 DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as patient'),
@@ -580,7 +579,7 @@ class AdminPatientController extends Controller
 
     private function savePatients($patient, $request)
     {
-
+        $patient->email = $request->input('patient_profile.email');
         $patient->active = $request->input('active', 0);
         $patient->save();
         if (empty($patient->userProfile)) {

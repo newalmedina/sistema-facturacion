@@ -243,7 +243,7 @@
                         orderable: true,
                         searchable: true,
                         data: 'email',
-                        name: 'patient_profiles.email',
+                        name: 'users.email',
                         sWidth: ''
                     },
                     {

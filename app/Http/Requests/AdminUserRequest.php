@@ -33,7 +33,7 @@ class AdminUserRequest extends FormRequest
             'user_profile.first_name' => 'required',
             'user_profile.last_name' => 'required',
 
-            'password' => 'nullable|same:password_confirm|min:8',
+            'password' => 'nullable|same:password_confirm|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
         ];
     }
 
@@ -50,7 +50,7 @@ class AdminUserRequest extends FormRequest
             'user_profile.last_name.required' => trans('users/admin_lang.fields.last_name_required'),
             'email.required' => trans('users/admin_lang.fields.email_required'),
             'password.same' => trans('users/admin_lang.fields.password_confirmed'),
-            'password.min' => trans('users/admin_lang.fields.password_min'),
+            'password.regex' => trans('users/admin_lang.fields.password_regex'),
 
         ];
     }
