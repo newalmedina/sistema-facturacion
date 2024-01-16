@@ -35,7 +35,7 @@ class SettingsServices
 
         $addressArray = [
             $data["address"],
-            !empty($province) ? $province : null,
+            !empty($province) ? $province->name : null,
             !empty($municipio) ? $municipio->name : null
         ];
 

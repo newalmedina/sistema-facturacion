@@ -109,7 +109,7 @@ Auth::user()->isAbleTo("admin-dashboard-appointment-this-month")
                                             </div>
                                             <div class="summary-footer text-start">
                                                 <labe>Seleccione mes</label>
-                                                <input   type="text"  class="form-control datepicker visitaMesFilter" wire:model="visitaMesFilter"  wire:change='getDatos' >
+                                                <input   type="text"  autocomplete="off" class="form-control datepicker visitaMesFilter" wire:model="visitaMesFilter"  wire:change='getDatos' >
                                             </div>
                                         </div>
                                     </div>

@@ -46,7 +46,7 @@
                     <div class="col-md-2">                     
                         <div class="form-group">
                             <label for="date"> {{ trans('patient-monitorings/admin_lang.fields.date') }}<span class="text-danger">*</span></label>
-                            <input value="{{ $patientMonitoring->dateFormatted }}" name="date" autocomplete="off" type="text" {{ $disabled }} class="form-control datepicker"   placeholder="{{ trans('patient-monitorings/admin_lang.fields.date_helper') }}">
+                            <input value="{{ $patientMonitoring->dateFormatted }}" name="date" autocomplete="off" type="text" {{ $disabled }} autocomplete="off" class="form-control datepicker"   placeholder="{{ trans('patient-monitorings/admin_lang.fields.date_helper') }}">
                         </div>
                     </div>
                    <div class="col-md-9">

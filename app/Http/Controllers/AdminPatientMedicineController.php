@@ -177,7 +177,7 @@ class AdminPatientMedicineController extends Controller
             'doctorInfo' => $medicine->createdBy
         ];
         $pdf = PDF::loadView('pdf.partials.recetas', $data);
-
+        
         return $pdf->download(
             trans('patient-medicines/admin_lang.patient-medicines-export') . '_' . Carbon::now()->format("dmYHis") . '.pdf'
         );
