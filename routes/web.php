@@ -59,6 +59,10 @@ Route::get('/register/verify/{confirmation_code}', [FrontRegisterUserController:
 //     //   Route::resource('alarms', 'FrontAlarmsController');
 // });
 
+Route::get('/ruta', function () {
+    return view('emails.my_reset_password', ['token' =>"dsadsa"]);
+});
+
 Route::get('/', function () {
     return redirect()->route('admin.dashboard');
 });

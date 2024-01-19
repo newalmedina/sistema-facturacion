@@ -58,7 +58,7 @@
 
 		<!-- Head Libs -->
 		<script src="{{ asset('assets/front/vendor/modernizr/modernizr.min.js')}}"></script>
-    @yield('head_page')
+    	@yield('head_page')
 	</head>
 	<body class="alternative-font-4 loading-overlay-showing img-background" data-plugin-page-transition data-loading-overlay data-plugin-options="{'hideDelay': 100}">
 

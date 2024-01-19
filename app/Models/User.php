@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Laratrust\Traits\LaratrustUserTrait;
+use App\Notifications\MyResetPassword;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -47,6 +48,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function sendPasswordResetNotification($token)
+{
+    $this->notify(new MyResetPassword($token));
+}
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
