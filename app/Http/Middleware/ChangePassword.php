@@ -21,7 +21,7 @@ class ChangePassword
     {
        
         if (Auth::check()) {
-           if(Auth::user()->change_password){
+           if(empty(Auth::user()->password_changed_at)){
                 return redirect('change-password');
            }
         } 

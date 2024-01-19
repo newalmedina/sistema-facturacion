@@ -22,7 +22,7 @@ class FrontChangePasswordController extends Controller
             ->withInput();
         }
         $user->password=bcrypt($request->password);
-        $user->change_password=0;
+        $user->password_changed_at=Carbon::now();
         $user->save();
 
         return redirect()->to('/')->with('success', trans('auth/change_password/front_lang.password_ok') );

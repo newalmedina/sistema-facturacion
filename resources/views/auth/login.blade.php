@@ -1,6 +1,8 @@
 @extends('layouts.front.default')
+@section('title')
+    @parent {{ "Login" }}
+@stop
 @section('head_page')
-
 @stop
 @section('content')
 <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">

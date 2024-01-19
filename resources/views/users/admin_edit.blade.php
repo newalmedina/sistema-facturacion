@@ -94,6 +94,49 @@ $disabled= isset($disabled)?$disabled : null;
                         </div>
                     </div>                    
                 </div>
+                <div class="row form-group mb-3">
+                    <div class="col-12">
+                     
+                        <div class="form-group">
+                            <label for="active"> {{ trans('users/admin_lang.fields.email_verified_at') }}</label>
+                            @if(!empty($user->email_verified_at))                                     
+                                <small class="text-muted" style="font-size:8px">
+                                       ({{\Carbon\Carbon::parse($user->email_verified_at)->format("d/m/Y H:i")}})
+                                </small>                                    
+                            @endif
+                            <div class="form-check form-switch">
+                                <input  {{ $disabled }} class="form-check-input toggle-switch" @if(!empty($user->email_verified_at)) checked @endif value="1" name="email_verified_at" type="checkbox" id="email_verified_at">                                
+                            </div>                           
+                        </div>
+                    </div>                    
+                </div>
+                <div class="row form-group mb-3">
+                    <div class="col-12">
+                     
+                        <div class="form-group">
+                            <label for="active"> {{ trans('users/admin_lang.fields.password_changed_at') }}</label>
+                             @if(!empty($user->password_changed_at))                                     
+                                <small class="text-muted" style="font-size:8px">
+                                       ({{\Carbon\Carbon::parse($user->password_changed_at)->format("d/m/Y H:i")}})
+                                </small>                                    
+                            @endif
+                            <div class="form-check form-switch">
+                                <input  {{ $disabled }} class="form-check-input toggle-switch" @if(!empty($user->password_changed_at)) checked @endif value="1" name="password_changed_at" type="checkbox" id="password_changed_at">
+                            </div>                           
+                        </div>
+                    </div>                    
+                </div>
+                <div class="row form-group mb-3">
+                    <div class="col-12">
+                     
+                        <div class="form-group">
+                            <label for="active"> {{ trans('users/admin_lang.fields.permit_recieve_emails') }}</label>
+                            <div class="form-check form-switch">
+                                <input  {{ $disabled }} class="form-check-input toggle-switch" @if($user->permit_recieve_emails==1) checked @endif value="1" name="permit_recieve_emails" type="checkbox" id="permit_recieve_emails">
+                            </div>                           
+                        </div>
+                    </div>                    
+                </div>
                 
 
                 

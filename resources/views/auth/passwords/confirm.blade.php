@@ -1,4 +1,7 @@
 @extends('layouts.front.default')
+@section('title')
+    @parent {{ "Confirmar correo" }}
+@stop
 @section('head_page')
     
 @stop

@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
         // Obtenemos los datos enviados por el usuario
 
         $user->email = "nmedina@gmail.com";
-        $user->change_password = 1;
+        $user->password_changed_at =  Carbon::now();
         $user->password = Hash::make("Secret15*");
 
         $user->email_verified_at = Carbon::now();

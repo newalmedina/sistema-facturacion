@@ -112,12 +112,25 @@ class AdminUserController extends Controller
 
             $user->email = $request->input('email');
             $user->active = $request->input('active', 0);
-
+            $user->permit_recieve_emails = $request->input('permit_recieve_emails', 0);
             if (!empty($request->input('password'))) {
                 $user->password = Hash::make($request->input('password'));
             }
+
             $user->userProfile->first_name = $request->input('user_profile.first_name');
             $user->userProfile->last_name = $request->input('user_profile.last_name');
+        
+            if(empty($user->password_changed_at) && $request->password_changed_at==1){
+                $user->password_changed_at= Carbon::now();
+            }elseif($request->password_changed_at!=1){
+                $user->password_changed_at=null;
+            }
+            if(empty($user->email_verified_at) && $request->email_verified_at==1){
+                $user->email_verified_at= Carbon::now();
+            }elseif($request->email_verified_at!=1){
+                $user->email_verified_at=null;
+            }
+        
             $user->push();
 
             DB::commit();
@@ -125,8 +138,9 @@ class AdminUserController extends Controller
 
             return redirect()->route('admin.users.edit', [$user->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
-            return redirect('admin/users/create/' . $user->id); // ->with('error-alert', trans('general/admin_lang.save_ko') . ' - ' . $e->getMessage());
+            return redirect()->route('admin.users.edit', [$user->id])  ->with('error', trans('general/admin_lang.save_ko') . ' - ' . $e->getMessage());
         }
     }
 
@@ -143,10 +157,21 @@ class AdminUserController extends Controller
 
             $user->email = $request->input('email');
             $user->active = $request->input('active', 0);
+            $user->permit_recieve_emails = $request->input('permit_recieve_emails', 0);
             $user->email_verified_at = Carbon::now();
 
             if (!empty($request->input('password'))) {
                 $user->password = Hash::make($request->input('password'));
+            }
+            if(empty($user->password_changed_at) && $request->password_changed_at==1){
+                $user->password_changed_at= Carbon::now();
+            }elseif($request->password_changed_at!=1){
+                $user->password_changed_at=null;
+            }
+            if(empty($user->email_verified_at) && $request->email_verified_at==1){
+                $user->email_verified_at= Carbon::now();
+            }elseif($request->email_verified_at!=1){
+                $user->email_verified_at=null;
             }
             $user->save();
 
