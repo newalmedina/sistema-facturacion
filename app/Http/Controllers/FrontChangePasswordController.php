@@ -6,6 +6,8 @@ use App\Http\Requests\FrontChangePasswordRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+use Carbon\Carbon;
+
 class FrontChangePasswordController extends Controller
 {
     public function index()

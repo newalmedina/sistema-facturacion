@@ -163,17 +163,23 @@ $disabled= isset($disabled)?$disabled : null;
 <script>
     
     function generatePassword(lenght) {
-        var pass = '';
-        var str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + 
-                'abcdefghijklmnopqrstuvwxyz0123456789@#$';
-            
-        for (let i = 1; i <= lenght; i++) {
-            var char = Math.floor(Math.random()
-                        * str.length + 1);                
-            pass += str.charAt(char)
-        }
-        $("#password").val(pass);
-        $("#password_confirm").val(pass);
+       var caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
+            var caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
+            var contrasena = "";
+
+            // Generar al menos una letra mayúscula
+            contrasena += String.fromCharCode(Math.floor(Math.random() * 26) + 65);
+
+            // Generar al menos un caracter especial
+            contrasena += caracteres.charAt(Math.floor(Math.random() * 14) + 52);
+
+            // Generar 6 caracteres aleatorios
+            for (var i = 2; i < 7; i++) {
+                contrasena += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+             contrasena += "*";
+        $("#password").val(contrasena);
+        $("#password_confirm").val(contrasena);
       //  return pass;
     }
 </script>

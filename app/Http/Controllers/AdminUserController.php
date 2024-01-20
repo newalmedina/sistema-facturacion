@@ -10,12 +10,15 @@ use App\Models\Province;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Jobs\SendUserRegistrationEmailJob;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
+
+use Illuminate\Support\Facades\Auth;
 
 class AdminUserController extends Controller
 {
@@ -134,7 +137,8 @@ class AdminUserController extends Controller
             $user->push();
 
             DB::commit();
-
+            
+        
 
             return redirect()->route('admin.users.edit', [$user->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
@@ -159,7 +163,6 @@ class AdminUserController extends Controller
             $user->active = $request->input('active', 0);
             $user->permit_recieve_emails = $request->input('permit_recieve_emails', 0);
             $user->email_verified_at = Carbon::now();
-
             if (!empty($request->input('password'))) {
                 $user->password = Hash::make($request->input('password'));
             }
@@ -182,11 +185,12 @@ class AdminUserController extends Controller
                 $userProfile->user_id = $user->id;
                 $userProfile->first_name = $request->input('user_profile.first_name');
                 $userProfile->last_name = $request->input('user_profile.last_name');
+                $userProfile->created_center=Auth::user()->hasSelectedCenter();
                 $userProfile->save();
             }
 
             DB::commit();
-
+            SendUserRegistrationEmailJob::dispatch($user,$request->input('password'));
 
             return redirect()->route('admin.users.edit', [$user->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {

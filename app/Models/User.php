@@ -164,4 +164,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $query->where('users.active', 1);
     }
+    public function scopeAllowRecieveEmails($query)
+    {
+        return $query->where('users.permit_recieve_emails', 1);
+    }
 }

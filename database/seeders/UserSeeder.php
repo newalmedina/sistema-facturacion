@@ -45,6 +45,7 @@ class UserSeeder extends Seeder
         $userProfile->gender = 'male';
         $userProfile->user_lang = 'es';
 
+
         $user->userProfile()->save($userProfile);
 
 
