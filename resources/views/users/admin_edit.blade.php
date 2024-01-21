@@ -36,7 +36,7 @@ $disabled= isset($disabled)?$disabled : null;
                         <div class="col-12 col-md-6">                     
                             <div class="form-group">
                                 <label for="center_created"> {{ trans('users/admin_lang.fields.center_created') }}</label>
-                                <input value="{{ !empty($user->userProfile)?$user->userProfile->createdCenter->name :null}}" type="text" disabled class="form-control" >
+                                <input value="{{ !empty($user->userProfile->createdCenter)?$user->userProfile->createdCenter->name :null}}" type="text" disabled class="form-control" >
                             </div>
                         </div>                       
                         @endif

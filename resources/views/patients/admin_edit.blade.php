@@ -38,7 +38,7 @@
                         <div class="col-12 col-md-6">                     
                             <div class="form-group">
                                 <label for="center_created"> {{ trans('patients/admin_lang.fields.center_created') }}</label>
-                                <input value="{{ !empty($patient->userProfile)?$patient->userProfile->createdCenter->name :null}}" type="text" disabled class="form-control" >
+                                <input value="{{ !empty($patient->userProfile->createdCenter)?$patient->userProfile->createdCenter->name :null}}" type="text" disabled class="form-control" >
                             </div>
                         </div>                       
                         @endif
