@@ -87,6 +87,7 @@ return [
 
         'centers' => 'Centros',
         'roles' => 'Roles',
+        'center_created' => 'Centro de Creación',
     ],
 
 ];

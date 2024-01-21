@@ -31,6 +31,17 @@ $disabled= isset($disabled)?$disabled : null;
               
             <div class="card-body">
                 <div class="row form-group mb-3">
+                      @if (!empty($user->userProfile))
+                    
+                        <div class="col-12 col-md-6">                     
+                            <div class="form-group">
+                                <label for="center_created"> {{ trans('users/admin_lang.fields.center_created') }}</label>
+                                <input value="{{ !empty($user->userProfile)?$user->userProfile->createdCenter->name :null}}" type="text" disabled class="form-control" >
+                            </div>
+                        </div>                       
+                        @endif
+                </div>
+                <div class="row form-group mb-3">
                     <div class="col-12 col-md-6">
                      
                         <div class="form-group">

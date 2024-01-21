@@ -31,6 +31,27 @@
             @endif
               
             <div class="card-body"> 
+              @if (!empty($patient->userProfile) || !empty($patient->patientProfile))
+                <div class="row form-group mb-3">
+                        @if (!empty($patient->userProfile))
+                    
+                        <div class="col-12 col-md-6">                     
+                            <div class="form-group">
+                                <label for="center_created"> {{ trans('patients/admin_lang.fields.center_created') }}</label>
+                                <input value="{{ !empty($patient->userProfile)?$patient->userProfile->createdCenter->name :null}}" type="text" disabled class="form-control" >
+                            </div>
+                        </div>                       
+                        @endif
+                        @if (!empty($patient->patientProfile))
+                            <div class="col-12 col-md-6">                     
+                                <div class="form-group">
+                                    <label for="email"> {{ trans('patients/admin_lang.fields.created_by') }}</label>
+                                    <input value="{{ !empty($patient->patientProfile)?$patient->patientProfile->createdBy->userProfile->fullname :null}}" type="text" disabled class="form-control" >
+                                </div>
+                            </div>                       
+                        @endif
+                </div>
+                        @endif
                 <div class="row form-group mb-3">
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
@@ -40,14 +61,7 @@
                             </div>                           
                         </div>
                     </div>   
-                    @if (!empty($patient->patientProfile))
-                        <div class="col-12 col-md-6">                     
-                            <div class="form-group">
-                                <label for="email"> {{ trans('patients/admin_lang.fields.created_by') }}</label>
-                                <input value="{{ !empty($patient->patientProfile)?$patient->patientProfile->createdBy->userProfile->fullname :null}}" type="text" disabled class="form-control" >
-                            </div>
-                        </div>                       
-                    @endif
+                   
                 </div>
 
                 <div class="row form-group mb-3">                   
