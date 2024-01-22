@@ -32,7 +32,8 @@ return [
         'created_by' => 'Creado por',
         'created_by_helper' => 'Introduce creado por',
         'created_by_required' => 'El campo creado por es obligatorio',
-
+        'center_created' => 'Centro de Creación',
+       
         'first_name' => 'Nombre',
         'first_name_helper' => 'Introduce nombre',
         'first_name_required' => 'El campo nombre es obligatorio',

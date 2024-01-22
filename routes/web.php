@@ -59,8 +59,8 @@ Route::get('/register/verify/{confirmation_code}', [FrontRegisterUserController:
 //     //   Route::resource('alarms', 'FrontAlarmsController');
 // });
 
-Route::get('/ruta', function () {
-    return view('emails.my_reset_password', ['token' =>"dsadsa"]);
+Route::get('/register', function () {
+    abort(404);
 });
 
 Route::get('/', function () {
@@ -85,13 +85,13 @@ Route::group(array('middleware' => []), function () {
     Route::get('/settings/get-image/{image}', [FrontSettingsController::class, 'getImage'])->name("front.settings-get-image");
 });
 
-Route::group(array( 'middleware' => ['auth', 'verified', 'check.active','avaible.site']), function () {
+Route::group(array('middleware' => ['auth', 'verified', 'check.active', 'avaible.site']), function () {
 
-    Route::get('/change-password', [FrontChangePasswordController::class,'index'])->name("front.change_password");
-    Route::post('/change-password', [FrontChangePasswordController::class,'update'])->name("front.change_password_update");
+    Route::get('/change-password', [FrontChangePasswordController::class, 'index'])->name("front.change_password");
+    Route::post('/change-password', [FrontChangePasswordController::class, 'update'])->name("front.change_password_update");
 });
 
-Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active','change.password','avaible.site']), function () {
+Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active', 'change.password', 'avaible.site']), function () {
 
     Route::get('/profile/personal-info', [AdminUserProfileController::class, 'personalInfo']);
     Route::post('/profile/personal-info/update', [AdminUserProfileController::class, 'updatePersonalInfo'])->name("admin.updateProfilePersonalInfo");
@@ -105,7 +105,7 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
 });
 
 
-Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active','change.password','profile.complete', 'avaible.site'/* , 'selected.center' */]), function () {
+Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active', 'change.password', 'profile.complete', 'avaible.site'/* , 'selected.center' */]), function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name("admin.dashboard");
 
     Route::get('/settings', [AdminSettingsController::class, 'index'])->name("admin.settings");
@@ -270,7 +270,7 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/services/export-excel', [AdminServiceController::class, 'exportExcel'])->name("admin.services.exportExcel");
 });
 
-Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active','change.password','profile.complete', 'avaible.site', 'selected.center']), function () {
+Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active', 'change.password', 'profile.complete', 'avaible.site', 'selected.center']), function () {
     //admin clinic-personal
     Route::get('/clinic-personal', [AdminClinicPersonalController::class, 'index']);
     Route::get('/clinic-personal/create', [AdminClinicPersonalController::class, 'create'])->name('admin.clinic-personal.create');

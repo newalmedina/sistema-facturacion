@@ -64,6 +64,11 @@ class AdminUsersPremissionSeeder  extends BaseSeeder
                 'display_name' => 'Usuarios - Suplantar Identidad',
                 'name' => Str::slug('admin-users-suplant-identity'),
                 'description' => 'Usuarios - Suplantar Identidad'
+            ],
+            [
+                'display_name' => 'Usuarios - Recibir notificaciones de usuarios creados',
+                'name' => Str::slug('admin-users-mail-user-created'),
+                'description' => 'Usuarios - Recibir notificaciones de usuarios creados'
             ]
         ];
 

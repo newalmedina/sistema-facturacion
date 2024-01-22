@@ -23,6 +23,9 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
+use App\Jobs\SendUserRegistrationEmailJob;
+
+
 class AdminPatientController extends Controller
 {
     public $filtProvinceId;
@@ -153,13 +156,17 @@ class AdminPatientController extends Controller
         try {
             DB::beginTransaction();
             $patient = new User();
-            $patient->password =  Hash::make(Str::random(8));
+            $password=Str::random(7)."*";
+            $patient->password =  Hash::make( $password);
             $this->savePatients($patient, $request);
 
             $roles = Role::where("name", "patient")->pluck("id");
 
             $patient->syncRoles($roles);
             DB::commit();
+            
+            SendUserRegistrationEmailJob::dispatch($patient, $password);
+
             return redirect()->route('admin.patients.edit', [$patient->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
             dd($e);
@@ -585,6 +592,7 @@ class AdminPatientController extends Controller
         if (empty($patient->userProfile)) {
             $userProfile = new UserProfile();
             $userProfile->user_id = $patient->id;
+            $userProfile->created_center=Auth::user()->hasSelectedCenter();
         } else {
             $userProfile = UserProfile::where('user_id', $patient->id)->first();
         }
@@ -625,7 +633,7 @@ class AdminPatientController extends Controller
             $patientProfile = PatientProfile::where('user_id', $patient->id)->first();
         }
 
-        $patientProfile->email = $request->input('patient_profile.email');
+        // $patientProfile->email = $request->input('patient_profile.email');
         $patientProfile->save();
     }
 }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Laratrust\Traits\LaratrustUserTrait;
 use App\Notifications\MyResetPassword;
+use App\Notifications\MyVerifyEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -49,10 +50,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
     public function sendPasswordResetNotification($token)
-{
-    $this->notify(new MyResetPassword($token));
-}
+    {
 
+        $this->notify(new MyResetPassword($token));
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new MyVerifyEmail($this));
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -163,5 +169,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeActive($query)
     {
         return $query->where('users.active', 1);
+    }
+    public function scopeAllowRecieveEmails($query)
+    {
+        return $query->where('users.permit_recieve_emails', 1);
     }
 }

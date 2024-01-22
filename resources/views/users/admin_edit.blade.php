@@ -31,6 +31,17 @@ $disabled= isset($disabled)?$disabled : null;
               
             <div class="card-body">
                 <div class="row form-group mb-3">
+                      @if (!empty($user->userProfile))
+                    
+                        <div class="col-12 col-md-6">                     
+                            <div class="form-group">
+                                <label for="center_created"> {{ trans('users/admin_lang.fields.center_created') }}</label>
+                                <input value="{{ !empty($user->userProfile->createdCenter)?$user->userProfile->createdCenter->name :null}}" type="text" disabled class="form-control" >
+                            </div>
+                        </div>                       
+                        @endif
+                </div>
+                <div class="row form-group mb-3">
                     <div class="col-12 col-md-6">
                      
                         <div class="form-group">
@@ -94,6 +105,49 @@ $disabled= isset($disabled)?$disabled : null;
                         </div>
                     </div>                    
                 </div>
+                <div class="row form-group mb-3">
+                    <div class="col-12">
+                     
+                        <div class="form-group">
+                            <label for="active"> {{ trans('users/admin_lang.fields.email_verified_at') }}</label>
+                            @if(!empty($user->email_verified_at))                                     
+                                <small class="text-muted" style="font-size:8px">
+                                       ({{\Carbon\Carbon::parse($user->email_verified_at)->format("d/m/Y H:i")}})
+                                </small>                                    
+                            @endif
+                            <div class="form-check form-switch">
+                                <input  {{ $disabled }} class="form-check-input toggle-switch" @if(!empty($user->email_verified_at)) checked @endif value="1" name="email_verified_at" type="checkbox" id="email_verified_at">                                
+                            </div>                           
+                        </div>
+                    </div>                    
+                </div>
+                <div class="row form-group mb-3">
+                    <div class="col-12">
+                     
+                        <div class="form-group">
+                            <label for="active"> {{ trans('users/admin_lang.fields.password_changed_at') }}</label>
+                             @if(!empty($user->password_changed_at))                                     
+                                <small class="text-muted" style="font-size:8px">
+                                       ({{\Carbon\Carbon::parse($user->password_changed_at)->format("d/m/Y H:i")}})
+                                </small>                                    
+                            @endif
+                            <div class="form-check form-switch">
+                                <input  {{ $disabled }} class="form-check-input toggle-switch" @if(!empty($user->password_changed_at)) checked @endif value="1" name="password_changed_at" type="checkbox" id="password_changed_at">
+                            </div>                           
+                        </div>
+                    </div>                    
+                </div>
+                <div class="row form-group mb-3">
+                    <div class="col-12">
+                     
+                        <div class="form-group">
+                            <label for="active"> {{ trans('users/admin_lang.fields.permit_recieve_emails') }}</label>
+                            <div class="form-check form-switch">
+                                <input  {{ $disabled }} class="form-check-input toggle-switch" @if($user->permit_recieve_emails==1) checked @endif value="1" name="permit_recieve_emails" type="checkbox" id="permit_recieve_emails">
+                            </div>                           
+                        </div>
+                    </div>                    
+                </div>
                 
 
                 
@@ -120,17 +174,23 @@ $disabled= isset($disabled)?$disabled : null;
 <script>
     
     function generatePassword(lenght) {
-        var pass = '';
-        var str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + 
-                'abcdefghijklmnopqrstuvwxyz0123456789@#$';
-            
-        for (let i = 1; i <= lenght; i++) {
-            var char = Math.floor(Math.random()
-                        * str.length + 1);                
-            pass += str.charAt(char)
-        }
-        $("#password").val(pass);
-        $("#password_confirm").val(pass);
+       var caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
+            var caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
+            var contrasena = "";
+
+            // Generar al menos una letra mayúscula
+            contrasena += String.fromCharCode(Math.floor(Math.random() * 26) + 65);
+
+            // Generar al menos un caracter especial
+            contrasena += caracteres.charAt(Math.floor(Math.random() * 14) + 52);
+
+            // Generar 6 caracteres aleatorios
+            for (var i = 2; i < 7; i++) {
+                contrasena += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+             contrasena += "*";
+        $("#password").val(contrasena);
+        $("#password_confirm").val(contrasena);
       //  return pass;
     }
 </script>

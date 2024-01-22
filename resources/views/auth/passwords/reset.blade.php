@@ -1,4 +1,7 @@
 @extends('layouts.front.default')
+@section('title')
+    @parent {{ "Restablecer contraseña" }}
+@stop
 @section('head_page')
 
 @stop
