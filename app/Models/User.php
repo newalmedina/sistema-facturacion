@@ -131,8 +131,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeClinicPersonal($query)
     {
 
-        return $query->join("role_user", "users.id", "=", "role_user.user_id")
-            ->join("roles", "role_user.role_id", "=", "roles.id")
+        return $query->leftJoin("role_user", "users.id", "=", "role_user.user_id")
+            ->leftJoin("roles", "role_user.role_id", "=", "roles.id")
             ->whereIn("roles.name", ["doctor"]);
     }
     public function scopeNotPatients($query)

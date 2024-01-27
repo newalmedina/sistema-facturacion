@@ -20,6 +20,7 @@ use App\Http\Controllers\AdminSuplantacionController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminUserProfileController;
 use App\Http\Controllers\AdminAppointmentController;
+use App\Http\Controllers\AdminAppointmentsController;
 use App\Http\Controllers\Auth\FrontRegisterUserController;
 use App\Http\Controllers\AdminCalendarController;
 use App\Http\Controllers\FrontChangePasswordController;
@@ -173,6 +174,7 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::post('/centers/list', [AdminCenterController::class, 'getData'])->name('admin.centers.getData');
     Route::delete('/centers/{id}', [AdminCenterController::class, 'destroy'])->name('admin.centers.destroy');
 
+
     Route::get('/centers/aditional-info/{id}', [AdminCenterController::class, 'editAditionalInfo'])->name('admin.centers.editAditionalInfo');
     Route::get('/centers/aditional-info/{id}/show', [AdminCenterController::class, 'showAditionalInfo'])->name('admin.centers.showAditionalInfo');
     Route::patch('/centers/aditional-info/{id}', [AdminCenterController::class, 'updateAditionalInfo'])->name('admin.centers.updateAditionalInfo');
@@ -250,6 +252,7 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/insurance-carriers/get-image/{photo}', [AdminInsuranceCarrierController::class, 'getimage'])->name("admin.insurance-carriers.getimage");
     Route::get('/insurance-carriers/export-excel', [AdminInsuranceCarrierController::class, 'exportExcel'])->name("admin.insurance-carriers.exportExcel");
     Route::delete('/insurance-carriers/delete-image/{photo}', [AdminInsuranceCarrierController::class, 'deleteImage'])->name("admin.insurance-carriers.deleteImage");
+
 
 
 
@@ -362,7 +365,24 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::post('/patients/{patient_id}/monitorings/list', [AdminPatientMonitoringController::class, 'getData'])->name('admin.patients.monitorings.getData');
     Route::delete('/patients/{patient_id}/monitorings/{id}', [AdminPatientMonitoringController::class, 'destroy'])->name('admin.patients.monitorings.destroy');
 
-    ///appointments
-    Route::get('/appointments', [AdminAppointmentController::class, 'index'])->name('admin.appointment');
+    //admin Appointments
+    Route::get('/appointments', [AdminAppointmentsController::class, 'index']);
+    Route::get('/appointments/create', [AdminAppointmentsController::class, 'create'])->name('admin.appointments.create');
+    Route::get('/appointments/{id}/edit', [AdminAppointmentsController::class, 'edit'])->name('admin.appointments.edit');
+    Route::get('/appointments/{id}/show', [AdminAppointmentsController::class, 'show'])->name('admin.appointments.show');
+    Route::get('/appointments/change-state/{id}', [AdminAppointmentsController::class, 'changeState'])->name('admin.appointments.changeState');
+    Route::patch('/appointments/{id}', [AdminAppointmentsController::class, 'update'])->name('admin.appointments.update');
+    Route::get('/appointments/remove-filter', [AdminAppointmentsController::class, 'removeFilter'])->name('admin.appointments.removeFilter');
+    Route::get('/appointments/get-insurances/{id}', [AdminAppointmentsController::class, 'getInsuraces'])->name('admin.appointments.getInsuraces');
+    Route::patch('/appointments/facturar/{id}', [AdminAppointmentsController::class, 'facturar'])->name('admin.appointments.facturar');
+    Route::patch('/appointments/finalizar/{id}', [AdminAppointmentsController::class, 'finalizar'])->name('admin.appointments.finalizar');
+    Route::get('/appointments/get-insurances-price/{user_id?}/{service?}/{insurance?}/', [AdminAppointmentsController::class, 'getInsurancesPrice'])->name('admin.appointments.getInsurancesPrice');
+    Route::post('/appointments/change-center', [AdminAppointmentsController::class, 'changeCenter'])->name('admin.appointments.getInsuraces');
+    Route::post('/appointments', [AdminAppointmentsController::class, 'store'])->name('admin.appointments.store');
+    Route::post('/appointments/save-filter', [AdminAppointmentsController::class, 'saveFilter'])->name('admin.appointments.saveFilter');
+    Route::post('/appointments/list', [AdminAppointmentsController::class, 'getData'])->name('admin.appointments.getData');
+    Route::delete('/appointments/{id}', [AdminAppointmentsController::class, 'destroy'])->name('admin.appointments.destroy');
+
+    Route::get('/appointments/export-excel', [AdminAppointmentsController::class, 'exportExcel'])->name("admin.appointments.exportExcel");
     Route::get('/calendar', [AdminCalendarController::class, 'index'])->name('admin.calendar');
 });

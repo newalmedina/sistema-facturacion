@@ -288,7 +288,17 @@
                     </form>      
                 </div>
                 <div  class="modal-footer">
-                  
+                    @if (!empty($appointment->user_id) )      
+                        @if(Auth::user()->isAbleTo('admin-patients-update'))
+                        <a href="{{ route('admin.patients.edit', $appointment->user_id) }}" class="btn btn-info pull-left" target="_blank">
+                            <i class="fas fa-user-injured" aria-hidden="true"></i>
+                        </a>
+                        @elseif(Auth::user()->isAbleTo('admin-patients-read'))
+                        <a href="{{ route('admin.patients.show', $appointment->user_id) }}" class="btn btn-info pull-left" target="_blank">
+                            <i class="fas fa-user-injured" aria-hidden="true"></i>
+                        </a>
+                        @endif
+                    @endif
                     <button type="button" class=" btn  btn-default pull-right" data-bs-dismiss="modal" aria-label="Close">{{ trans('general/admin_lang.close') }}</button>                   
                     @if (empty($disabledForm))
                          <button type="submit" form="formDataAppointment" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>  
