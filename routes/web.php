@@ -21,6 +21,7 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminUserProfileController;
 use App\Http\Controllers\AdminAppointmentController;
 use App\Http\Controllers\AdminAppointmentsController;
+use App\Http\Controllers\AdminAppointmentsDeletedController;
 use App\Http\Controllers\Auth\FrontRegisterUserController;
 use App\Http\Controllers\AdminCalendarController;
 use App\Http\Controllers\FrontChangePasswordController;
@@ -384,5 +385,14 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::delete('/appointments/{id}', [AdminAppointmentsController::class, 'destroy'])->name('admin.appointments.destroy');
 
     Route::get('/appointments/export-excel', [AdminAppointmentsController::class, 'exportExcel'])->name("admin.appointments.exportExcel");
+
+
+    Route::get('/appointments-deleted', [AdminAppointmentsDeletedController::class, 'index']);
+    Route::get('/appointments-deleted/remove-filter', [AdminAppointmentsDeletedController::class, 'removeFilter'])->name('admin.appointments_deleted.removeFilter');
+    Route::patch('/appointments-deleted/restaurar/{id}', [AdminAppointmentsDeletedController::class, 'restaurar'])->name('admin.appointments_deleted.restaurar');
+    Route::post('/appointments-deleted/save-filter', [AdminAppointmentsDeletedController::class, 'saveFilter'])->name('admin.appointments_deleted.saveFilter');
+    Route::post('/appointments-deleted/list', [AdminAppointmentsDeletedController::class, 'getData'])->name('admin.appointments_deleted.getData');
+    Route::delete('/appointments-deleted/{id}', [AdminAppointmentsDeletedController::class, 'destroy'])->name('admin.appointments_deleted.destroy');
+
     Route::get('/calendar', [AdminCalendarController::class, 'index'])->name('admin.calendar');
 });

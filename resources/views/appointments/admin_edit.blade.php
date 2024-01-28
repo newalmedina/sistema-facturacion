@@ -245,7 +245,7 @@ $disabled= isset($disabled)?$disabled : null;
         let insurance= $("#insurance_carrier_id").val()==""?0:$("#insurance_carrier_id").val();
         let service= $("#service_id").val()==""?0: $("#service_id").val();
         let user_id=$("#user_id").val()==""?0: $("#user_id").val();
-        insurancePrice(user_id,service, insurance);
+        // insurancePrice(user_id,service, insurance);
         calculateTotal();
     });
     var allowInsurance=false;
@@ -309,7 +309,7 @@ $disabled= isset($disabled)?$disabled : null;
         $('#insuranceServiceApplied').html("");
         $('#applicated_insurance').prop("disabled",true);
         $('#applicated_insurance').prop("checked",false);
-        allowInsurance=false;
+        
         if(user_id>0 && service_id>0 && insurance_id>0){
             $.ajax({ 
                 url     : "{{ url('admin/appointments/get-insurances-price') }}/"+user_id+"/"+service_id+"/"+insurance_id,
@@ -322,7 +322,7 @@ $disabled= isset($disabled)?$disabled : null;
                         $('#insuranceServiceApplied').html("Este seguro no aplica para este servicio.");
                         $('#applicated_insurance').prop("disabled",true);
                         $('#applicated_insurance').prop("checked",false);
-                        allowInsurance=false;
+                        
                     }              else{
                         $('#applicated_insurance').prop("disabled",false);
                         @if($appointment->applicated_insurance)
@@ -331,7 +331,7 @@ $disabled= isset($disabled)?$disabled : null;
                         $('#applicated_insurance').prop("checked",false);
 
                         @endif
-                        allowInsurance=true;
+                        
                     }        
                 }
                 
@@ -342,14 +342,15 @@ $disabled= isset($disabled)?$disabled : null;
 
     function calculateTotal(){
         $("#total").val($("#service_id").find(':selected').data('id'));
+        
         if($("#service_id").val()!=""){
          
             $("#total").val($("#service_id").find(':selected').data('id'));
 
             if ($('#applicated_insurance').prop('checked')) {
-                if(allowInsurance){
-                    $("#total").val($("#price_with_insurance").val());
-                }
+            
+                 $("#total").val($("#price_with_insurance").val());
+                
             } 
         }
 

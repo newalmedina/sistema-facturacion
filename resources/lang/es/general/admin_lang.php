@@ -33,6 +33,7 @@ return [
     'not_permission' => 'No tienes permisos necesarios para ver esta sección',
 
     'generate_document' => 'Generar documento',
+    'suplant' => 'Suplantar identidad',
     'lang' => [
         'lang' => 'Idiomas',
         'es' => 'Español',

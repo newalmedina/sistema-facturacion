@@ -25,7 +25,15 @@ $disabled= isset($disabled)?$disabled : null;
         <div class="row">
             <div class="col-12 text-end">
                 <h3> <span class="badge badge-primary p-2"><b>{{ $user->userProfile->fullName }}</b></span></h3>
+                
             </div>
+            @if (auth()->user()->isAbleTo("admin-users-suplant-identity") && auth()->user()->id != $user->id) 
+            <div class="col-12 text-start">
+
+                <a  class="btn btn-primary btn-xs ms-1"  data-bs-content="{{ trans('general/admin_lang.suplant')  }}" data-bs-placement="left" data-bs-toggle="popover" href="{{ route('admin.suplantar', $user->id) }} " ><i
+                class="fa fa-user-secret" ></i> {{ trans('general/admin_lang.suplant')  }}</a> 
+            </div>
+            @endif
         </div>
     @else
         <div class="col-12 mb-5"></div>

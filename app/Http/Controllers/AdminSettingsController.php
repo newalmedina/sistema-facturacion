@@ -28,8 +28,8 @@ class AdminSettingsController extends Controller
 
         $pageTitle = trans('settings/admin_lang.settings');
         $title = trans('settings/admin_lang.settings');
-
-        return view('settings.admin_index', compact('pageTitle', 'title', 'setting', 'provincesList', 'municipiosList', 'disabledForm'));
+        $tab = 'tab_1';
+        return view('settings.admin_index', compact('pageTitle', 'title', 'setting', 'provincesList', 'municipiosList', 'disabledForm', 'tab'));
     }
     public function update(AdminSettingRequest $request)
     {
@@ -56,7 +56,7 @@ class AdminSettingsController extends Controller
                         $setting->value = $filename;
                         //guardando en la carpeta public para luego sacarla en los pdf
                         // $image->storeAs('settings', $filename, 'public');
-                    
+
 
                         // Ruta de la carpeta "settings"
                         $rutaCarpeta = public_path('settings');

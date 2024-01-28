@@ -392,4 +392,24 @@ class Appointment extends Model
         }
         return false;
     }
+    public function scopeCanDeleteTrash()
+    {
+        if (
+            !auth()->user()->isAbleTo('admin-appointments-delete-permanent')
+        ) {
+            //si no tiene ninguno de los permisos no muestre ningun registro 
+            return false;
+        }
+        return true;
+    }
+    public function scopeCanRestaurarTrash()
+    {
+        if (
+            !auth()->user()->isAbleTo('admin-appointments-restore-deleted')
+        ) {
+            //si no tiene ninguno de los permisos no muestre ningun registro 
+            return false;
+        }
+        return true;
+    }
 }

@@ -27,7 +27,7 @@
    
     <div class="row">
         <div class="col">
-            <form id="formData" enctype="multipart/form-data" action=" {{ route("admin.appointments_deleted.saveFilter") }}" method="post"  novalidate="false">
+            <form id="formData" enctype="multipart/form-data" action=" {{ route("admin.appointments.saveFilter") }}" method="post"  novalidate="false">
                 @csrf
                 @method("post")
             <section class="card card-featured-top card-featured-primary">
@@ -43,23 +43,23 @@
                     <div class="row">
                         <div class="col-12 col-md-3">                     
                             <div class="form-group">
-                                <label for="start_at_ini"  class="col-12"> {{ trans('appointments_deleted/admin_lang.fields.start_at_ini') }}</label>
+                                <label for="start_at_ini"  class="col-12"> {{ trans('appointments/admin_lang.fields.start_at_ini') }}</label>
                                 <input   type="text"  autocomplete="off" class="form-control datepicker" value="{{ $filtStartAtIni }}"  name="start_at_ini" id="start_at_ini" >
                                             
                             </div>
                         </div>       
                         <div class="col-12 col-md-3">                     
                             <div class="form-group">
-                                <label for="start_at_end"  class="col-12"> {{ trans('appointments_deleted/admin_lang.fields.start_at_end') }}</label>
+                                <label for="start_at_end"  class="col-12"> {{ trans('appointments/admin_lang.fields.start_at_end') }}</label>
                                 <input   type="text"  autocomplete="off" class="form-control datepicker" value="{{ $filtStartAtEnd }}"  name="start_at_end" id="start_at_end" >
                                             
                             </div>
                         </div>   
                         <div class="col-12 col-md-3">                     
                             <div class="form-group">
-                                <label for="state" class="col-12"> {{ trans('appointments_deleted/admin_lang.fields.state') }} </label>
+                                <label for="state" class="col-12"> {{ trans('appointments/admin_lang.fields.state') }} </label>
                                 <select class="form-control select2" multiple name="state[]" id="state">
-                                    <option value="">{{ trans('appointments_deleted/admin_lang.fields.state_helper') }}</option>   
+                                    <option value="">{{ trans('appointments/admin_lang.fields.state_helper') }}</option>   
                                     @foreach ($stateList as $key=>$value)
                                     
                                         <option value="{{ $key }}"  
@@ -74,9 +74,9 @@
                         </div>       
                         <div class="col-12 col-md-3">                     
                             <div class="form-group">
-                                <label for="service_id" class="col-12"> {{ trans('appointments_deleted/admin_lang.fields.service_id') }} </label>
+                                <label for="service_id" class="col-12"> {{ trans('appointments/admin_lang.fields.service_id') }} </label>
                                 <select class="form-control select2" multiple name="service_id[]" id="service_id">
-                                    <option value="">{{ trans('appointments_deleted/admin_lang.fields.state_helper') }}</option>   
+                                    <option value="">{{ trans('appointments/admin_lang.fields.state_helper') }}</option>   
                                     @foreach ($serviceList as $service)
                                        
                                          <option value="{{  $service->id }}"
@@ -93,9 +93,9 @@
                     <div class="row">
                         <div class="col-12 col-md-6">                     
                             <div class="form-group">
-                                <label for="user_id"  class="col-12"> {{ trans('appointments_deleted/admin_lang.fields.user_id') }}</label>
+                                <label for="user_id"  class="col-12"> {{ trans('appointments/admin_lang.fields.user_id') }}</label>
                                 <select class="form-control select2" multiple name="user_id[]" id="user_id">
-                                    <option value="">{{ trans('appointments_deleted/admin_lang.fields.user_id_helper') }}</option>   
+                                    <option value="">{{ trans('appointments/admin_lang.fields.user_id_helper') }}</option>   
                                     @foreach ($patientList as $patient)
                                         <option value="{{  $patient->id }}"
                                             @if(in_array($patient->id,$filtUserId))
@@ -109,9 +109,9 @@
                         </div>   
                         <div class="col-12 col-md-6">                     
                             <div class="form-group">
-                                <label for="doctor_id" class="col-12"> {{ trans('appointments_deleted/admin_lang.fields.doctor_id') }} </label>
+                                <label for="doctor_id" class="col-12"> {{ trans('appointments/admin_lang.fields.doctor_id') }} </label>
                                 <select class="form-control select2" multiple name="doctor_id[]" id="doctor_id">
-                                    <option value="">{{ trans('appointments_deleted/admin_lang.fields.doctor_id_helper') }}</option>   
+                                    <option value="">{{ trans('appointments/admin_lang.fields.doctor_id_helper') }}</option>   
                                     @foreach ($doctorList as $doctor)
                                     <option value="{{  $doctor->id }}"
                                         @if(in_array($doctor->id,$filtDoctorId))
@@ -130,12 +130,14 @@
                     <div class="row ">
                         <div class="col-12 col-md-6 d-flex justify-content-start">
                             <button class="btn btn-success btn-xs " type="submit"> {!! trans('general/admin_lang.filter') !!}</button>
-                            <a href="{{ url('admin/appointments-deleted/remove-filter') }}" class="ms-2 btn btn-danger btn-xs">
+                            <a href="{{ url('admin/appointments/remove-filter') }}" class="ms-2 btn btn-danger btn-xs">
                                 {!! trans('general/admin_lang.clean_filter') !!}
                             </a>
                         </div>
                         @if ( 
-                        Auth::user()->isAbleTo("admin-appointments-deleted-list") 
+                        Auth::user()->isAbleTo("admin-appointments-list-all") ||
+                        Auth::user()->isAbleTo("admin-appointments-list-created-by-user") ||
+                        Auth::user()->isAbleTo("admin-appointments-list-doctor") 
                          ) 
                         <div class="col-12 col-md-6 d-flex justify-content-end">
                             <a href="{{ url('admin/appointments/export-excel') }}" class="text-success">
@@ -161,19 +163,28 @@
 
                         <h2 class="card-title">{{ $title }}</h2>
                     </header>
-                   
+                    <div class="card-body">  
+                        <div class="text-end">
+                            @if(Auth::user()->isAbleTo("admin-appointments-create"))
+                              <a href="{{ url('admin/appointments/create') }}" class="btn btn-outline-success">
+                                {{ trans('appointments/admin_lang.new') }}
+                              </a>
+                            @endif
+                          </div>
+                    </div>
 
                     <div class="card-body">  
                         <div class="row">
                             <div class="col-12 table-responsive">
                                 @if ( 
-                                    Auth::user()->isAbleTo("admin-appointments-deleted-list") 
+                                    Auth::user()->isAbleTo("admin-appointments-list-all") ||
+                                    Auth::user()->isAbleTo("admin-appointments-list-created-by-user") ||
+                                    Auth::user()->isAbleTo("admin-appointments-list-doctor") 
                                     ) 
                                 <table id="table_appointments" class="table table-bordered table-striped" style="width: 100%" aria-hidden="true">
                                     <thead>
                                         <tr>
                                             {{-- <th scope="col"> --}}
-                                            <th scope="col">
                                             <th scope="col">
                                             <th scope="col">
                                             <th scope="col">
@@ -188,7 +199,6 @@
                                     <tfoot>
                                         <tr>
                                             {{-- <th scope="col"> --}}
-                                            <th scope="col">
                                             <th scope="col">
                                             <th scope="col">
                                             <th scope="col">
@@ -233,8 +243,9 @@
     });
     var oTable = '';
     @if ( 
-        Auth::user()->isAbleTo("admin-appointments-deleted-list") 
-       
+        Auth::user()->isAbleTo("admin-appointments-list-all") ||
+        Auth::user()->isAbleTo("admin-appointments-list-created-by-user") ||
+        Auth::user()->isAbleTo("admin-appointments-list-doctor") 
             ) 
         $(function() {
             oTable = $('#table_appointments').DataTable({
@@ -248,7 +259,7 @@
                     "headers": {
                         "X-CSRF-TOKEN": "{{ csrf_token() }}"
                     },
-                    url: "{{ url('admin/appointments-deleted/list') }}",
+                    url: "{{ url('admin/appointments/list') }}",
                     type: "POST"
                 },
             /* order: [
@@ -257,7 +268,7 @@
                 columns: [
                    
                     // {
-                    //     "title": "{!! trans('appointments_deleted/admin_lang.fields.image2') !!}",
+                    //     "title": "{!! trans('appointments/admin_lang.fields.image2') !!}",
                     //     orderable: false,
                     //     searchable: false,
                     //     data: 'image',
@@ -265,7 +276,7 @@
                     //     sWidth: '80px'
                     // },
                     {
-                        "title": "{!! trans('appointments_deleted/admin_lang.fields.start_at') !!}",
+                        "title": "{!! trans('appointments/admin_lang.fields.start_at') !!}",
                         orderable       : true,
                         searchable      : true,
                         data            : 'start_at',
@@ -278,7 +289,7 @@
                             sWidth          : '100px'
                     },
                     {
-                        "title": "{!! trans('appointments_deleted/admin_lang.fields.user_id') !!}",
+                        "title": "{!! trans('appointments/admin_lang.fields.user_id') !!}",
                         orderable: true,
                         searchable: true,
                         data: 'patient',
@@ -286,7 +297,7 @@
                         sWidth: ''
                     },
                     {
-                        "title": "{!! trans('appointments_deleted/admin_lang.fields.doctor_id') !!}",
+                        "title": "{!! trans('appointments/admin_lang.fields.doctor_id') !!}",
                         orderable: true,
                         searchable: true,
                         data: 'doctor',
@@ -294,7 +305,7 @@
                         sWidth: ''
                     },
                     {
-                        "title": "{!! trans('appointments_deleted/admin_lang.fields.service_id') !!}",
+                        "title": "{!! trans('appointments/admin_lang.fields.service_id') !!}",
                         orderable: true,
                         searchable: true,
                         data: 'service',
@@ -302,7 +313,7 @@
                         sWidth: ''
                     },
                     {
-                        "title": "{!! trans('appointments_deleted/admin_lang.fields.total') !!}",
+                        "title": "{!! trans('appointments/admin_lang.fields.total') !!}",
                         orderable: true,
                         searchable: true,
                         data: 'total',
@@ -311,24 +322,11 @@
                     },
                    
                     {
-                        "title": "{!! trans('appointments_deleted/admin_lang.fields.state') !!}",
+                        "title": "{!! trans('appointments/admin_lang.fields.state') !!}",
                         orderable: false,
                         searchable: false,
                         sWidth: '100px',
                         data: 'state'
-                    },
-                    {
-                        "title": "{!! trans('appointments_deleted/admin_lang.fields.deleted_at') !!}",
-                        orderable       : true,
-                        searchable      : true,
-                        data            : 'deleted_at',
-                        name            : 'deleted_at',
-                        type: 'num',
-                            render: {
-                                _: 'display',
-                                sort: 'timestamp'
-                            },
-                            sWidth          : '100px'
                     },
                     {
                         "title": "{!! trans('general/admin_lang.actions') !!}",
@@ -430,10 +428,10 @@
         return false;
     }
 
-    function restaurarElement(url) {
+    function facturarElement(url) {
             Swal.fire({
-                title: "{{ trans('appointments_deleted/admin_lang.restaurar') }}",
-            text: "{{ trans('appointments_deleted/admin_lang.restaurar_question') }}",
+                title: "{{ trans('appointments/admin_lang.facturar') }}",
+            text: "{{ trans('appointments/admin_lang.facturar_question') }}",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -474,8 +472,8 @@
 
         function finalizarElement(url) {
             Swal.fire({
-                title: "{{ trans('appointments_deleted/admin_lang.finalizar') }}",
-            text: "{{ trans('appointments_deleted/admin_lang.finalizar_question') }}",
+                title: "{{ trans('appointments/admin_lang.finalizar') }}",
+            text: "{{ trans('appointments/admin_lang.finalizar_question') }}",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
