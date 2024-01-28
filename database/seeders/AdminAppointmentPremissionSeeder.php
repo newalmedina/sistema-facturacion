@@ -45,9 +45,9 @@ class AdminAppointmentPremissionSeeder  extends BaseSeeder
                 'display_name' => 'Citas - listado (Solo las Asignadas a mi como doctor)',
                 'name' => Str::slug('admin-appointments-list-doctor'),
                 'description' => 'Citas - listado (Solo las Asignadas a mi como doctor)'
-            ],  
+            ],
 
-            
+
 
             [
                 'display_name' => 'Citas - crear',
@@ -69,7 +69,7 @@ class AdminAppointmentPremissionSeeder  extends BaseSeeder
                 'display_name' => 'Citas - actualizar (Solo las Asignadas a mi como doctor)',
                 'name' => Str::slug('admin-appointments-update-doctor'),
                 'description' => 'Citas - actualizar (Solo las Asignadas a mi como doctor)'
-            ],  
+            ],
 
             [
                 'display_name' => 'Citas - ver todas',
@@ -85,7 +85,7 @@ class AdminAppointmentPremissionSeeder  extends BaseSeeder
                 'display_name' => 'Citas - ver (Solo las Asignadas a mi como doctor)',
                 'name' => Str::slug('admin-appointments-read-doctor'),
                 'description' => 'Citas - ver (Solo las Asignadas a mi como doctor)'
-            ],  
+            ],
 
             [
                 'display_name' => 'Citas - facturar todas',
@@ -101,7 +101,7 @@ class AdminAppointmentPremissionSeeder  extends BaseSeeder
                 'display_name' => 'Citas - facturar (Solo las Asignadas a mi como doctor)',
                 'name' => Str::slug('admin-appointments-facturar-doctor'),
                 'description' => 'Citas - facturar (Solo las Asignadas a mi como doctor)'
-            ],  
+            ],
 
             [
                 'display_name' => 'Citas - finalizar todas',
@@ -117,7 +117,7 @@ class AdminAppointmentPremissionSeeder  extends BaseSeeder
                 'display_name' => 'Citas - finalizar (Solo las Asignadas a mi como doctor)',
                 'name' => Str::slug('admin-appointments-end-doctor'),
                 'description' => 'Citas - finalizar (Solo las Asignadas a mi como doctor)'
-            ],  
+            ],
 
             [
                 'display_name' => 'Citas - eliminar todas',
@@ -133,17 +133,32 @@ class AdminAppointmentPremissionSeeder  extends BaseSeeder
                 'display_name' => 'Citas - eliminar (Solo las Asignadas a mi como doctor)',
                 'name' => Str::slug('admin-appointments-delete-doctor'),
                 'description' => 'Citas - eliminar (Solo las Asignadas a mi como doctor)'
-            ],  
+            ],
             [
                 'display_name' => 'Citas - eliminar (Una vez facturadas)',
                 'name' => Str::slug('admin-appointments-delete-facturar'),
                 'description' => 'Citas - eliminar (Una vez facturadas)'
-            ],  
+            ],
             [
                 'display_name' => 'Citas - eliminar (Una vez finalizadas)',
                 'name' => Str::slug('admin-appointments-delete-end'),
                 'description' => 'Citas - eliminar (Una vez finalizadas)'
-            ],  
+            ],
+            [
+                'display_name' => 'Citas - Listado de eliminadas ',
+                'name' => Str::slug('admin-appointments-deleted-list'),
+                'description' => 'Citas - Listado de eliminadas'
+            ],
+            [
+                'display_name' => 'Citas - Restaurar Eliminadas ',
+                'name' => Str::slug('admin-appointments-restore-deleted'),
+                'description' => 'Citas - Restaurar Eliminadas'
+            ],
+            [
+                'display_name' => 'Citas - Elimar permanentemente ',
+                'name' => Str::slug('admin-appointments-delete-permanent'),
+                'description' => 'Citas - Elimar permanentemente'
+            ],
 
 
 

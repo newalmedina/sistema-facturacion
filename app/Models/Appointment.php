@@ -27,6 +27,10 @@ class Appointment extends Model
     {
         return $this->belongsTo('App\Models\Service', 'service_id', "id");
     }
+    public function center()
+    {
+        return $this->belongsTo('App\Models\Center', 'center_id', "id");
+    }
 
     public function insurance()
     {
@@ -45,19 +49,19 @@ class Appointment extends Model
     {
         switch ($this->state) {
             case 'pendiente':
-            $state="Pendiente";
-            break;
-            case 'facturado':
-                $state="Facturado";
+                $state = "Pendiente";
                 break;
-                case 'finalizado':
-                    $state="Finalizado";
-                    break;
-                    
-                    default:
-                    $state="Sin estado";
-            
-            break;
+            case 'facturado':
+                $state = "Facturado";
+                break;
+            case 'finalizado':
+                $state = "Finalizado";
+                break;
+
+            default:
+                $state = "Sin estado";
+
+                break;
         }
         return $state;
     }
@@ -65,19 +69,19 @@ class Appointment extends Model
     {
         switch ($this->state) {
             case 'pendiente':
-            $color="#6c757d";
-            break;
-            case 'facturado':
-                $color="#ffc107";
+                $color = "#6c757d";
                 break;
-                case 'finalizado':
-                    $color="#28a745";
-                    break;
-                    
-                    default:
-                    $color="Sin estado";
-            
-            break;
+            case 'facturado':
+                $color = "#ffc107";
+                break;
+            case 'finalizado':
+                $color = "#28a745";
+                break;
+
+            default:
+                $color = "Sin estado";
+
+                break;
         }
         return $color;
     }
@@ -175,7 +179,7 @@ class Appointment extends Model
 
     public function scopeSelectedCenter($query)
     {
-      return   $query->where("appointments.center_id", auth()->user()->userProfile->center->id);
+        return   $query->where("appointments.center_id", auth()->user()->userProfile->center->id);
     }
 
     public function scopeCanShowDashboard($query)
@@ -208,8 +212,8 @@ class Appointment extends Model
 
     public function scopeCanList($query)
     {
-       
-       
+
+
         if (
             !auth()->user()->isAbleTo('admin-appointments-list-all') &&
             !auth()->user()->isAbleTo('admin-appointments-list-doctor')      &&
@@ -229,13 +233,11 @@ class Appointment extends Model
                         $query->orWhere("appointments.created_by", Auth::user()->id);
                     }
                 });
-               
             }
         }
-        
     }
     public function scopeCanEdit()
-    {     
+    {
 
         if (
             !auth()->user()->isAbleTo('admin-appointments-update-all') &&
@@ -248,7 +250,6 @@ class Appointment extends Model
         } else {
             if (auth()->user()->isAbleTo('admin-appointments-update-all')) {
                 return true;
-               
             } else {
                 if (auth()->user()->isAbleTo('admin-appointments-update-doctor')) {
                     return $this->soySuDoctor();
@@ -262,7 +263,7 @@ class Appointment extends Model
     }
 
     public function scopeCanShow()
-    {     
+    {
         if (
             !auth()->user()->isAbleTo('admin-appointments-read-all') &&
             !auth()->user()->isAbleTo('admin-appointments-read-doctor')      &&
@@ -274,7 +275,6 @@ class Appointment extends Model
         } else {
             if (auth()->user()->isAbleTo('admin-appointments-read-all')) {
                 return true;
-                
             } else {
                 if (auth()->user()->isAbleTo('admin-appointments-read-doctor')) {
                     return $this->soySuDoctor();
@@ -286,12 +286,12 @@ class Appointment extends Model
         }
         return false;
     }
-   
+
     public function scopeCanFacturar()
     {
         //si no se ha facturado no se puede finalizar
 
-        if ( $this->state=="facturado" || $this->state=="finalizado") {
+        if ($this->state == "facturado" || $this->state == "finalizado") {
             return false;
         }
 
@@ -305,8 +305,8 @@ class Appointment extends Model
         } else {
             if (!auth()->user()->isAbleTo('admin-appointments-facturar-all')) {
                 if (auth()->user()->isAbleTo('admin-appointments-facturar-doctor') && auth()->user()->isAbleTo('admin-appointments-facturar-created-by-user')) {
-                    if($this->soySuDoctor() || $this->soySuCreador()){                        
-                        return true ;
+                    if ($this->soySuDoctor() || $this->soySuCreador()) {
+                        return true;
                     }
                 }
 
@@ -323,9 +323,9 @@ class Appointment extends Model
         return false;
     }
     public function scopeCanFinalizar()
-    {    
+    {
         //si no se ha facturado no se puede finalizar
-        if ( $this->state=="pendiente" || $this->state=="finalizado") {
+        if ($this->state == "pendiente" || $this->state == "finalizado") {
             return false;
         }
         if (
@@ -338,8 +338,8 @@ class Appointment extends Model
         } else {
             if (!auth()->user()->isAbleTo('admin-appointments-end-all')) {
                 if (auth()->user()->isAbleTo('admin-appointments-end-doctor') && auth()->user()->isAbleTo('admin-appointments-end-created-by-user')) {
-                    if($this->soySuDoctor() || $this->soySuCreador()){                        
-                        return true ;
+                    if ($this->soySuDoctor() || $this->soySuCreador()) {
+                        return true;
                     }
                 }
 
@@ -366,17 +366,17 @@ class Appointment extends Model
             //si no tiene ninguno de los permisos no muestre ningun registro 
             return false;
         } else {
-            if($this->state =="facturado" && !auth()->user()->isAbleTo('admin-appointments-delete-facturar')){
+            if ($this->state == "facturado" && !auth()->user()->isAbleTo('admin-appointments-delete-facturar')) {
                 return false;
             }
-            if($this->state =="finalizado" && !auth()->user()->isAbleTo('admin-appointments-delete-end')){
+            if ($this->state == "finalizado" && !auth()->user()->isAbleTo('admin-appointments-delete-end')) {
                 return false;
             }
-            
+
             if (!auth()->user()->isAbleTo('admin-appointments-delete-all')) {
                 if (auth()->user()->isAbleTo('admin-appointments-delete-doctor') && auth()->user()->isAbleTo('admin-appointments-delete-created-by-user')) {
-                    if($this->soySuDoctor() || $this->soySuCreador()){                        
-                        return true ;
+                    if ($this->soySuDoctor() || $this->soySuCreador()) {
+                        return true;
                     }
                 }
 
@@ -392,5 +392,24 @@ class Appointment extends Model
         }
         return false;
     }
-  
+    public function scopeCanDeleteTrash()
+    {
+        if (
+            !auth()->user()->isAbleTo('admin-appointments-delete-permanent')
+        ) {
+            //si no tiene ninguno de los permisos no muestre ningun registro 
+            return false;
+        }
+        return true;
+    }
+    public function scopeCanRestaurarTrash()
+    {
+        if (
+            !auth()->user()->isAbleTo('admin-appointments-restore-deleted')
+        ) {
+            //si no tiene ninguno de los permisos no muestre ningun registro 
+            return false;
+        }
+        return true;
+    }
 }

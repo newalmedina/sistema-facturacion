@@ -17,7 +17,8 @@
  <a class="btn btn-primary" href="{!!$url!!}" target="_blank" >{!! trans('emails/my_verify_email_lang.verify_btn') !!}</a>
 
 <br/>
-<p>{{ trans('emails/my_reset_password_lang.text_2') }}</p>
+<p>{{ trans('emails/my_reset_password_lang.text_2') }}</p>ol
+
  <p>{!! trans('emails/my_verify_email_lang.text_3') !!}</p>
 <br/>
  <p>{!! trans('emails/general_lang.bye') !!}  {!!$settingInsideMessage->site_name!!}

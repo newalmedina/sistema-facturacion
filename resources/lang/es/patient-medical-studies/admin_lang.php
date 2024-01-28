@@ -3,7 +3,7 @@
 
 return [
     'patient-medical-studies' => 'Estudios médicos',
-    'patient-medical-studies-export' => 'recetas_medicas',
+    'patient-medical-studies-export' => 'estudios_medicos',
     'patients' => "Pacientes",
     'todos' => 'Todos los estudios médicos',
     'patient-medical-study' => 'Estudio médico',
@@ -13,7 +13,7 @@ return [
     'show' => 'Visualizar estudio médico',
     'patient-medical-studies-management' => 'Gestión de estudios médicos',
     'created_at' => 'Creado el:',
-    
+
 
 
     'fields' => [
@@ -30,7 +30,7 @@ return [
         'created_by_helper' => 'Introduce creado por',
         'created_by_required' => 'El campo creado por es obligatorio',
 
-       
+
 
         'center' => 'Centro',
         'center_helper' => 'Introduce centro',

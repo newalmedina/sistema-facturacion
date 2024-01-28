@@ -170,6 +170,42 @@
                             </a>                        
                         </li>
                     @endif
+                    @if(Auth::user()->isAbleTo("admin-appointments") && Auth::user()->hasSelectedCenter())
+                        <li class="nav-parent 
+                            @if (
+                            // Request::is('admin/users*') ||
+                                Request::is('admin/appointments*') 
+                                
+                            ) 
+                               nav-active
+                               nav-expanded
+                            @endif">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-calendar-check" aria-hidden="true"></i>
+                                <span>{{ trans('appointments/admin_lang.appointments') }}</span>
+                            </a>
+                            <ul class="nav nav-children" style="">
+                                @if(Auth::user()->isAbleTo("admin-appointments"))
+                                    <li  @if (Request::is('admin/appointments*') && !Request::is('admin/appointments-deleted')) class="nav-active" @endif>                       
+                                        <a class="nav-link"  href="{{ url('/admin/appointments') }}">
+                                            <i class="fas fa-list" aria-hidden="true"></i>
+                                            <span>{{ trans('appointments/admin_lang.list') }}</span>
+                                        </a>                    
+                                    </li>
+                                @endif
+                                @if(Auth::user()->isAbleTo("admin-appointments-deleted-list"))
+                                    <li  @if (Request::is('admin/appointments-deleted')) class="nav-active" @endif>                       
+                                        <a class="nav-link"  href="{{ url('/admin/appointments-deleted') }}">
+                                            <i class="fas fa-list" aria-hidden="true"></i>
+                                            <span>{{ trans('appointments_deleted/admin_lang.list') }}</span>
+                                        </a>                    
+                                    </li>
+                                @endif
+                                
+                            </ul>
+                        </li>
+                    @endif
+                   
                     
                     @if(Auth::user()->isAbleTo("admin-settings")  )
                         <li class="@if (Request::is('admin/settings*') ) nav-active @endif">

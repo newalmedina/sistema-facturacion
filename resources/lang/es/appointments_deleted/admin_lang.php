@@ -2,11 +2,11 @@
 
 
 return [
-    'appointments' => 'Citas',
+    'appointments' => 'Citas eliminadas',
 
-    'todos' => 'Todas las citas',
-    'cita' => 'Cita',
-    'list' => 'Listado de citas',
+    'todos' => 'Todas las citas eliminadas',
+    'cita' => 'Cita eliminada',
+    'list' => 'Listado de citas eliminadas',
     'new' => 'Nueva cita',
     'edit' => 'Editar cita',
     'show' => 'Visualizar cita',
@@ -18,6 +18,8 @@ return [
 
     'changed' => 'cita Cambiado Correctamente',
     'quit_image' => 'Quitar imagen',
+    'restaurar_question' => '¿Seguro que quieres restaurar esta cita?',
+    'restaurar' => 'Restaurar',
     'facturar_question' => '¿Seguro que quieres facturar esta cita?',
     'facturar' => 'Facturar',
     'finalizar_question' => '¿Seguro que quieres finalizar esta cita?',
@@ -48,6 +50,7 @@ return [
         'start_at_helper' => 'Introduce fecha',
         'start_at_required' => 'El campo fecha es obligatorio',
 
+        'deleted_at' => 'Fecha eliminado',
         'start_at_ini' => 'Fecha inicial',
         'start_at_ini_helper' => 'Introduce fecha inicial',
         'start_at_ini_required' => 'El campo fecha inicial es obligatorio',
