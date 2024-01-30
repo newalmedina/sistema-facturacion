@@ -112,7 +112,7 @@ $disabled= isset($disabled)?$disabled : null;
                 </div> --}}
                            
             </div>
-            <div class="card-footer row">
+            <div class=" row">
                 <div class="col-12  d-flex justify-content-between">
 
                     <a href="{{ url('admin/settings') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>

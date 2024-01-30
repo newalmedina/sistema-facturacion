@@ -13,4 +13,8 @@ class Setting extends Model
     {
         return $query->where('group_slug', "general-settings");
     }
+    public function scopeSmtp($query)
+    {
+        return $query->where('group_slug', "smtp-settings");
+    }
 }

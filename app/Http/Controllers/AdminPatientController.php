@@ -24,7 +24,7 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Jobs\SendUserRegistrationEmailJob;
-
+use App\Services\SettingsServices;
 
 class AdminPatientController extends Controller
 {
@@ -156,16 +156,23 @@ class AdminPatientController extends Controller
         try {
             DB::beginTransaction();
             $patient = new User();
-            $password=Str::random(7)."*";
-            $patient->password =  Hash::make( $password);
+            $password = Str::random(7) . "*";
+            $patient->password =  Hash::make($password);
             $this->savePatients($patient, $request);
 
             $roles = Role::where("name", "patient")->pluck("id");
 
             $patient->syncRoles($roles);
             DB::commit();
-            
-            SendUserRegistrationEmailJob::dispatch($patient, $password);
+
+            $allowEmail = SettingsServices::allowEmails();
+
+
+            if ($allowEmail) {
+                //cambiar config del .env
+                $setConfiguration = SettingsServices::setSmtpConfiguration();
+                SendUserRegistrationEmailJob::dispatch($patient, $password);
+            }
 
             return redirect()->route('admin.patients.edit', [$patient->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
@@ -592,7 +599,7 @@ class AdminPatientController extends Controller
         if (empty($patient->userProfile)) {
             $userProfile = new UserProfile();
             $userProfile->user_id = $patient->id;
-            $userProfile->created_center=Auth::user()->hasSelectedCenter();
+            $userProfile->created_center = Auth::user()->hasSelectedCenter();
         } else {
             $userProfile = UserProfile::where('user_id', $patient->id)->first();
         }

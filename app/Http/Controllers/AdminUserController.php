@@ -11,6 +11,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Jobs\SendUserRegistrationEmailJob;
+use App\Services\SettingsServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -122,29 +123,29 @@ class AdminUserController extends Controller
 
             $user->userProfile->first_name = $request->input('user_profile.first_name');
             $user->userProfile->last_name = $request->input('user_profile.last_name');
-        
-            if(empty($user->password_changed_at) && $request->password_changed_at==1){
-                $user->password_changed_at= Carbon::now();
-            }elseif($request->password_changed_at!=1){
-                $user->password_changed_at=null;
+
+            if (empty($user->password_changed_at) && $request->password_changed_at == 1) {
+                $user->password_changed_at = Carbon::now();
+            } elseif ($request->password_changed_at != 1) {
+                $user->password_changed_at = null;
             }
-            if(empty($user->email_verified_at) && $request->email_verified_at==1){
-                $user->email_verified_at= Carbon::now();
-            }elseif($request->email_verified_at!=1){
-                $user->email_verified_at=null;
+            if (empty($user->email_verified_at) && $request->email_verified_at == 1) {
+                $user->email_verified_at = Carbon::now();
+            } elseif ($request->email_verified_at != 1) {
+                $user->email_verified_at = null;
             }
-        
+
             $user->push();
 
             DB::commit();
-            
-        
+
+
 
             return redirect()->route('admin.users.edit', [$user->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
             dd($e);
             DB::rollBack();
-            return redirect()->route('admin.users.edit', [$user->id])  ->with('error', trans('general/admin_lang.save_ko') . ' - ' . $e->getMessage());
+            return redirect()->route('admin.users.edit', [$user->id])->with('error', trans('general/admin_lang.save_ko') . ' - ' . $e->getMessage());
         }
     }
 
@@ -166,15 +167,15 @@ class AdminUserController extends Controller
             if (!empty($request->input('password'))) {
                 $user->password = Hash::make($request->input('password'));
             }
-            if(empty($user->password_changed_at) && $request->password_changed_at==1){
-                $user->password_changed_at= Carbon::now();
-            }elseif($request->password_changed_at!=1){
-                $user->password_changed_at=null;
+            if (empty($user->password_changed_at) && $request->password_changed_at == 1) {
+                $user->password_changed_at = Carbon::now();
+            } elseif ($request->password_changed_at != 1) {
+                $user->password_changed_at = null;
             }
-            if(empty($user->email_verified_at) && $request->email_verified_at==1){
-                $user->email_verified_at= Carbon::now();
-            }elseif($request->email_verified_at!=1){
-                $user->email_verified_at=null;
+            if (empty($user->email_verified_at) && $request->email_verified_at == 1) {
+                $user->email_verified_at = Carbon::now();
+            } elseif ($request->email_verified_at != 1) {
+                $user->email_verified_at = null;
             }
             $user->save();
 
@@ -185,12 +186,20 @@ class AdminUserController extends Controller
                 $userProfile->user_id = $user->id;
                 $userProfile->first_name = $request->input('user_profile.first_name');
                 $userProfile->last_name = $request->input('user_profile.last_name');
-                $userProfile->created_center=Auth::user()->hasSelectedCenter();
+                $userProfile->created_center = Auth::user()->hasSelectedCenter();
                 $userProfile->save();
             }
 
             DB::commit();
-            SendUserRegistrationEmailJob::dispatch($user,$request->input('password'));
+            $allowEmail = SettingsServices::allowEmails();
+
+
+            if ($allowEmail) {
+                //cambiar config del .env
+                $setConfiguration = SettingsServices::setSmtpConfiguration();
+
+                SendUserRegistrationEmailJob::dispatch($user, $request->input('password'));
+            }
 
             return redirect()->route('admin.users.edit', [$user->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
@@ -215,7 +224,7 @@ class AdminUserController extends Controller
             DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as fullname'),
 
         ])
-           // ->notPatients()
+            // ->notPatients()
             ->distinct()
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
             ->leftJoin("role_user", "role_user.user_id", "=", "users.id")

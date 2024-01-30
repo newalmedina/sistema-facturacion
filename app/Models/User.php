@@ -13,6 +13,8 @@ use Laravel\Sanctum\HasApiTokens;
 use Laratrust\Traits\LaratrustUserTrait;
 use App\Notifications\MyResetPassword;
 use App\Notifications\MyVerifyEmail;
+use App\Services\SettingsServices;
+use PhpOffice\PhpSpreadsheet\Writer\Ods\Settings;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -51,13 +53,28 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
     public function sendPasswordResetNotification($token)
     {
+        $allowEmail = SettingsServices::allowEmails();
 
-        $this->notify(new MyResetPassword($token));
+
+        if ($allowEmail) {
+            //cambiar config del .env
+            $setConfiguration = SettingsServices::setSmtpConfiguration();
+
+            $this->notify(new MyResetPassword($token));
+        }
     }
 
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new MyVerifyEmail($this));
+        $allowEmail = SettingsServices::allowEmails();
+
+
+        if ($allowEmail) {
+            //cambiar config del .env
+            $setConfiguration = SettingsServices::setSmtpConfiguration();
+
+            $this->notify(new MyVerifyEmail($this));
+        }
     }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

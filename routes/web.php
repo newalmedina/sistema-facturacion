@@ -114,6 +114,8 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::patch('/settings', [AdminSettingsController::class, 'update'])->name("admin.settings.update");
     Route::delete('/settings/delete-image/{image}', [AdminSettingsController::class, 'deleteImage'])->name("admin.settings.deleteImage");
 
+    Route::get('/settings-smtp', [AdminSettingsController::class, 'indexSmtp'])->name("admin.settings.smtp");
+    Route::patch('/settings-smtp', [AdminSettingsController::class, 'updateSmtp'])->name("admin.settings.smtp-update");
     //Admin Profile
     Route::get('/profile', [AdminUserProfileController::class, 'edit']);
 
