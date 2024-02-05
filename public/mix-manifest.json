@@ -1,4 +1,13 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/assets/admin/css/skins/default.css": "/assets/admin/css/skins/default.css",
+    "/resources/views/vendor/jsvalidation/bootstrap.php": "/resources/views/vendor/jsvalidation/bootstrap.php",
+    "/resources/views/vendor/jsvalidation/bootstrap4.php": "/resources/views/vendor/jsvalidation/bootstrap4.php",
+    "/resources/views/vendor/jsvalidation/bootstrap5.php": "/resources/views/vendor/jsvalidation/bootstrap5.php",
+    "/resources/views/vendor/jsvalidation/uikit.php": "/resources/views/vendor/jsvalidation/uikit.php",
+    "/vendor/jsvalidation/js/jsvalidation.js": "/vendor/jsvalidation/js/jsvalidation.js",
+    "/vendor/jsvalidation/js/jsvalidation.js.map": "/vendor/jsvalidation/js/jsvalidation.js.map",
+    "/vendor/jsvalidation/js/jsvalidation.min.js": "/vendor/jsvalidation/js/jsvalidation.min.js",
+    "/vendor/jsvalidation/js/jsvalidation.min.js.map": "/vendor/jsvalidation/js/jsvalidation.min.js.map"
 }

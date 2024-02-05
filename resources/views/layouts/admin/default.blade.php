@@ -37,18 +37,18 @@
     <link rel="stylesheet" href="{{ asset('assets/admin/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/admin/vendor/bootstrap-fileupload/bootstrap-fileupload.min.css')}}">
 
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/admin/css/theme.css')}}">
-
-    <!-- Skin CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/admin/css/skins/default.css')}}">
+ 
 
     <!-- Theme Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/admin/css/custom.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/admin/vendor/select2/select2.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/admin/vendor/toast/toast.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/admin/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}">
+   <!-- Theme CSS -->
+   <link rel="stylesheet" href="{{ asset('assets/admin/css/theme.css')}}">
 
+   <!-- Skin CSS -->
+   <link rel="stylesheet" href="{{ asset('assets/admin/css/skins/default.css')}}">
     <!-- Head Libs -->
     <script src="{{ asset('assets/admin/vendor/modernizr/modernizr.js')}}"></script>
     <style>

@@ -27,6 +27,11 @@
    
     <div class="row">
         <div class="col">
+            <button class="btn btn-primary">primary</button>
+            <button class="btn btn-secondary">secondary</button>
+            <button class="btn btn-tertiary">tertiary</button>
+            <button class="btn btn-quaternary">quaternary</button>
+            
             <form id="formData" enctype="multipart/form-data" action=" {{ route("admin.centers.saveFilter") }}" method="post"  novalidate="false">
                 @csrf
                 @method("post")
