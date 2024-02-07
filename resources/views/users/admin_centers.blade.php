@@ -25,7 +25,7 @@ $disabled= isset($disabled)?$disabled : null;
             <div class="row form-group mb-3">
                 <div class="col-12 ">                     
                     <div class="form-group">
-                        <label class="text-primary" for="center_id" class="col-12"> {{ trans('users/admin_lang.centers_asigned') }}</label>
+                        <label class='text-primary' for="center_id" class="col-12"> {{ trans('users/admin_lang.centers_asigned') }}</label>
                         <select {{ $disabled }} class="col-12 form-control select2" style="width:100%" multiple name="center_id[]" id="center_id">
                             <option value="">{{ trans('users/admin_lang.centers_helper') }}</option>   
                             @foreach ($centers as $center)

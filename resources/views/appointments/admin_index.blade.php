@@ -43,21 +43,21 @@
                     <div class="row">
                         <div class="col-12 col-md-3">                     
                             <div class="form-group">
-                                <label class="text-primary" for="start_at_ini"  class="col-12"> {{ trans('appointments/admin_lang.fields.start_at_ini') }}</label>
+                                <label class='text-primary' for="start_at_ini"  class="col-12"> {{ trans('appointments/admin_lang.fields.start_at_ini') }}</label>
                                 <input   type="text"  autocomplete="off" class="form-control datepicker" value="{{ $filtStartAtIni }}"  name="start_at_ini" id="start_at_ini" >
                                             
                             </div>
                         </div>       
                         <div class="col-12 col-md-3">                     
                             <div class="form-group">
-                                <label class="text-primary" for="start_at_end"  class="col-12"> {{ trans('appointments/admin_lang.fields.start_at_end') }}</label>
+                                <label class='text-primary' for="start_at_end"  class="col-12"> {{ trans('appointments/admin_lang.fields.start_at_end') }}</label>
                                 <input   type="text"  autocomplete="off" class="form-control datepicker" value="{{ $filtStartAtEnd }}"  name="start_at_end" id="start_at_end" >
                                             
                             </div>
                         </div>   
                         <div class="col-12 col-md-3">                     
                             <div class="form-group">
-                                <label class="text-primary" for="state" class="col-12"> {{ trans('appointments/admin_lang.fields.state') }} </label>
+                                <label class='text-primary' for="state" class="col-12"> {{ trans('appointments/admin_lang.fields.state') }} </label>
                                 <select class="form-control select2" multiple name="state[]" id="state">
                                     <option value="">{{ trans('appointments/admin_lang.fields.state_helper') }}</option>   
                                     @foreach ($stateList as $key=>$value)
@@ -74,7 +74,7 @@
                         </div>       
                         <div class="col-12 col-md-3">                     
                             <div class="form-group">
-                                <label class="text-primary" for="service_id" class="col-12"> {{ trans('appointments/admin_lang.fields.service_id') }} </label>
+                                <label class='text-primary' for="service_id" class="col-12"> {{ trans('appointments/admin_lang.fields.service_id') }} </label>
                                 <select class="form-control select2" multiple name="service_id[]" id="service_id">
                                     <option value="">{{ trans('appointments/admin_lang.fields.state_helper') }}</option>   
                                     @foreach ($serviceList as $service)
@@ -93,7 +93,7 @@
                     <div class="row">
                         <div class="col-12 col-md-6">                     
                             <div class="form-group">
-                                <label class="text-primary" for="user_id"  class="col-12"> {{ trans('appointments/admin_lang.fields.user_id') }}</label>
+                                <label class='text-primary' for="user_id"  class="col-12"> {{ trans('appointments/admin_lang.fields.user_id') }}</label>
                                 <select class="form-control select2" multiple name="user_id[]" id="user_id">
                                     <option value="">{{ trans('appointments/admin_lang.fields.user_id_helper') }}</option>   
                                     @foreach ($patientList as $patient)
@@ -109,7 +109,7 @@
                         </div>   
                         <div class="col-12 col-md-6">                     
                             <div class="form-group">
-                                <label class="text-primary" for="doctor_id" class="col-12"> {{ trans('appointments/admin_lang.fields.doctor_id') }} </label>
+                                <label class='text-primary' for="doctor_id" class="col-12"> {{ trans('appointments/admin_lang.fields.doctor_id') }} </label>
                                 <select class="form-control select2" multiple name="doctor_id[]" id="doctor_id">
                                     <option value="">{{ trans('appointments/admin_lang.fields.doctor_id_helper') }}</option>   
                                     @foreach ($doctorList as $doctor)
@@ -379,7 +379,7 @@
     //     var strBtn = "";
 
     //     $("#confirmModalLabel").html("{{ trans('general/admin_lang.delete') }}");
-    //     $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label class="text-primary" style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
+    //     $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label class='text-primary' style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
     //     strBtn+= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('general/admin_lang.close') }}</button>';
     //     strBtn+= '<button type="button" class="btn btn-primary" onclick="javascript:deleteinfo(\''+url+'\');">{{ trans('general/admin_lang.yes_delete') }}</button>';
     //     $("#confirmModalFooter").html(strBtn);

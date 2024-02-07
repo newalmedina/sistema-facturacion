@@ -38,13 +38,13 @@
                   <div class="row form-group mb-3">
                     <div class="col-md-4">                     
                         <div class="form-group">
-                            <label class="text-primary" for="start_date"> {{ trans('patient-medical-studies/admin_lang.fields.start_date') }}</label>
+                            <label class='text-primary' for="start_date"> {{ trans('patient-medical-studies/admin_lang.fields.start_date') }}</label>
                             <input value="{{ $filtStartData }}" name="start_date" type="text"  autocomplete="off" class="form-control datepicker"   placeholder="{{ trans('patient-medical-studies/admin_lang.fields.start_date_helper') }}">
                         </div>
                     </div>
                     <div class="col-md-4">                     
                         <div class="form-group">
-                            <label class="text-primary" for="end_date"> {{ trans('patient-medical-studies/admin_lang.fields.end_date') }}</label>
+                            <label class='text-primary' for="end_date"> {{ trans('patient-medical-studies/admin_lang.fields.end_date') }}</label>
                             <input value="{{ $filtEndData }}" name="end_date" type="text"  autocomplete="off" class="form-control datepicker"   placeholder="{{ trans('patient-medical-studies/admin_lang.fields.end_date_helper') }}">
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                     <div class="row form-group mb-3">
                         <div class="col-12 col-md-8">                     
                             <div class="form-group">
-                                <label class="text-primary" for="center_id"  class="col-12"> {{ trans('patient-medical-studies/admin_lang.fields.centers') }}</label>
+                                <label class='text-primary' for="center_id"  class="col-12"> {{ trans('patient-medical-studies/admin_lang.fields.centers') }}</label>
                                 <select class="form-control select2" multiple name="center_id[]" id="center_id">   
                                     @foreach ($centerList as $center)
                                         <option value="{{ $center->id }}" @if( $center->id==in_array($center->id,$filtCenterId))  selected @endif >{{ $center->name }}</option>
@@ -277,7 +277,7 @@
         var strBtn = "";
 
         $("#confirmModalLabel").html("{{ trans('general/admin_lang.copy') }}");
-        $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label class="text-primary" style='font-size: 18px'>{{ trans('general/admin_lang.copy_question') }}</label></div>");
+        $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label class='text-primary' style='font-size: 18px'>{{ trans('general/admin_lang.copy_question') }}</label></div>");
         strBtn+= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('general/admin_lang.close') }}</button>';
         strBtn+= '<button type="button" class="btn btn-primary" onclick="javascript:copyInfo(\''+url+'\');">{{ trans('general/admin_lang.yes_copy') }}</button>';
         $("#confirmModalFooter").html(strBtn);
@@ -292,7 +292,7 @@
     //     var strBtn = "";
 
     //     $("#confirmModalLabel").html("{{ trans('general/admin_lang.delete') }}");
-    //     $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label class="text-primary" style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
+    //     $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label class='text-primary' style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
     //     strBtn+= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('general/admin_lang.close') }}</button>';
     //     strBtn+= '<button type="button" class="btn btn-primary" onclick="javascript:deleteinfo(\''+url+'\');">{{ trans('general/admin_lang.yes_delete') }}</button>';
     //     $("#confirmModalFooter").html(strBtn);
@@ -328,7 +328,7 @@
                 if(data) {
                     // $("#modal_alert").addClass('modal-success');
                     // $("#alertModalHeader").html("{{ trans('general/admin_lang.warning') }}");
-                    // $("#alertModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-check-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i> <label class="text-primary" style='font-size: 18px'>" + data.msg+"</label></div>");
+                    // $("#alertModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-check-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i> <label class='text-primary' style='font-size: 18px'>" + data.msg+"</label></div>");
                     // $("#modal_alert").modal('toggle');
                     toastr.success( data.msg)
                     oTable.ajax.reload(null, false);

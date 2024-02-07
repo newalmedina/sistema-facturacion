@@ -36,7 +36,7 @@
        @if (!empty(auth()->user()->userProfile->center ))
        <div id="userbox" class="userbox">
      
-        <b class="text-success">
+        <b class="text-secondary">
             <i class="fas fa-hospital"></i>
                <i>
                   {{ auth()->user()->userProfile->center->name }}

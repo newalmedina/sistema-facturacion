@@ -132,7 +132,7 @@
                     var strBtn = "";
 
                     $("#confirmModalLabel").html("{{ trans('general/admin_lang.delete') }}");
-                    $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label class="text-primary" style='font-size: 18px'>{{ trans('general/admin_lang.delete_question_image') }}</label></div>");
+                    $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label class='text-primary' style='font-size: 18px'>{{ trans('general/admin_lang.delete_question_image') }}</label></div>");
                     strBtn+= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('general/admin_lang.close') }}</button>';
                     strBtn+= '<button type="button" class="btn btn-primary" onclick="javascript:deleteinfo();">{{ trans('general/admin_lang.yes_delete') }}</button>';
                     $("#confirmModalFooter").html(strBtn);

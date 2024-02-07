@@ -43,7 +43,7 @@
                     <div class="row">
                         <div class="col-12 ">                     
                             <div class="form-group">
-                                <label class="text-primary" for="specialization_id" class="col-12" > {{ trans('clinic-personal/admin_lang.fields.specialization_id') }}</label>
+                                <label class='text-primary' for="specialization_id" class="col-12" > {{ trans('clinic-personal/admin_lang.fields.specialization_id') }}</label>
                                 <select class="form-control select2 col-12" style="width: 100%" name="specialization_id[]" multiple id="specialization_id">
                                     @foreach ($specializations as $specialization)
                                         <option value="{{ $specialization->id }}" @if (in_array($specialization->id,$filtSpecializationId)) selected @endif >{{ $specialization->name }}</option>

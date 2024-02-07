@@ -33,7 +33,7 @@
                 <div class="row form-group mb-3">   
                     <div class="col-lg-12">                     
                         <div class="form-group">
-                            <label class="text-primary" for="allergies"> {{ trans('patients/admin_lang.fields.allergies') }}</label>
+                            <label class='text-primary' for="allergies"> {{ trans('patients/admin_lang.fields.allergies') }}</label>
                             <textarea name="patient_profile[allergies]"  {{ $disabled }}  class="form-control" id="" cols="30" rows="4" placeholder="{{ trans('patients/admin_lang.fields.allergies_helper') }}">{{ !empty($patient->patientProfile)?$patient->patientProfile->allergies :null}}</textarea>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                 <div class="row form-group mb-3">     
                     <div class="col-lg-12">                     
                         <div class="form-group">
-                            <label class="text-primary" for="pathological_diseases"> {{ trans('patients/admin_lang.fields.pathological_diseases') }}</label>
+                            <label class='text-primary' for="pathological_diseases"> {{ trans('patients/admin_lang.fields.pathological_diseases') }}</label>
                             <textarea name="patient_profile[pathological_diseases]"  {{ $disabled }}  class="form-control" id="" cols="30" rows="4" placeholder="{{ trans('patients/admin_lang.fields.pathological_diseases_helper') }}">{{ !empty($patient->patientProfile)?$patient->patientProfile->pathological_diseases :null}}</textarea>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                 <div class="row form-group mb-3">     
                     <div class="col-lg-12">                     
                         <div class="form-group">
-                            <label class="text-primary" for="surgical_diseases"> {{ trans('patients/admin_lang.fields.surgical_diseases') }}</label>
+                            <label class='text-primary' for="surgical_diseases"> {{ trans('patients/admin_lang.fields.surgical_diseases') }}</label>
                             <textarea name="patient_profile[surgical_diseases]"  {{ $disabled }}  class="form-control" id="" cols="30" rows="4" placeholder="{{ trans('patients/admin_lang.fields.surgical_diseases_helper') }}">{{ !empty($patient->patientProfile)?$patient->patientProfile->surgical_diseases :null}}</textarea>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                 <div class="row form-group mb-3">     
                     <div class="col-lg-12">                     
                         <div class="form-group">
-                            <label class="text-primary" for="family_history"> {{ trans('patients/admin_lang.fields.family_history') }}</label>
+                            <label class='text-primary' for="family_history"> {{ trans('patients/admin_lang.fields.family_history') }}</label>
                             <textarea name="patient_profile[family_history]"  {{ $disabled }}  class="form-control" id="" cols="30" rows="4" placeholder="{{ trans('patients/admin_lang.fields.family_history_helper') }}">{{ !empty($patient->patientProfile)?$patient->patientProfile->family_history :null}}</textarea>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                 <div class="row form-group mb-3">     
                     <div class="col-lg-12">                     
                         <div class="form-group">
-                            <label class="text-primary" for="gynecological_history"> {{ trans('patients/admin_lang.fields.gynecological_history') }}</label>
+                            <label class='text-primary' for="gynecological_history"> {{ trans('patients/admin_lang.fields.gynecological_history') }}</label>
                             <textarea name="patient_profile[gynecological_history]"  {{ $disabled }}  class="form-control" id="" cols="30" rows="4" placeholder="{{ trans('patients/admin_lang.fields.gynecological_history_helper') }}">{{ !empty($patient->patientProfile)?$patient->patientProfile->gynecological_history :null}}</textarea>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                 <div class="row form-group mb-3">     
                     <div class="col-lg-12">                     
                         <div class="form-group">
-                            <label class="text-primary" for="others"> {{ trans('patients/admin_lang.fields.others') }}</label>
+                            <label class='text-primary' for="others"> {{ trans('patients/admin_lang.fields.others') }}</label>
                             <textarea name="patient_profile[others]"  {{ $disabled }}  class="form-control" id="" cols="30" rows="4" placeholder="{{ trans('patients/admin_lang.fields.others_helper') }}">{{ !empty($patient->patientProfile)?$patient->patientProfile->others :null}}</textarea>
                         </div>
                     </div>

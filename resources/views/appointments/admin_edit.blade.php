@@ -71,7 +71,7 @@ $disabled= isset($disabled)?$disabled : null;
                             @if (!empty($appointment->created_by))              
                                 <div class="row mb-3">
                                     <div class="col-12 offset-md-8 col-md-4 ">
-                                        <label class="text-primary" for="createdBy"> {{ trans('appointments/admin_lang.fields.created_by') }}</label>
+                                        <label class='text-primary' for="createdBy"> {{ trans('appointments/admin_lang.fields.created_by') }}</label>
                                         <input disabled  type="text"  value="{{ $appointment->createdBy->userProfile->fullName }}" id="createdBy"  class="form-control"   placeholder="">
                                     </div>                                   
                                         
@@ -83,7 +83,7 @@ $disabled= isset($disabled)?$disabled : null;
                                     <div class="row">
                                         <div class="col-md-8">
                                             <div class="form-group ">
-                                                <label class="text-primary" for="start_at"> {{ trans('appointments/admin_lang.fields.start_at') }}<span class="text-danger">*</span></label>
+                                                <label class='text-primary' for="start_at"> {{ trans('appointments/admin_lang.fields.start_at') }}<span class="text-danger">*</span></label>
                                                 <input {{ $disabledForm}}  value="{{ !empty($appointment->start_at) ? \Carbon\Carbon::parse($appointment->start_at)->format("Y-m-d") : null }}"  type="date" name="start_at" id="start_at"  class="form-control " placeholder="{{ trans('appointments/admin_lang.fields.start_at_helper') }}">
                                                 
                                                
@@ -91,7 +91,7 @@ $disabled= isset($disabled)?$disabled : null;
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group ">
-                                                <label class="text-primary" for="hour"> {{ trans('appointments/admin_lang.fields.hour') }}<span class="text-danger">*</span></label>
+                                                <label class='text-primary' for="hour"> {{ trans('appointments/admin_lang.fields.hour') }}<span class="text-danger">*</span></label>
                                                 <input {{ $disabledForm}} value="{{ !empty($appointment->start_at) ? \Carbon\Carbon::parse($appointment->start_at)->format("H:i") : null }}"  type="time"   name="hour" id="hour"  class="form-control timepicker"   placeholder="{{ trans('appointments/admin_lang.fields.hour_helper') }}">
                                    
                                             </div>
@@ -101,7 +101,7 @@ $disabled= isset($disabled)?$disabled : null;
                                 </div> 
                                 <div class="col-12 col-md-6">
                                     <div class="form-group ">
-                                        <label class="text-primary" for="user_id"> {{ trans('appointments/admin_lang.fields.user_id') }}<span class="text-danger">*</span></label>                                  
+                                        <label class='text-primary' for="user_id"> {{ trans('appointments/admin_lang.fields.user_id') }}<span class="text-danger">*</span></label>                                  
                                     
                                             <select {{ $disabledForm}}  class="form-control  select2"  name="user_id" id="user_id" >
                                                 <option value=""> {{ trans('appointments/admin_lang.fields.user_id_helper') }}</option>
@@ -123,7 +123,7 @@ $disabled= isset($disabled)?$disabled : null;
                                 <div class="col-12 col-md-6">
                                     
                                     <div class="form-group ">
-                                        <label class="text-primary" for="doctor_id"> {{ trans('appointments/admin_lang.fields.doctor_id') }}<span class="text-danger">*</span></label>
+                                        <label class='text-primary' for="doctor_id"> {{ trans('appointments/admin_lang.fields.doctor_id') }}<span class="text-danger">*</span></label>
                                         
                                         <select  {{ $disabledForm }}   class="form-control   select2" name="doctor_id"  >
                                             <option value=""> {{ trans('appointments/admin_lang.fields.doctor_id_helper') }}</option>
@@ -140,7 +140,7 @@ $disabled= isset($disabled)?$disabled : null;
                                 <div class="col-12 col-md-6">
                                     
                                     <div  class="form-group ">
-                                        <label class="text-primary" for="service_id"> {{ trans('appointments/admin_lang.fields.service_id') }}<span class="text-danger">*</span></label>
+                                        <label class='text-primary' for="service_id"> {{ trans('appointments/admin_lang.fields.service_id') }}<span class="text-danger">*</span></label>
                                         
                                         <select {{ $disabledForm }}    class="form-control  select2" name="service_id"  id="service_id"  >
                                             <option  data-id="0" value=""> {{ trans('appointments/admin_lang.fields.service_id_helper') }}</option>
@@ -160,7 +160,7 @@ $disabled= isset($disabled)?$disabled : null;
                                 <div class="col-12 col-md-6">
                                     
                                     <div   class="form-group ">
-                                        <label class="text-primary" for="insurance_carrier_id"> {{ trans('appointments/admin_lang.fields.insurance_carrier_id') }}</label>
+                                        <label class='text-primary' for="insurance_carrier_id"> {{ trans('appointments/admin_lang.fields.insurance_carrier_id') }}</label>
                                     
                                         <select {{ $disabledForm }}    class="form-control select2"  name="insurance_carrier_id"  id="insurance_carrier_id"    >
                                             <option data-id="" value=""> {{ trans('appointments/admin_lang.fields.insurance_carrier_id_helper') }}</option>
@@ -176,7 +176,7 @@ $disabled= isset($disabled)?$disabled : null;
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group ">
-                                                <label class="text-primary" for="poliza"> {{ trans('appointments/admin_lang.fields.poliza') }}</label>
+                                                <label class='text-primary' for="poliza"> {{ trans('appointments/admin_lang.fields.poliza') }}</label>
                                                 <input {{ $disabledForm}}  type="text"  name="poliza" id="poliza"    disabled class="form-control "   placeholder="">
                                             </div>
                                         </div>                                    
@@ -186,13 +186,13 @@ $disabled= isset($disabled)?$disabled : null;
                             <div class="row form-group mb-3">       
                                 <div class="col-12 col-md-4">
                                     <div class="form-group ">
-                                        <label class="text-primary" for="price_with_insurance"> {{ trans('appointments/admin_lang.fields.price_with_insurance') }}</label>
+                                        <label class='text-primary' for="price_with_insurance"> {{ trans('appointments/admin_lang.fields.price_with_insurance') }}</label>
                                         <input {{ $disabledForm}} value="{{ $appointment->price_with_insurance }}"  type="text"  id="price_with_insurance"   name="price_with_insurance"     disabled class="form-control "   placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-4">
                                     <div class="form-group ">
-                                        <label class="text-primary" for="applicated_insurance"> {{ trans('appointments/admin_lang.fields.applicated_insurance') }}</label>
+                                        <label class='text-primary' for="applicated_insurance"> {{ trans('appointments/admin_lang.fields.applicated_insurance') }}</label>
                                         <div class="form-check form-switch">
                                           
                                                 <input {{ $disabledForm}}  @if($appointment->applicated_insurance==1) checked @endif  class="form-check-input toggle-switch"  name="applicated_insurance"  value="1"   type="checkbox" id="applicated_insurance">
@@ -203,7 +203,7 @@ $disabled= isset($disabled)?$disabled : null;
                                 <div class="col-12 col-md-4">
                                     
                                     <div class="form-group ">
-                                        <label class="text-primary" for="total"> {{ trans('appointments/admin_lang.fields.total') }}</label>
+                                        <label class='text-primary' for="total"> {{ trans('appointments/admin_lang.fields.total') }}</label>
                                         <input {{ $disabledForm}} value="{{ $appointment->total}}"  type="text"  id="total" disabled class="form-control "  name="total"     placeholder="">
                                         
                                     </div>
@@ -213,7 +213,7 @@ $disabled= isset($disabled)?$disabled : null;
                                 <div class="col-12 ">
                                     
                                     <div class="form-group ">
-                                        <label class="text-primary" for="comment"> {{ trans('appointments/admin_lang.fields.comment') }}</label>
+                                        <label class='text-primary' for="comment"> {{ trans('appointments/admin_lang.fields.comment') }}</label>
                                         <textarea  {{ $disabledForm }}   id="comment"  class="form-control "  name="comment"     placeholder="{{ trans('appointments/admin_lang.fields.comment_helper') }}">{{ $appointment->comment}}</textarea>
                                     </div>
                                 </div>     

@@ -25,7 +25,7 @@ Auth::user()->isAbleTo("admin-dashboard-appointment-this-month")
                                                 <h4 class="title">Visitas Hoy</h4>
                                                 <div class="info">
                                                     <strong class="amount">{{ $appointmentToday }}</strong><br>
-                                                    <span class="text-primary">(Total)</span>
+                                                    <span class='text-primary'>(Total)</span>
                                                 </div>
                                             </div>
                                             {{-- <div class="summary-footer">
@@ -52,7 +52,7 @@ Auth::user()->isAbleTo("admin-dashboard-appointment-this-month")
                                                 <h4 class="title">Visitas Hoy </h4>
                                                 <div class="info">
                                                     <strong class="amount">{{ $appointmentTodayPending }}</strong><br>
-                                                    <span class="text-primary">(Pendientes)</span>
+                                                    <span class='text-primary'>(Pendientes)</span>
                                                 </div>
                                             </div>
                                             {{-- <div class="summary-footer">

@@ -32,7 +32,7 @@
                     <div class="col-12 col-md-2">
                      
                         <div class="form-group">
-                            <label class="text-primary" for="price"> {{ trans('services/admin_lang.fields.general_price') }}</label>
+                            <label class='text-primary' for="price"> {{ trans('services/admin_lang.fields.general_price') }}</label>
                             <input value="{{!empty($service->price) ? $service->price :null }}" disabled type="text" {{ $disabled }} class="form-control" name="realPrice"  placeholder="{{ trans('services/admin_lang.fields.price') }}">
                         </div>
                     </div>                                       

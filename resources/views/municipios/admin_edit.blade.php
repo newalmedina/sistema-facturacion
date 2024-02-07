@@ -49,13 +49,13 @@ $disabled= isset($disabled)?$disabled : null;
                                 <div class="col-12 col-md-6">   
                                  
                                     <div class="form-group">
-                                        <label class="text-primary" for="name"> {{ trans('municipios/admin_lang.fields.name') }} <span class="text-danger">*</span> </label>
+                                        <label class='text-primary' for="name"> {{ trans('municipios/admin_lang.fields.name') }} <span class="text-danger">*</span> </label>
                                         <input value="{{!empty($municipio->name) ? $municipio->name :null }}" type="text" {{ $disabled }} class="form-control" name="name"  placeholder="{{ trans('municipios/admin_lang.fields.name_helper') }}">
                                     </div>
                                 </div>   
                                 <div class="col-12 col-md-6">                     
                                     <div class="form-group">
-                                        <label class="text-primary" for="province_id" class=" col-12"> {{ trans('centers/admin_lang.fields.province_id') }}<span class="text-danger">*</span></label>
+                                        <label class='text-primary' for="province_id" class=" col-12"> {{ trans('centers/admin_lang.fields.province_id') }}<span class="text-danger">*</span></label>
                                         <select {{ $disabled }} class="form-control select2 col-12" style="width:100%" name="province_id" id="province_id">
                                             <option value="">{{ trans('centers/admin_lang.fields.province_id_helper') }}</option>   
                                             @foreach ($provincesList as $province)
@@ -70,7 +70,7 @@ $disabled= isset($disabled)?$disabled : null;
                             <div class="row form-group mb-3">
                                 <div class="col-12 col-md-6">                     
                                     <div class="form-group">
-                                        <label class="text-primary" for="active"> {{ trans('municipios/admin_lang.fields.active') }}</label>
+                                        <label class='text-primary' for="active"> {{ trans('municipios/admin_lang.fields.active') }}</label>
                                         <div class="form-check form-switch">
                                             <input  {{ $disabled }} class="form-check-input toggle-switch" @if($municipio->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
                                         </div>                           

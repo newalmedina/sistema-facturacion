@@ -44,7 +44,7 @@
                 @csrf
                 <div class="row">
                     <div class="form-group col">
-                        <label class="text-primary" for="email" class="col-md-12 col-form-label text-start">{{ trans('auth/login/front_lang.fields.email') }}</label>
+                        <label class='text-primary' for="email" class="col-md-12 col-form-label text-start">{{ trans('auth/login/front_lang.fields.email') }}</label>
 
                         <div class="col-md-12">
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col">
-                        <label class="text-primary" for="password" class="col-md-12 col-form-label text-start">{{ trans('auth/login/front_lang.fields.password') }}</label>
+                        <label class='text-primary' for="password" class="col-md-12 col-form-label text-start">{{ trans('auth/login/front_lang.fields.password') }}</label>
 
                         <div class="col-md-12">
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
@@ -77,7 +77,7 @@
                         <div class="custom-control custom-checkbox">
                             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-                            <label class="text-primary" class="form-check-label" for="remember">
+                            <label class='text-primary' class="form-check-label" for="remember">
                                 {{ trans('auth/login/front_lang.fields.remember_me') }}
                             </label>
                         </div>

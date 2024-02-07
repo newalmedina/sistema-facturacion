@@ -241,7 +241,7 @@
     //     var strBtn = "";
 
     //     $("#confirmModalLabel").html("{{ trans('general/admin_lang.delete') }}");
-    //     $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label class="text-primary" style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
+    //     $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label class='text-primary' style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
     //     strBtn+= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('general/admin_lang.close') }}</button>';
     //     strBtn+= '<button type="button" class="btn btn-primary" onclick="javascript:deleteinfo(\''+url+'\');">{{ trans('general/admin_lang.yes_delete') }}</button>';
     //     $("#confirmModalFooter").html(strBtn);
@@ -277,7 +277,7 @@
                 if(data) {
                     // $("#modal_alert").addClass('modal-success');
                     // $("#alertModalHeader").html("{{ trans('general/admin_lang.warning') }}");
-                    // $("#alertModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-check-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i> <label class="text-primary" style='font-size: 18px'>" + data.msg+"</label></div>");
+                    // $("#alertModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-check-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i> <label class='text-primary' style='font-size: 18px'>" + data.msg+"</label></div>");
                     // $("#modal_alert").modal('toggle');
                     toastr.success( data.msg)
                     oTable.ajax.reload(null, false);

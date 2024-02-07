@@ -47,7 +47,7 @@
                     <div class="col-md-2">
                      
                         <div class="form-group">
-                            <label class="text-primary" for="date"> {{ trans('patient-medical-studies/admin_lang.fields.date') }}<span class="text-danger">*</span></label>
+                            <label class='text-primary' for="date"> {{ trans('patient-medical-studies/admin_lang.fields.date') }}<span class="text-danger">*</span></label>
                             <input value="{{ $medicalStudies->dateFormatted }}" name="date" autocomplete="off" type="text" {{ $disabled }} autocomplete="off" class="form-control datepicker"   placeholder="{{ trans('patient-medical-studies/admin_lang.fields.date_helper') }}">
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         <div class=" offset-md-4 col-md-4">
                          
                             <div class="form-group">
-                                <label class="text-primary" for="created_by"> {{ trans('patient-medical-studies/admin_lang.fields.created_by') }}</label>
+                                <label class='text-primary' for="created_by"> {{ trans('patient-medical-studies/admin_lang.fields.created_by') }}</label>
                                 <input value="{{ $medicalStudies->createdBy->userProfile->fullName }}" type="text" disabled class="form-control "   placeholder="{{ trans('patient-medical-studies/admin_lang.fields.created_by_helper') }}">
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                         <div class="col-md-4">
                          
                             <div class="form-group">
-                                <label class="text-primary" for="center"> {{ trans('patient-medical-studies/admin_lang.fields.center') }}</label>
+                                <label class='text-primary' for="center"> {{ trans('patient-medical-studies/admin_lang.fields.center') }}</label>
                                 <input value="{{ $medicalStudies->center->name }}" type="text" disabled class="form-control "   placeholder="{{ trans('patient-medical-studies/admin_lang.fields.center_helper') }}">
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                     <div class="col-12">
                      
                         <div class="form-group">
-                            <label class="text-primary" for="description"> {{ trans('patient-medical-studies/admin_lang.fields.description') }}</label> 
+                            <label class='text-primary' for="description"> {{ trans('patient-medical-studies/admin_lang.fields.description') }}</label> 
                             <textarea name="description" class="form-control textarea" id="description" cols="30" rows="10">{{ $medicalStudies->description }}</textarea>
                             <textarea name="hideDescription" style="visibility: hidden; position: absolute; top: -9999px; left: -9999px;" id="hideDescription">{{ $medicalStudies->description }}</textarea>
                             {{--   --}}

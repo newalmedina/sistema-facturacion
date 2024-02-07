@@ -17,7 +17,7 @@
               
               <div class="col-12 ">                     
                   <div class="form-group">
-                      <label class="text-primary" for="center_id"> {{ trans('centers/admin_lang.centers') }}</label>
+                      <label class='text-primary' for="center_id"> {{ trans('centers/admin_lang.centers') }}</label>
                       <select class="form-control select2Center"  name="center_id" id="center_id">
                           <option value="">{{ trans('centers/admin_lang.fields.center_id_helper') }}</option>   
                           @foreach ($centers as $center)

@@ -50,7 +50,7 @@
                 @csrf
                 <div class="row">
                     <div class="form-group col">
-                        <label class="text-primary" for="email" class="col-md-12 col-form-label text-start">Correo</label>
+                        <label class='text-primary' for="email" class="col-md-12 col-form-label text-start">Correo</label>
 
                         <div class="col-md-12">
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
