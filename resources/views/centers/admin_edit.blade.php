@@ -34,7 +34,7 @@
                     <div class="col-12">
                      
                         <div class="form-group">
-                            <label for="name"> {{ trans('centers/admin_lang.fields.name') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="name"> {{ trans('centers/admin_lang.fields.name') }}<span class="text-danger">*</span></label>
                             <input value="{{!empty($center->name) ? $center->name :null }}" type="text"  {{ $disabled }} class="form-control" name="name"  placeholder="{{ trans('centers/admin_lang.fields.name_helper') }}">
                         </div>
                     </div>      
@@ -42,7 +42,7 @@
                 {{-- <div class="row form-group mb-3"">                         
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="image"> {{ trans('centers/admin_lang.fields.image') }}</label>
+                            <label class="text-primary" for="image"> {{ trans('centers/admin_lang.fields.image') }}</label>
                             <input type="file" accept="image/*" class="form-control d-none" name="image" id="center_image" style="opacity: 0; width: 0;">
                             <div class="input-group">
                                 <input type="text"  {{ $disabled }} class="form-control" id="nombrefichero" readonly>
@@ -56,13 +56,13 @@
                 <div class="row form-group mb-3">
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
-                            <label for="phone"> {{ trans('centers/admin_lang.fields.phone') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="phone"> {{ trans('centers/admin_lang.fields.phone') }}<span class="text-danger">*</span></label>
                             <input value="{{!empty($center->phone) ? $center->phone :null }}" type="text"  {{ $disabled }} class="form-control" name="phone"  placeholder="{{ trans('centers/admin_lang.fields.phone_helper') }}">
                         </div>
                     </div>    
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
-                            <label for="email"> {{ trans('centers/admin_lang.fields.email') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="email"> {{ trans('centers/admin_lang.fields.email') }}<span class="text-danger">*</span></label>
                             <input value="{{!empty($center->email) ? $center->email :null }}" type="text"  {{ $disabled }} class="form-control" name="email"  placeholder="{{ trans('centers/admin_lang.fields.email_helper') }}">
                         </div>
                     </div>                        
@@ -73,7 +73,7 @@
                 <div class="row form-group mb-3">
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
-                            <label for="province_id" class="col-12"> {{ trans('centers/admin_lang.fields.province_id') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="province_id" class="col-12"> {{ trans('centers/admin_lang.fields.province_id') }}<span class="text-danger">*</span></label>
                             <select  {{ $disabled }}  class="form-control select2" name="province_id" id="province_id">
                                 <option value="">{{ trans('centers/admin_lang.fields.province_id_helper') }}</option>   
                                 @foreach ($provincesList as $province)
@@ -85,7 +85,7 @@
                     </div>    
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
-                            <label for="municipio_id" class="col-12"> {{ trans('centers/admin_lang.fields.municipio_id') }} <span class="text-danger">*</span> </label>
+                            <label class="text-primary" for="municipio_id" class="col-12"> {{ trans('centers/admin_lang.fields.municipio_id') }} <span class="text-danger">*</span> </label>
                             <select  {{ $disabled }}  class="form-control select2" name="municipio_id" id="municipio_id">
                                 <option value="">{{ trans('centers/admin_lang.fields.municipio_id_helper') }}</option>   
                                 @foreach ($municipiosList as $municipio)
@@ -98,7 +98,7 @@
                 <div class="row form-group mb-3">
                     <div class="col-12">                     
                         <div class="form-group">
-                            <label for="address"> {{ trans('centers/admin_lang.fields.address') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="address"> {{ trans('centers/admin_lang.fields.address') }}<span class="text-danger">*</span></label>
                             <input value="{{!empty($center->address) ? $center->address :null }}" type="text"  {{ $disabled }} class="form-control" name="address"  placeholder="{{ trans('centers/admin_lang.fields.address_helper') }}">
                         </div>
                     </div>                      
@@ -106,7 +106,7 @@
                 <div class="row form-group mb-3">
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
-                            <label for="active"> {{ trans('centers/admin_lang.fields.active') }}</label>
+                            <label class="text-primary" for="active"> {{ trans('centers/admin_lang.fields.active') }}</label>
                             <div class="form-check form-switch">
                                 <input {{ $disabled }}  class="form-check-input toggle-switch" @if($center->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
                             </div>                           
@@ -114,7 +114,7 @@
                     </div>                    
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
-                            <label for="default"> {{ trans('centers/admin_lang.fields.default') }}</label>
+                            <label class="text-primary" for="default"> {{ trans('centers/admin_lang.fields.default') }}</label>
                             <div class="form-check form-switch">
                                 <input {{ $disabled }}  class="form-check-input toggle-switch" @if($center->default==1) checked @endif value="1" name="default" type="checkbox" id="default">
                             </div>                           
@@ -127,7 +127,7 @@
 
                     <a href="{{ url('admin/centers') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
                     @if (empty( $disabled ))
-                        <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                        <button type="submit" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>   
                         
                     @endif
                 </div>

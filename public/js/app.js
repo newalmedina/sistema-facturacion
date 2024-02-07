@@ -1006,24 +1006,25 @@ eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extr
 
 /***/ }),
 
-/***/ "./resources/sass/admin/css/default.scss":
-/*!***********************************************!*\
-  !*** ./resources/sass/admin/css/default.scss ***!
-  \***********************************************/
+/***/ "./resources/assets/admin/sass/default.scss":
+/*!**************************************************!*\
+  !*** ./resources/assets/admin/sass/default.scss ***!
+  \**************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9yZXNvdXJjZXMvc2Fzcy9hZG1pbi9jc3MvZGVmYXVsdC5zY3NzLmpzIiwibWFwcGluZ3MiOiI7QUFBQSIsInNvdXJjZXMiOlsid2VicGFjazovLy8uL3Jlc291cmNlcy9zYXNzL2FkbWluL2Nzcy9kZWZhdWx0LnNjc3M/ZjEwOCJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBleHRyYWN0ZWQgYnkgbWluaS1jc3MtZXh0cmFjdC1wbHVnaW5cbmV4cG9ydCB7fTsiXSwibmFtZXMiOltdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./resources/sass/admin/css/default.scss\n");
+eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9yZXNvdXJjZXMvYXNzZXRzL2FkbWluL3Nhc3MvZGVmYXVsdC5zY3NzLmpzIiwibWFwcGluZ3MiOiI7QUFBQSIsInNvdXJjZXMiOlsid2VicGFjazovLy8uL3Jlc291cmNlcy9hc3NldHMvYWRtaW4vc2Fzcy9kZWZhdWx0LnNjc3M/ZmYyYyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBleHRyYWN0ZWQgYnkgbWluaS1jc3MtZXh0cmFjdC1wbHVnaW5cbmV4cG9ydCB7fTsiXSwibmFtZXMiOltdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./resources/assets/admin/sass/default.scss\n");
 
 /***/ }),
 
-/***/ "./resources/sass/admin/css/theme.scss":
-/*!*********************************************!*\
-  !*** ./resources/sass/admin/css/theme.scss ***!
-  \*********************************************/
-/***/ (() => {
+/***/ "./resources/assets/admin/sass/theme.scss":
+/*!************************************************!*\
+  !*** ./resources/assets/admin/sass/theme.scss ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-throw new Error("Module build failed (from ./node_modules/mini-css-extract-plugin/dist/loader.js):\nModuleBuildError: Module build failed (from ./node_modules/css-loader/dist/cjs.js):\nError: Can't resolve '../img/flags.png' in 'C:\\laragon\\www\\medical-system\\resources\\sass\\admin\\css'\n    at finishWithoutResolve (C:\\laragon\\www\\medical-system\\node_modules\\enhanced-resolve\\lib\\Resolver.js:309:18)\n    at C:\\laragon\\www\\medical-system\\node_modules\\enhanced-resolve\\lib\\Resolver.js:386:15\n    at C:\\laragon\\www\\medical-system\\node_modules\\enhanced-resolve\\lib\\Resolver.js:435:5\n    at eval (eval at create (C:\\laragon\\www\\medical-system\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:16:1)\n    at C:\\laragon\\www\\medical-system\\node_modules\\enhanced-resolve\\lib\\Resolver.js:435:5\n    at eval (eval at create (C:\\laragon\\www\\medical-system\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:27:1)\n    at C:\\laragon\\www\\medical-system\\node_modules\\enhanced-resolve\\lib\\DescriptionFilePlugin.js:87:43\n    at C:\\laragon\\www\\medical-system\\node_modules\\enhanced-resolve\\lib\\Resolver.js:435:5\n    at eval (eval at create (C:\\laragon\\www\\medical-system\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:15:1)\n    at C:\\laragon\\www\\medical-system\\node_modules\\enhanced-resolve\\lib\\Resolver.js:435:5\n    at processResult (C:\\laragon\\www\\medical-system\\node_modules\\webpack\\lib\\NormalModule.js:758:19)\n    at C:\\laragon\\www\\medical-system\\node_modules\\webpack\\lib\\NormalModule.js:860:5\n    at C:\\laragon\\www\\medical-system\\node_modules\\loader-runner\\lib\\LoaderRunner.js:400:11\n    at C:\\laragon\\www\\medical-system\\node_modules\\loader-runner\\lib\\LoaderRunner.js:252:18\n    at context.callback (C:\\laragon\\www\\medical-system\\node_modules\\loader-runner\\lib\\LoaderRunner.js:124:13)\n    at Object.loader (C:\\laragon\\www\\medical-system\\node_modules\\css-loader\\dist\\index.js:155:5)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)");
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9yZXNvdXJjZXMvYXNzZXRzL2FkbWluL3Nhc3MvdGhlbWUuc2Nzcy5qcyIsIm1hcHBpbmdzIjoiO0FBQUEiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvYXNzZXRzL2FkbWluL3Nhc3MvdGhlbWUuc2Nzcz9iZjQ1Il0sInNvdXJjZXNDb250ZW50IjpbIi8vIGV4dHJhY3RlZCBieSBtaW5pLWNzcy1leHRyYWN0LXBsdWdpblxuZXhwb3J0IHt9OyJdLCJuYW1lcyI6W10sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///./resources/assets/admin/sass/theme.scss\n");
 
 /***/ }),
 
@@ -1172,6 +1173,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		var installedChunks = {
 /******/ 			"/js/app": 0,
 /******/ 			"css/app": 0,
+/******/ 			"assets/admin/css/theme": 0,
 /******/ 			"assets/admin/css/skins/default": 0
 /******/ 		};
 /******/ 		
@@ -1222,10 +1224,10 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["css/app","assets/admin/css/skins/default"], () => (__webpack_require__("./resources/js/app.js")))
-/******/ 	__webpack_require__.O(undefined, ["css/app","assets/admin/css/skins/default"], () => (__webpack_require__("./resources/sass/app.scss")))
-/******/ 	__webpack_require__.O(undefined, ["css/app","assets/admin/css/skins/default"], () => (__webpack_require__("./resources/sass/admin/css/default.scss")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app","assets/admin/css/skins/default"], () => (__webpack_require__("./resources/sass/admin/css/theme.scss")))
+/******/ 	__webpack_require__.O(undefined, ["css/app","assets/admin/css/theme","assets/admin/css/skins/default"], () => (__webpack_require__("./resources/js/app.js")))
+/******/ 	__webpack_require__.O(undefined, ["css/app","assets/admin/css/theme","assets/admin/css/skins/default"], () => (__webpack_require__("./resources/sass/app.scss")))
+/******/ 	__webpack_require__.O(undefined, ["css/app","assets/admin/css/theme","assets/admin/css/skins/default"], () => (__webpack_require__("./resources/assets/admin/sass/default.scss")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app","assets/admin/css/theme","assets/admin/css/skins/default"], () => (__webpack_require__("./resources/assets/admin/sass/theme.scss")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

@@ -35,7 +35,7 @@ $disabled= isset($disabled)?$disabled : null;
                     
                         <div class="col-12 col-md-6">                     
                             <div class="form-group">
-                                <label for="center_created"> {{ trans('users/admin_lang.fields.center_created') }}</label>
+                                <label class="text-primary" for="center_created"> {{ trans('users/admin_lang.fields.center_created') }}</label>
                                 <input value="{{ !empty($user->userProfile->createdCenter)?$user->userProfile->createdCenter->name :null}}" type="text" disabled class="form-control" >
                             </div>
                         </div>                       
@@ -45,7 +45,7 @@ $disabled= isset($disabled)?$disabled : null;
                     <div class="col-12 col-md-6">
                      
                         <div class="form-group">
-                            <label for="first_name"> {{ trans('users/admin_lang.fields.first_name') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="first_name"> {{ trans('users/admin_lang.fields.first_name') }}<span class="text-danger">*</span></label>
                             <input value="{{!empty($user->userProfile->first_name) ? $user->userProfile->first_name :null }}" type="text"  {{ $disabled }} class="form-control" name="user_profile[first_name]"  placeholder="{{ trans('users/admin_lang.fields.first_name_helper') }}">
                         </div>
                     </div>    
@@ -53,7 +53,7 @@ $disabled= isset($disabled)?$disabled : null;
                     <div class="col-12 col-md-6">
                      
                         <div class="form-group">
-                            <label for="last_name"> {{ trans('users/admin_lang.fields.last_name') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="last_name"> {{ trans('users/admin_lang.fields.last_name') }}<span class="text-danger">*</span></label>
                             <input value="{{!empty($user->userProfile->last_name) ? $user->userProfile->last_name :null }}" type="text"  {{ $disabled }} class="form-control" name="user_profile[last_name]"  placeholder="{{ trans('users/admin_lang.fields.last_name_helper') }}">
                         </div>
                     </div>     
@@ -63,7 +63,7 @@ $disabled= isset($disabled)?$disabled : null;
                     <div class="col-12">
                      
                         <div class="form-group">
-                            <label for="email"> {{ trans('users/admin_lang.fields.email') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="email"> {{ trans('users/admin_lang.fields.email') }}<span class="text-danger">*</span></label>
                             <input value="{{ $user->email }}" type="text"  {{ $disabled }} class="form-control" name="email"  placeholder="{{ trans('users/admin_lang.fields.email_helper') }}">
                         </div>
                     </div>                    
@@ -72,14 +72,14 @@ $disabled= isset($disabled)?$disabled : null;
                     <div class="col-12 col-md-6">
                      
                         <div class="form-group">
-                            <label for="password"> {{ trans('users/admin_lang.fields.password') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="password"> {{ trans('users/admin_lang.fields.password') }}<span class="text-danger">*</span></label>
                             <input value="" type="text"  {{ $disabled }} class="form-control" id="password" name="password"  placeholder="{{ trans('users/admin_lang.fields.password_helper') }}">
                         </div>
                     </div>  
                     <div class="col-12 col-md-6">
                      
                         <div class="form-group">
-                            <label for="password_confirm"> {{ trans('users/admin_lang.fields.password_confirm') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="password_confirm"> {{ trans('users/admin_lang.fields.password_confirm') }}<span class="text-danger">*</span></label>
                             <input value="" type="text"  {{ $disabled }} class="form-control" id="password_confirm" name="password_confirm"  placeholder="{{ trans('users/admin_lang.fields.password_confirm_helper') }}">
                         </div>
                     </div>                    
@@ -98,7 +98,7 @@ $disabled= isset($disabled)?$disabled : null;
                     <div class="col-12">
                      
                         <div class="form-group">
-                            <label for="active"> {{ trans('users/admin_lang.fields.active') }}</label>
+                            <label class="text-primary" for="active"> {{ trans('users/admin_lang.fields.active') }}</label>
                             <div class="form-check form-switch">
                                 <input  {{ $disabled }} class="form-check-input toggle-switch" @if($user->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
                             </div>                           
@@ -109,7 +109,7 @@ $disabled= isset($disabled)?$disabled : null;
                     <div class="col-12">
                      
                         <div class="form-group">
-                            <label for="active"> {{ trans('users/admin_lang.fields.email_verified_at') }}</label>
+                            <label class="text-primary" for="active"> {{ trans('users/admin_lang.fields.email_verified_at') }}</label>
                             @if(!empty($user->email_verified_at))                                     
                                 <small class="text-muted" style="font-size:8px">
                                        ({{\Carbon\Carbon::parse($user->email_verified_at)->format("d/m/Y H:i")}})
@@ -125,7 +125,7 @@ $disabled= isset($disabled)?$disabled : null;
                     <div class="col-12">
                      
                         <div class="form-group">
-                            <label for="active"> {{ trans('users/admin_lang.fields.password_changed_at') }}</label>
+                            <label class="text-primary" for="active"> {{ trans('users/admin_lang.fields.password_changed_at') }}</label>
                              @if(!empty($user->password_changed_at))                                     
                                 <small class="text-muted" style="font-size:8px">
                                        ({{\Carbon\Carbon::parse($user->password_changed_at)->format("d/m/Y H:i")}})
@@ -141,7 +141,7 @@ $disabled= isset($disabled)?$disabled : null;
                     <div class="col-12">
                      
                         <div class="form-group">
-                            <label for="active"> {{ trans('users/admin_lang.fields.permit_recieve_emails') }}</label>
+                            <label class="text-primary" for="active"> {{ trans('users/admin_lang.fields.permit_recieve_emails') }}</label>
                             <div class="form-check form-switch">
                                 <input  {{ $disabled }} class="form-check-input toggle-switch" @if($user->permit_recieve_emails==1) checked @endif value="1" name="permit_recieve_emails" type="checkbox" id="permit_recieve_emails">
                             </div>                           
@@ -157,7 +157,7 @@ $disabled= isset($disabled)?$disabled : null;
 
                     <a href="{{ url('admin/users') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
                     @if (empty($disabled))
-                     <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>  
+                     <button type="submit" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>  
                      @endif    
                 </div>
             </div>

@@ -31,13 +31,13 @@
                 <div class="row form-group mb-3">
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
-                            <label for="phone"> {{ trans('clinic-personal/admin_lang.fields.phone') }}</label>
+                            <label class="text-primary" for="phone"> {{ trans('clinic-personal/admin_lang.fields.phone') }}</label>
                             <input value="{{!empty($clinicPersonal->userProfile) ? $clinicPersonal->userProfile->phone.' / '. $clinicPersonal->userProfile->mobile :null }}" type="text" disabled class="form-control" name="phone"  placeholder="{{ trans('clinic-personal/admin_lang.fields.phone_helper') }}">
                         </div>
                     </div>    
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
-                            <label for="email"> {{ trans('clinic-personal/admin_lang.fields.email') }}</label>
+                            <label class="text-primary" for="email"> {{ trans('clinic-personal/admin_lang.fields.email') }}</label>
                             <input value="{{!empty($clinicPersonal->email) ? $clinicPersonal->email :null }}" type="text" disabled class="form-control" name="email"  placeholder="{{ trans('clinic-personal/admin_lang.fields.email_helper') }}">
                         </div>
                     </div>                        
@@ -45,7 +45,7 @@
                 <div class="row form-group mb-3">
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
-                            <label for="exequatur"> {{ trans('clinic-personal/admin_lang.fields.exequatur') }}</label>
+                            <label class="text-primary" for="exequatur"> {{ trans('clinic-personal/admin_lang.fields.exequatur') }}</label>
                             <input value="{{!empty($clinicPersonal->doctorProfile) ? $clinicPersonal->doctorProfile->exequatur :null }}" maxlength="20" type="text" {{ $disabled }} class="form-control" name="doctor_profile[exequatur]"  placeholder="{{ trans('clinic-personal/admin_lang.fields.exequatur_helper') }}">
                         </div>
                     </div>            
@@ -53,7 +53,7 @@
                 <div class="row form-group mb-3">
                     <div class="col-12 ">                     
                         <div class="form-group">
-                            <label for="specialization_id" class="col-12"> {{ trans('clinic-personal/admin_lang.fields.specialization_id') }}</label>
+                            <label class="text-primary" for="specialization_id" class="col-12"> {{ trans('clinic-personal/admin_lang.fields.specialization_id') }}</label>
                             <select {{ $disabled }} class="col-12 form-control select2" style="width:100%"  multiple name="doctor_profile[specialization_id][]" id="specialization_id">
                                 <option value="">{{ trans('clinic-personal/admin_lang.fields.specialization_id_helper') }}</option>   
                                 @foreach ($specializations as $specialization)
@@ -69,7 +69,7 @@
                 <div class="col-12  d-flex justify-content-between">
                     <a href="{{ url('admin/clinic-personal') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
                     @if (empty( $disabled ))
-                        <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>                           
+                        <button type="submit" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>                           
                     @endif
                 </div>
             </div>

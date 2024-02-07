@@ -117,18 +117,18 @@ Auth::user()->isAbleTo('admin-dashboard-appointment-programadas-today-created-by
                                 </button>
                                 @endif
                                 @if ($appointment->canFinalizarDashboard())
-                                <button onclick="finalizar({{ $appointment->id }})" class="btn btn-success btn-xs">
+                                <button onclick="finalizar({{ $appointment->id }})" class="btn btn-primary btn-xs">
                                     <i class="fas fa-check"></i>
                                 </button>
                                 @endif
                                 {{-- @switch( $state)
                                             @case(1)
                                                 @if(Auth::user()->isAbleTo('admin-dashboard-appointment-programadas-today-end-all'))
-                                                    <button onclick="finalizar({{ $appointment->id }})" class="btn btn-success btn-xs">
+                                                    <button onclick="finalizar({{ $appointment->id }})" class="btn btn-primary btn-xs">
                                 <i class="fas fa-check"></i>
                                 </button>
                                 @elseif(Auth::user()->isAbleTo('admin-dashboard-appointment-programadas-today-end') && $appointment->soySuDoctor() )
-                                <button onclick="finalizar({{ $appointment->id }})" class="btn btn-success btn-xs">
+                                <button onclick="finalizar({{ $appointment->id }})" class="btn btn-primary btn-xs">
                                     <i class="fas fa-check"></i>
                                 </button>
                                 @endif

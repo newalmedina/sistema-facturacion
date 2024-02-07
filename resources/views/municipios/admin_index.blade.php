@@ -43,7 +43,7 @@
                     <div class="row">
                         <div class="col-12 col-md-4">                     
                             <div class="form-group">
-                                <label for="province_id" class="col-12"> {{ trans('municipios/admin_lang.fields.province_id') }}</label>
+                                <label class="text-primary" for="province_id" class="col-12"> {{ trans('municipios/admin_lang.fields.province_id') }}</label>
                                 <select class="form-control select2" name="province_id" id="province_id">
                                     <option value="">{{ trans('municipios/admin_lang.fields.province_id_helper') }}</option>   
                                     @foreach ($provincesList as $province)
@@ -58,7 +58,7 @@
                 <div class="card-footer">  
                     <div class="row ">
                         <div class="col-12 col-md-6 d-flex justify-content-start">
-                            <button class="btn btn-success btn-xs " type="submit"> {!! trans('general/admin_lang.filter') !!}</button>
+                            <button class="btn btn-primary btn-xs " type="submit"> {!! trans('general/admin_lang.filter') !!}</button>
                             <a href="{{ url('admin/municipios/remove-filter') }}" class="ms-2 btn btn-danger btn-xs">
                                 {!! trans('general/admin_lang.clean_filter') !!}
                             </a>
@@ -286,7 +286,7 @@
     //     var strBtn = "";
 
     //     $("#confirmModalLabel").html("{{ trans('general/admin_lang.delete') }}");
-    //     $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
+    //     $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label class="text-primary" style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
     //     strBtn+= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('general/admin_lang.close') }}</button>';
     //     strBtn+= '<button type="button" class="btn btn-primary" onclick="javascript:deleteinfo(\''+url+'\');">{{ trans('general/admin_lang.yes_delete') }}</button>';
     //     $("#confirmModalFooter").html(strBtn);
@@ -322,7 +322,7 @@
                 if(data) {
                     // $("#modal_alert").addClass('modal-success');
                     // $("#alertModalHeader").html("{{ trans('general/admin_lang.warning') }}");
-                    // $("#alertModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-check-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i> <label style='font-size: 18px'>" + data.msg+"</label></div>");
+                    // $("#alertModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-check-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i> <label class="text-primary" style='font-size: 18px'>" + data.msg+"</label></div>");
                     // $("#modal_alert").modal('toggle');
                     toastr.success( data.msg)
                     oTable.ajax.reload(null, false);

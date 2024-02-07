@@ -49,7 +49,7 @@ $disabled= isset($disabled)?$disabled : null;
                                 <div class="col-12">
                                  
                                     <div class="form-group">
-                                        <label for="name"> {{ trans('medical-specializations/admin_lang.fields.name') }}<span class="text-danger">*</span></label>
+                                        <label class="text-primary" for="name"> {{ trans('medical-specializations/admin_lang.fields.name') }}<span class="text-danger">*</span></label>
                                         <input value="{{!empty($medicalSpecialization->name) ? $medicalSpecialization->name :null }}" type="text" {{ $disabled }}  class="form-control" name="name"  placeholder="{{ trans('medical-specializations/admin_lang.fields.name_helper') }}">
                                     </div>
                                 </div>      
@@ -57,7 +57,7 @@ $disabled= isset($disabled)?$disabled : null;
                             <div class="row form-group mb-3">
                                 <div class="col-12">                     
                                     <div class="form-group">
-                                        <label for="description"> {{ trans('medical-specializations/admin_lang.fields.description') }}</label>
+                                        <label class="text-primary" for="description"> {{ trans('medical-specializations/admin_lang.fields.description') }}</label>
                                         <textarea name="description" {{ $disabled }}  class="form-control" id="" cols="30" rows="10">{{ $medicalSpecialization->description }}</textarea>
                                         
                                     </div>
@@ -66,7 +66,7 @@ $disabled= isset($disabled)?$disabled : null;
                             <div class="row form-group mb-3">
                                 <div class="col-12 col-md-6">                     
                                     <div class="form-group">
-                                        <label for="active"> {{ trans('medical-specializations/admin_lang.fields.active') }}</label>
+                                        <label class="text-primary" for="active"> {{ trans('medical-specializations/admin_lang.fields.active') }}</label>
                                         <div class="form-check form-switch">
                                             <input {{ $disabled }}  class="form-check-input toggle-switch" @if($medicalSpecialization->active==1) checked @endif value="1" name="active" type="checkbox" id="active">
                                         </div>                           
@@ -80,7 +80,7 @@ $disabled= isset($disabled)?$disabled : null;
             
                                 <a href="{{ url('admin/medical-specializations') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
                                 @if (empty( $disabled ))
-                                    <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                                    <button type="submit" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>   
                                     
                                 @endif
                             </div>

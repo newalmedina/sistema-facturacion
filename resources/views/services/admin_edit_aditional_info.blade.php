@@ -32,7 +32,7 @@
                     <div class="col-12 col-md-2">
                      
                         <div class="form-group">
-                            <label for="price"> {{ trans('services/admin_lang.fields.general_price') }}</label>
+                            <label class="text-primary" for="price"> {{ trans('services/admin_lang.fields.general_price') }}</label>
                             <input value="{{!empty($service->price) ? $service->price :null }}" disabled type="text" {{ $disabled }} class="form-control" name="realPrice"  placeholder="{{ trans('services/admin_lang.fields.price') }}">
                         </div>
                     </div>                                       
@@ -89,7 +89,7 @@
 
                     <a href="{{ url('admin/services') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
                     @if (empty( $disabled ))
-                        <button type="button" id="saveData" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                        <button type="button" id="saveData" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>   
                         
                     @endif
                 </div>

@@ -41,7 +41,7 @@
                 </div>
                 <div  class="modal-footer">
                     <button type="button" class=" btn  btn-default pull-right" data-bs-dismiss="modal" aria-label="Close">{{ trans('general/admin_lang.close') }}</button>
-                    <button type="button" wire:click='finalizarItem' form="finalizar" class="btn btn-success">Si, finalizar</button>   
+                    <button type="button" wire:click='finalizarItem' form="finalizar" class="btn btn-primary">Si, finalizar</button>   
                                     
                 </div>
             </div>
@@ -63,7 +63,7 @@
                 </div>
                 <div  class="modal-footer">
                     <button type="button" class=" btn  btn-default pull-right" data-bs-dismiss="modal" aria-label="Close">{{ trans('general/admin_lang.close') }}</button>
-                    <button type="button" wire:click='facturarItem' form="facturar" class="btn btn-success">Si, facturar</button>   
+                    <button type="button" wire:click='facturarItem' form="facturar" class="btn btn-primary">Si, facturar</button>   
                                     
                 </div>
             </div>
@@ -86,7 +86,7 @@
                      
                      @if(!empty($appointment->id))
                         @if(!empty($appointment->state!="pendiente"))
-                            <label for="start_at"> Escribe un comentario<span class="text-danger">*</span></label>                                            
+                            <label class="text-primary" for="start_at"> Escribe un comentario<span class="text-danger">*</span></label>                                            
                             <textarea class="form-control" wire:model="appointmentForm.delete_coment"></textarea>
                                @error('appointmentForm.delete_coment') <span class="text-danger">{{ $message }}</span> @enderror
                         @endif
@@ -95,7 +95,7 @@
 
                 <div  class="modal-footer">
                     <button type="button" class=" btn  btn-default pull-right" data-bs-dismiss="modal" aria-label="Close">{{ trans('general/admin_lang.close') }}</button>
-                    <button type="button" wire:click='deleteItem' form="eliminar" class="btn btn-success">{{ trans('general/admin_lang.yes_delete') }}</button>   
+                    <button type="button" wire:click='deleteItem' form="eliminar" class="btn btn-primary">{{ trans('general/admin_lang.yes_delete') }}</button>   
                                     
                 </div>
             </div>
@@ -134,7 +134,7 @@
                                         <button type="button" wire:click='openFacturarModal' class="btn btn-warning btn-sm"><i class="fas fa-dollar-sign me-2"></i>Facturar</button>
                                     @endif
                                     @if($appointment->canFinalizar())
-                                        <button type="button" wire:click='openFinalizarModal' class="btn btn-success btn-sm"><i class="fas fa-dollar-sign me-2"></i>Finalizar</button>
+                                        <button type="button" wire:click='openFinalizarModal' class="btn btn-primary btn-sm"><i class="fas fa-dollar-sign me-2"></i>Finalizar</button>
                                     @endif
                                 </div>   
                             </div>
@@ -144,7 +144,7 @@
                         @if (!empty($appointment->created_by))              
                             <div class="row mb-3">
                                 <div class="col-12 offset-md-8 col-md-4 ">
-                                    <label for="createdBy"> {{ trans('appointments/admin_lang.fields.created_by') }}</label>
+                                    <label class="text-primary" for="createdBy"> {{ trans('appointments/admin_lang.fields.created_by') }}</label>
                                     <input disabled  type="text"  value="{{ $appointment->createdBy->userProfile->fullName }}" id="createdBy"  class="form-control"   placeholder="">
                                 </div>
                                 
@@ -157,7 +157,7 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group ">
-                                            <label for="start_at"> {{ trans('appointments/admin_lang.fields.start_at') }}<span class="text-danger">*</span></label>
+                                            <label class="text-primary" for="start_at"> {{ trans('appointments/admin_lang.fields.start_at') }}<span class="text-danger">*</span></label>
                                             <input {{ $disabledForm}}  type="date" wire:model.defer="appointmentForm.start_at" id="start_at"  class="form-control " placeholder="{{ trans('appointments/admin_lang.fields.start_at_helper') }}">
 
                                             @error('appointmentForm.start_at') <span class="text-danger">{{ $message }}</span> @enderror
@@ -165,7 +165,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group ">
-                                            <label for="hour"> {{ trans('appointments/admin_lang.fields.hour') }}<span class="text-danger">*</span></label>
+                                            <label class="text-primary" for="hour"> {{ trans('appointments/admin_lang.fields.hour') }}<span class="text-danger">*</span></label>
                                             <input {{ $disabledForm}}  type="time"   wire:model.defer="appointmentForm.hour" id="hour"  class="form-control timepicker"   placeholder="{{ trans('appointments/admin_lang.fields.hour_helper') }}">
                                            
                                             @error('appointmentForm.hour') <span class="text-danger">{{ $message }}</span> @enderror
@@ -176,7 +176,7 @@
                             </div> 
                             <div class="col-12 col-md-6">
                                 <div class="form-group ">
-                                    <label for="user_id"> {{ trans('appointments/admin_lang.fields.user_id') }}<span class="text-danger">*</span></label>                                  
+                                    <label class="text-primary" for="user_id"> {{ trans('appointments/admin_lang.fields.user_id') }}<span class="text-danger">*</span></label>                                  
                                   
                                         <select {{ $disabledForm}}  class="form-control form_select_modal" wire:model="appointmentForm.user_id" wire:change="changePatient()" data-id="appointmentForm.user_id"  name="appointmentForm.user_id" id="patient_form">
                                             <option value=""> {{ trans('appointments/admin_lang.fields.user_id_helper') }}</option>
@@ -195,7 +195,7 @@
                             <div class="col-12 col-md-6">
                                 
                                 <div class="form-group ">
-                                    <label for="doctor_id"> {{ trans('appointments/admin_lang.fields.doctor_id') }}<span class="text-danger">*</span></label>
+                                    <label class="text-primary" for="doctor_id"> {{ trans('appointments/admin_lang.fields.doctor_id') }}<span class="text-danger">*</span></label>
                                     
                                     <select  {{ $disabledForm }}   class="form-control  " wire:model="appointmentForm.doctor_id"  >
                                         <option value=""> {{ trans('appointments/admin_lang.fields.doctor_id_helper') }}</option>
@@ -209,7 +209,7 @@
                             <div class="col-12 col-md-6">
                                 
                                 <div  class="form-group ">
-                                    <label for="service_id"> {{ trans('appointments/admin_lang.fields.service_id') }}<span class="text-danger">*</span></label>
+                                    <label class="text-primary" for="service_id"> {{ trans('appointments/admin_lang.fields.service_id') }}<span class="text-danger">*</span></label>
                                       
                                     <select {{ $disabledForm }}    class="form-control" wire:model="appointmentForm.service_id" wire:change='calculatePrices()'   >
                                         <option value=""> {{ trans('appointments/admin_lang.fields.service_id_helper') }}</option>
@@ -226,7 +226,7 @@
                             <div class="col-12 col-md-6">
                                 
                                 <div   class="form-group ">
-                                    <label for="insurance_carrier_id"> {{ trans('appointments/admin_lang.fields.insurance_carrier_id') }}</label>
+                                    <label class="text-primary" for="insurance_carrier_id"> {{ trans('appointments/admin_lang.fields.insurance_carrier_id') }}</label>
                                  
                                     <select {{ $disabledForm }}    class="form-control"  wire:model="appointmentForm.insurance_carrier_id"   wire:change='calculatePrices()'    >
                                         <option value=""> {{ trans('appointments/admin_lang.fields.insurance_carrier_id_helper') }}</option>
@@ -241,7 +241,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group ">
-                                            <label for="poliza"> {{ trans('appointments/admin_lang.fields.poliza') }}</label>
+                                            <label class="text-primary" for="poliza"> {{ trans('appointments/admin_lang.fields.poliza') }}</label>
                                             <input {{ $disabledForm}}  type="text"  wire:model="appointmentForm.poliza"     disabled class="form-control "   placeholder="">
                                         </div>
                                     </div>                                    
@@ -251,13 +251,13 @@
                         <div class="row form-group mb-3">       
                             <div class="col-12 col-md-4">
                                 <div class="form-group ">
-                                    <label for="price_with_insurance"> {{ trans('appointments/admin_lang.fields.price_with_insurance') }}</label>
+                                    <label class="text-primary" for="price_with_insurance"> {{ trans('appointments/admin_lang.fields.price_with_insurance') }}</label>
                                     <input {{ $disabledForm}}  type="text"  id="price_with_insurance"   wire:model="appointmentForm.price_with_insurance"     disabled class="form-control "   placeholder="">
                                 </div>
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-group ">
-                                    <label for="applicated_insurance"> {{ trans('appointments/admin_lang.fields.applicated_insurance') }}</label>
+                                    <label class="text-primary" for="applicated_insurance"> {{ trans('appointments/admin_lang.fields.applicated_insurance') }}</label>
                                     <div class="form-check form-switch">
                                         @if ($appointmentForm["insurance_carrier_id"])
                                             <input {{ $disabledForm}}   class="form-check-input toggle-switch"  wire:model="appointmentForm.applicated_insurance"  value="1"  wire:change='calculatePrices' name="applicated_insurance" type="checkbox" id="applicated_insurance">
@@ -270,7 +270,7 @@
                             <div class="col-12 col-md-4">
                                 
                                 <div class="form-group ">
-                                    <label for="total"> {{ trans('appointments/admin_lang.fields.total') }}</label>
+                                    <label class="text-primary" for="total"> {{ trans('appointments/admin_lang.fields.total') }}</label>
                                     <input {{ $disabledForm}}  type="text"  id="total" disabled class="form-control "  wire:model="appointmentForm.total"     placeholder="">
                                        
                                 </div>
@@ -280,7 +280,7 @@
                             <div class="col-12 ">
                                 
                                 <div class="form-group ">
-                                    <label for="comment"> {{ trans('appointments/admin_lang.fields.comment') }}</label>
+                                    <label class="text-primary" for="comment"> {{ trans('appointments/admin_lang.fields.comment') }}</label>
                                     <textarea  {{ $disabledForm }}   id="comment"  class="form-control "  wire:model.defer="appointmentForm.comment"     placeholder="{{ trans('appointments/admin_lang.fields.comment_helper') }}"></textarea>
                                 </div>
                             </div>     
@@ -301,7 +301,7 @@
                     @endif
                     <button type="button" class=" btn  btn-default pull-right" data-bs-dismiss="modal" aria-label="Close">{{ trans('general/admin_lang.close') }}</button>                   
                     @if (empty($disabledForm))
-                         <button type="submit" form="formDataAppointment" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>  
+                         <button type="submit" form="formDataAppointment" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>  
                         
                     @endif                 
                                     
@@ -342,7 +342,7 @@
                 <div class="row mb-4">
                     <div class="col-12 col-md-4">
                         <div class="form-group ">
-                            <label for="filter-doctor"> {{ trans('appointments/admin_lang.fields.doctor_id') }}</label>
+                            <label class="text-primary" for="filter-doctor"> {{ trans('appointments/admin_lang.fields.doctor_id') }}</label>
                             <select   class="form-control filter_select2" wire:model="filtersForm.doctor_id" data-id="filtersForm.doctor_id"    name="" id="filtersForm.doctor_id">
                                 <option value=""> {{ trans('appointments/admin_lang.fields.doctor_id_all') }}</option>
                                 @foreach ($doctorListFilter as $doctor)
@@ -353,7 +353,7 @@
                     </div>
                     <div class="col-12 col-md-4">
                         <div class="form-group ">
-                            <label for="filter-paciente">Paciente</label>
+                            <label class="text-primary" for="filter-paciente">Paciente</label>
                             <select   class="form-control filter_select2" wire:model="filtersForm.patient_id" data-id="filtersForm.patient_id"    name="" id="filtersForm.patient_id">
                                 <option value=""> Todos los pacientes</option>
                                 @foreach ($patientListFilter as $patiet)
@@ -364,7 +364,7 @@
                     </div>
                     <div class="col-12 col-md-4">
                         <div class="form-group ">
-                            <label for="filter-estado"> Estado</label>
+                            <label class="text-primary" for="filter-estado"> Estado</label>
                             <select   class="form-control filter_select2" wire:model="filtersForm.estado" data-id="filtersForm.estado"   name="" id="filtersForm.estado">
                                 <option value="">Todos los Estados</option>
                                 <option value="pend">Pendiente</option>

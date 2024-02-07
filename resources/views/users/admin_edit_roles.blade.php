@@ -49,7 +49,7 @@ $disabled= isset($disabled)?$disabled : null;
 
                     <a href="{{ url('admin/users') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
                     @if (empty($disabled))
-                     <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>  
+                     <button type="submit" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>  
                      @endif    
                 </div>
             </div>

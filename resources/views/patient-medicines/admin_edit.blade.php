@@ -47,7 +47,7 @@
                     <div class="col-md-2">
                      
                         <div class="form-group">
-                            <label for="date"> {{ trans('patient-medicines/admin_lang.fields.date') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="date"> {{ trans('patient-medicines/admin_lang.fields.date') }}<span class="text-danger">*</span></label>
                             <input value="{{ $medicine->dateFormatted }}" name="date" autocomplete="off" type="text" {{ $disabled }} autocomplete="off" class="form-control datepicker"   placeholder="{{ trans('patient-medicines/admin_lang.fields.date_helper') }}">
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         <div class=" offset-md-4 col-md-4">
                          
                             <div class="form-group">
-                                <label for="created_by"> {{ trans('patient-medicines/admin_lang.fields.created_by') }}</label>
+                                <label class="text-primary" for="created_by"> {{ trans('patient-medicines/admin_lang.fields.created_by') }}</label>
                                 <input value="{{ $medicine->createdBy->userProfile->fullName }}" type="text" disabled class="form-control "   placeholder="{{ trans('patient-medicines/admin_lang.fields.created_by_helper') }}">
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                         <div class="col-md-4">
                          
                             <div class="form-group">
-                                <label for="center"> {{ trans('patient-medicines/admin_lang.fields.center') }}</label>
+                                <label class="text-primary" for="center"> {{ trans('patient-medicines/admin_lang.fields.center') }}</label>
                                 <input value="{{ $medicine->center->name }}" type="text" disabled class="form-control "   placeholder="{{ trans('patient-medicines/admin_lang.fields.center_helper') }}">
                             </div>
                         </div>
@@ -132,7 +132,7 @@
                     <div class="col-12">
                      
                         <div class="form-group">
-                            <label for="comment"> {{ trans('patient-medicines/admin_lang.fields.comment') }}</label> 
+                            <label class="text-primary" for="comment"> {{ trans('patient-medicines/admin_lang.fields.comment') }}</label> 
                             <textarea name="comment" class="form-control textarea" id="" cols="30" rows="10">{{ $medicine->comment }}</textarea>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
                 <div class="col-12  d-flex justify-content-between">
                     <a href="{{ route('admin.patients.medicines',["patient_id"=>$patient->id]) }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
                     @if (empty( $disabled ))
-                        <button type="button" id="saveData" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>                           
+                        <button type="button" id="saveData" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>                           
                     @endif
                 </div>
             </div>

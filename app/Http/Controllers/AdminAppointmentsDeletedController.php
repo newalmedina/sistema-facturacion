@@ -243,7 +243,7 @@ class AdminAppointmentsDeletedController extends Controller
             $appointment = Appointment::withTrashed()->find($data->id);
 
             if ($appointment->canRestaurarTrash()) {
-                $actions .= '<button class="btn btn-success ms-1 mt-1  btn-xs" data-bs-content="' . trans('appointments_deleted/admin_lang.restaurar') . '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:restaurarElement(\'' .
+                $actions .= '<button class="btn btn-primary ms-1 mt-1  btn-xs" data-bs-content="' . trans('appointments_deleted/admin_lang.restaurar') . '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:restaurarElement(\'' .
                     url('admin/appointments-deleted/restaurar/' . $data->id) . '\');" data-content="' .
                     trans('appointments_deleted/admin_lang.resturar') . '" data-placement="left" data-toggle="popover">
                     <i class="fas fa-check" aria-hidden="true"></i>';

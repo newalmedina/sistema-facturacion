@@ -102,7 +102,7 @@
                     </p>
                     <i>{{ $date }}</i>
          </div>
-        <label class="doctor-name" style="font-size:50px;">
+        <label class="text-primary" class="doctor-name" style="font-size:50px;">
             {{ $doctorInfo->userProfile->fullName }}
          
         </label>
@@ -164,10 +164,10 @@
             <div style="float: left; width:50%; text-align:left;">
 
                 <hr class="  margin: 10px 0;">
-                <label for="">  {{ $doctorInfo->userProfile->fullName }}</label>
+                <label class="text-primary" for="">  {{ $doctorInfo->userProfile->fullName }}</label>
             </div>
             <div style="float: right; width:50%;text-align: right;">
-                <label for="">    {{ $date }}</label>
+                <label class="text-primary" for="">    {{ $date }}</label>
               
             </div>
         </div>

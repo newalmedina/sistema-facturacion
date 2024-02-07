@@ -29,7 +29,7 @@
                     <div class="col-12">
                      
                         <div class="form-group">
-                            <label for="schedule"> {{ trans('centers/admin_lang.fields.schedule') }}</label>
+                            <label class="text-primary" for="schedule"> {{ trans('centers/admin_lang.fields.schedule') }}</label>
                             <input value="{{!empty($center->schedule) ? $center->schedule :null }}" type="text" {{ $disabled }}  class="form-control" name="schedule"  placeholder="{{ trans('centers/admin_lang.fields.schedule') }}">
                         </div>
                     </div>                                       
@@ -37,7 +37,7 @@
                 <div class="row form-group mb-3">
                     <div class="col-12">                     
                         <div class="form-group">
-                            <label for="name"> {{ trans('centers/admin_lang.fields.specialities') }}</label>
+                            <label class="text-primary" for="name"> {{ trans('centers/admin_lang.fields.specialities') }}</label>
                             <textarea name="specialities" {{ $disabled }}  class="form-control" id="" cols="30" rows="10">{{ $center->specialities }}</textarea>
                             
                         </div>
@@ -51,7 +51,7 @@
                     <a href="{{ url('admin/centers') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
                     
                     @if (empty( $disabled ))
-                        <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                        <button type="submit" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>   
                         
                     @endif 
                 </div>

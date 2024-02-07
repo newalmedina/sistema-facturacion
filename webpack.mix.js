@@ -17,5 +17,5 @@ mix.js('resources/js/app.js', 'public/js')
 mix.copy('vendor/proengsoft/laravel-jsvalidation/resources/views', 'resources/views/vendor/jsvalidation')
     .copy('vendor/proengsoft/laravel-jsvalidation/public', 'public/vendor/jsvalidation');
 
-mix.sass('resources/sass/admin/css/default.scss', 'public/assets/admin/css/skins');
-mix.sass('resources/sass/admin/css/theme.scss', 'public/assets/admin/css');
+mix.sass('resources/assets/admin/sass/default.scss', 'public/assets/admin/css/skins');
+mix.sass('resources/assets/admin/sass/theme.scss', 'public/assets/admin/css');

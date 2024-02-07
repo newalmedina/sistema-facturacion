@@ -27,13 +27,13 @@
                     <div class="col-lg-6">
                      
                         <div class="form-group">
-                            <label for="birthday"> {{ trans('profile/admin_lang.fields.birthday') }} <span class="text-danger">*</span></label>
+                            <label class="text-primary" for="birthday"> {{ trans('profile/admin_lang.fields.birthday') }} <span class="text-danger">*</span></label>
                             <input value="{{ $user->userProfile->birthdayFormatted }}" type="text" class="form-control" id="birthday" name="user_profile[birthday]"  placeholder="{{ trans('profile/admin_lang.fields.birthday_helper') }}">
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="identification"> {{ trans('profile/admin_lang.fields.identification') }} <span class="text-danger">*</span></label>
+                            <label class="text-primary" for="identification"> {{ trans('profile/admin_lang.fields.identification') }} <span class="text-danger">*</span></label>
                             <input  value="{{ $user->userProfile->identification }}" maxlength="15" type="text" class="form-control" name="user_profile[identification]"  id="identification" placeholder="{{ trans('profile/admin_lang.fields.identification_helper') }}">
                         </div>
                     </div>
@@ -42,13 +42,13 @@
                     <div class="col-lg-6">
                      
                         <div class="form-group">
-                            <label for="phone"> {{ trans('profile/admin_lang.fields.phone') }} <span class="text-danger">*</span></label>
+                            <label class="text-primary" for="phone"> {{ trans('profile/admin_lang.fields.phone') }} <span class="text-danger">*</span></label>
                             <input value="{{ $user->userProfile->phone }}" type="text"  maxlength="15" class="form-control" name="user_profile[phone]"  placeholder="{{ trans('profile/admin_lang.fields.phone_helper') }}">
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="mobile"> {{ trans('profile/admin_lang.fields.mobile') }}</label>
+                            <label class="text-primary" for="mobile"> {{ trans('profile/admin_lang.fields.mobile') }}</label>
                             <input  value="{{ $user->userProfile->mobile }}"  type="text"  maxlength="15" class="form-control" name="user_profile[mobile]"  id="mobile" placeholder="{{ trans('profile/admin_lang.fields.mobile_helper') }}">
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                     <div class="col-lg-6">
                      
                         <div class="form-group">
-                            <label for="gender" class="col-12"> {{ trans('profile/admin_lang.fields.gender') }} <span class="text-danger">*</span></label>
+                            <label class="text-primary" for="gender" class="col-12"> {{ trans('profile/admin_lang.fields.gender') }} <span class="text-danger">*</span></label>
                             <select class="form-control select2" name="user_profile[gender]" id="gender"> 
                                 @foreach ($genders as $key=>$value)
                                     <option value="{{ $key }}" @if($user->userProfile->gender ==$key) selected @endif>{{ $value }}</option>
@@ -70,7 +70,7 @@
                 <div class="row form-group mb-3">
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
-                            <label for="province_id" class="col-12"> {{ trans('profile/admin_lang.fields.province_id') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="province_id" class="col-12"> {{ trans('profile/admin_lang.fields.province_id') }}<span class="text-danger">*</span></label>
                             <select class="form-control select2" name="user_profile[province_id]" id="province_id">
                                 <option value="">{{ trans('profile/admin_lang.fields.province_id_helper') }}</option>   
                                 @foreach ($provincesList as $province)
@@ -82,7 +82,7 @@
                     </div>    
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
-                            <label for="municipio_id" class="col-12"> {{ trans('profile/admin_lang.fields.municipio_id') }} <span class="text-danger">*</span> </label>
+                            <label class="text-primary" for="municipio_id" class="col-12"> {{ trans('profile/admin_lang.fields.municipio_id') }} <span class="text-danger">*</span> </label>
                             <select class="form-control select2" name="user_profile[municipio_id]" id="municipio_id">
                                 <option value="">{{ trans('profile/admin_lang.fields.municipio_id_helper') }}</option>   
                                 @foreach ($municipiosList as $municipio)
@@ -96,7 +96,7 @@
                     <div class="col-lg-12">
                      
                         <div class="form-group">
-                            <label for="address"> {{ trans('profile/admin_lang.fields.address') }} <span class="text-danger">*</span></label>
+                            <label class="text-primary" for="address"> {{ trans('profile/admin_lang.fields.address') }} <span class="text-danger">*</span></label>
                             <input value="{{ $user->userProfile->address }}" type="text" class="form-control" name="user_profile[address]"  placeholder="{{ trans('profile/admin_lang.fields.address_helper') }}">
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                 </div>
             </div>
             <div class="card-footer text-end">
-                <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                <button type="submit" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>   
             </div>
         </form>
     </div>

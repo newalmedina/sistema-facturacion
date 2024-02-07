@@ -402,7 +402,7 @@ class AdminPatientMedicineController extends Controller
                     class="fa fa-file-pdf fa-lg"></i></a> ';
             }
             if (auth()->user()->isAbleTo("admin-patients-medicines-create")) {
-                $actions .= '<a  class="btn btn-success btn-xs" href="javascript:void(0);"  onclick="javascript:copyElement(\'' .
+                $actions .= '<a  class="btn btn-primary btn-xs" href="javascript:void(0);"  onclick="javascript:copyElement(\'' .
                     route('admin.patients.medicines.copy', ["patient_id" => $data->user_id, "id" => $data->id])  . '\');"><i
                     class="fa fa-copy fa-lg"></i></a> ';
             }

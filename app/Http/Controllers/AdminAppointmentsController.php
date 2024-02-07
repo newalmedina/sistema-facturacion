@@ -411,7 +411,7 @@ class AdminAppointmentsController extends Controller
                     <i class="fas fa-dollar-sign" aria-hidden="true"></i></button>';
             }
             if ($appointment->canFinalizar()) {
-                $actions .= '<button class="btn btn-success ms-1 mt-1  btn-xs" data-bs-content="' . trans('appointments/admin_lang.finalizar') . '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:finalizarElement(\'' .
+                $actions .= '<button class="btn btn-primary ms-1 mt-1  btn-xs" data-bs-content="' . trans('appointments/admin_lang.finalizar') . '" data-bs-placement="left" data-bs-toggle="popover" onclick="javascript:finalizarElement(\'' .
                     url('admin/appointments/finalizar/' . $data->id) . '\');" data-content="' .
                     trans('appointments/admin_lang.facturar') . '" data-placement="left" data-toggle="popover">
                     <i class="fas fa-check" aria-hidden="true"></i>';

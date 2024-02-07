@@ -20,7 +20,7 @@
                                 <div class="col-12">
                                  
                                     <div class="form-group">
-                                        <label for="password_old"> {{ trans('auth/change_password/front_lang.password_old') }}<span class="text-danger">*</span></label>
+                                        <label class="text-primary" for="password_old"> {{ trans('auth/change_password/front_lang.password_old') }}<span class="text-danger">*</span></label>
                                         <input  type="password"  class="form-control" name="password_old"  placeholder="{{ trans('auth/change_password/front_lang.password_old_helper') }}">
                                         @error('password_old')
                                             <div class="text-danger">{{ $message }}</div>
@@ -30,14 +30,14 @@
                                  <div class="col-12">
                                  
                                     <div class="form-group">
-                                        <label for="password"> {{ trans('auth/change_password/front_lang.password') }}<span class="text-danger">*</span></label>
+                                        <label class="text-primary" for="password"> {{ trans('auth/change_password/front_lang.password') }}<span class="text-danger">*</span></label>
                                         <input  type="password"  class="form-control" value="" name="password"  placeholder="{{ trans('auth/change_password/front_lang.password_helper') }}">
                                     </div>
                                 </div>    
                                  <div class="col-12">
                                  
                                     <div class="form-group">
-                                        <label for="password_confirm"> {{ trans('auth/change_password/front_lang.password_confirm') }}<span class="text-danger">*</span></label>
+                                        <label class="text-primary" for="password_confirm"> {{ trans('auth/change_password/front_lang.password_confirm') }}<span class="text-danger">*</span></label>
                                         <input  type="password"  class="form-control" value="" name="password_confirm"  placeholder="{{ trans('auth/change_password/front_lang.password_confirm_helper') }}">
                                     </div>
                                 </div>    

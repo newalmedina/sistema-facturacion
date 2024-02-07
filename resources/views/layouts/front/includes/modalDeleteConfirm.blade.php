@@ -12,7 +12,7 @@
         </div>
         <div class="modal-footer ">
           <button type="button" class="btn btn-info" data-bs-dismiss="modal">{{ trans('general/admin_lang.no') }}</button>
-          <button class="btn btn-success" wire:click.prevent="delete()"  >{{ trans('general/admin_lang.yes_delete') }}</button>
+          <button class="btn btn-primary" wire:click.prevent="delete()"  >{{ trans('general/admin_lang.yes_delete') }}</button>
         
         </div>
       </div>

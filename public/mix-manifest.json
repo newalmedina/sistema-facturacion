@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/assets/admin/css/theme.css": "/assets/admin/css/theme.css",
     "/assets/admin/css/skins/default.css": "/assets/admin/css/skins/default.css",
     "/resources/views/vendor/jsvalidation/bootstrap.php": "/resources/views/vendor/jsvalidation/bootstrap.php",
     "/resources/views/vendor/jsvalidation/bootstrap4.php": "/resources/views/vendor/jsvalidation/bootstrap4.php",

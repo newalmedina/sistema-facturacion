@@ -42,7 +42,7 @@
                     <div class="row">
                         <div class="col-12  col-md-6">                     
                             <div class="form-group">
-                                <label for="role_id" class="col-12" > {{ trans('users/admin_lang.fields.roles') }}</label>
+                                <label class="text-primary" for="role_id" class="col-12" > {{ trans('users/admin_lang.fields.roles') }}</label>
                                 <select class="form-control select2 col-12" style="width: 100%" name="role_id[]" multiple id="role_id">
                                     @foreach ($roles as $role)
                                         <option value="{{ $role->id }}"         @if (in_array($role->id,$filtRoleId)) selected @endif >{{ $role->name }}</option>
@@ -52,7 +52,7 @@
                         </div>   
                         <div class="col-12  col-md-6">                     
                             <div class="form-group">
-                                <label for="center_id" class="col-12" > {{ trans('users/admin_lang.fields.centers') }}</label>
+                                <label class="text-primary" for="center_id" class="col-12" > {{ trans('users/admin_lang.fields.centers') }}</label>
                                 <select class="form-control select2 col-12" style="width: 100%" name="center_id[]" multiple id="center_id">
                                     @foreach ($centers as $center)
                                         <option value="{{ $center->id }}"         @if (in_array($center->id,$filtCenterId)) selected @endif >{{ $center->name }}</option>
@@ -66,7 +66,7 @@
                 <div class="card-footer">  
                     <div class="row ">
                         <div class="col-12 col-md-6 d-flex justify-content-start">
-                            <button class="btn btn-success btn-xs " type="submit"> {!! trans('general/admin_lang.filter') !!}</button>
+                            <button class="btn btn-primary btn-xs " type="submit"> {!! trans('general/admin_lang.filter') !!}</button>
                             <a href="{{ url('admin/users/remove-filter') }}" class="ms-2 btn btn-danger btn-xs">
                                 {!! trans('general/admin_lang.clean_filter') !!}
                             </a>
@@ -279,7 +279,7 @@
     //     var strBtn = "";
 
     //     $("#confirmModalLabel").html("{{ trans('general/admin_lang.delete') }}");
-    //     $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
+    //     $("#confirmModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-question-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i><label class="text-primary" style='font-size: 18px'>{{ trans('general/admin_lang.delete_question') }}</label></div>");
     //     strBtn+= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ trans('general/admin_lang.close') }}</button>';
     //     strBtn+= '<button type="button" class="btn btn-primary" onclick="javascript:deleteinfo(\''+url+'\');">{{ trans('general/admin_lang.yes_delete') }}</button>';
     //     $("#confirmModalFooter").html(strBtn);
@@ -315,7 +315,7 @@
                 if(data) {
                     // $("#modal_alert").addClass('modal-success');
                     // $("#alertModalHeader").html("{{ trans('general/admin_lang.warning') }}");
-                    // $("#alertModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-check-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i> <label style='font-size: 18px'>" + data.msg+"</label></div>");
+                    // $("#alertModalBody").html("<div class='d-flex align-items-center'><i class='fas fa-check-circle text-success' style='font-size: 64px; float: left; margin-right:15px;'></i> <label class="text-primary" style='font-size: 18px'>" + data.msg+"</label></div>");
                     // $("#modal_alert").modal('toggle');
                     toastr.success( data.msg)
                     oTable.ajax.reload(null, false);

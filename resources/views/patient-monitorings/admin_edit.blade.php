@@ -45,7 +45,7 @@
                 <div class="row form-group mb-3">  
                     <div class="col-md-2">                     
                         <div class="form-group">
-                            <label for="date"> {{ trans('patient-monitorings/admin_lang.fields.date') }}<span class="text-danger">*</span></label>
+                            <label class="text-primary" for="date"> {{ trans('patient-monitorings/admin_lang.fields.date') }}<span class="text-danger">*</span></label>
                             <input value="{{ $patientMonitoring->dateFormatted }}" name="date" autocomplete="off" type="text" {{ $disabled }} autocomplete="off" class="form-control datepicker"   placeholder="{{ trans('patient-monitorings/admin_lang.fields.date_helper') }}">
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                         <div class=" offset-md-4 col-md-4">
                          
                             <div class="form-group">
-                                <label for="created_by"> {{ trans('patient-monitorings/admin_lang.fields.created_by') }}</label>
+                                <label class="text-primary" for="created_by"> {{ trans('patient-monitorings/admin_lang.fields.created_by') }}</label>
                                 <input value="{{ $patientMonitoring->createdBy->userProfile->fullName }}" type="text" disabled class="form-control "   placeholder="{{ trans('patient-monitorings/admin_lang.fields.created_by_helper') }}">
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                         <div class="col-md-4">
                          
                             <div class="form-group">
-                                <label for="center"> {{ trans('patient-monitorings/admin_lang.fields.center') }}</label>
+                                <label class="text-primary" for="center"> {{ trans('patient-monitorings/admin_lang.fields.center') }}</label>
                                 <input value="{{ $patientMonitoring->center->name }}" type="text" disabled class="form-control "   placeholder="{{ trans('patient-monitorings/admin_lang.fields.center_helper') }}">
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                     <div class="row form-group mb-3">  
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="height"> {{ trans('patient-monitorings/admin_lang.fields.height') }}</label>
+                                <label class="text-primary" for="height"> {{ trans('patient-monitorings/admin_lang.fields.height') }}</label>
                                 <input name="height" value="{{ $patientMonitoring->height }}" type="number" {{ $disabled }} class="form-control "   placeholder="">
                             </div>
                         </div>      
@@ -86,7 +86,7 @@
                     <div class="row form-group mb-3">    
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="weight"> {{ trans('patient-monitorings/admin_lang.fields.weight') }}</label>
+                                <label class="text-primary" for="weight"> {{ trans('patient-monitorings/admin_lang.fields.weight') }}</label>
                                 <input name="weight" value="{{ $patientMonitoring->weight }}" type="number" {{ $disabled }} class="form-control "   placeholder="">
                             </div>
                         </div>  
@@ -94,7 +94,7 @@
                     <div class="row form-group mb-3">   
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="temperature"> {{ trans('patient-monitorings/admin_lang.fields.temperature') }}</label>
+                                <label class="text-primary" for="temperature"> {{ trans('patient-monitorings/admin_lang.fields.temperature') }}</label>
                                 <input name="temperature" value="{{ $patientMonitoring->temperature }}" type="number" {{ $disabled }} class="form-control "   placeholder="">
                             </div>
                         </div>    
@@ -102,7 +102,7 @@
                     <div class="row form-group mb-3">    
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="heart_rate"> {{ trans('patient-monitorings/admin_lang.fields.heart_rate') }}</label>
+                                <label class="text-primary" for="heart_rate"> {{ trans('patient-monitorings/admin_lang.fields.heart_rate') }}</label>
                                 <input name="heart_rate" value="{{ $patientMonitoring->heart_rate }}" type="number" {{ $disabled }} class="form-control "   placeholder="">
                             </div>
                         </div>    
@@ -110,7 +110,7 @@
                     <div class="row form-group mb-3">   
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="blood_presure"> {{ trans('patient-monitorings/admin_lang.fields.blood_presure') }}</label>
+                                <label class="text-primary" for="blood_presure"> {{ trans('patient-monitorings/admin_lang.fields.blood_presure') }}</label>
                                 <input name="blood_presure" value="{{ $patientMonitoring->blood_presure }}" type="number" {{ $disabled }} class="form-control "   placeholder="">
                             </div>
                         </div>      
@@ -118,7 +118,7 @@
                     <div class="row form-group mb-3">  
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="rheumatoid_factor"> {{ trans('patient-monitorings/admin_lang.fields.rheumatoid_factor') }}</label>
+                                <label class="text-primary" for="rheumatoid_factor"> {{ trans('patient-monitorings/admin_lang.fields.rheumatoid_factor') }}</label>
                                 <input name="rheumatoid_factor" value="{{ $patientMonitoring->rheumatoid_factor }}" type="number" {{ $disabled }} class="form-control "   placeholder="">
                             </div>
                         </div>   
@@ -131,7 +131,7 @@
                                 <div class="card-header">
                                     <h4 class="card-title m-0">
                                         <a class="accordion-toggle" data-bs-toggle="collapse" data-bs-parent="#accordion4" data-bs-target="#motiveCollapse">
-                                            <label for="motive"> {{ trans('patient-monitorings/admin_lang.fields.motive') }}</label> 
+                                            <label class="text-primary" for="motive"> {{ trans('patient-monitorings/admin_lang.fields.motive') }}</label> 
                                         </a>
                                     </h4>
                                 </div>
@@ -145,7 +145,7 @@
                                 <div class="card-header">
                                     <h4 class="card-title m-0">
                                         <a class="accordion-toggle" data-bs-toggle="collapse" data-bs-parent="#accordion4" data-bs-target="#physical_explorationCollapse">
-                                            <label for="physical_exploration"> {{ trans('patient-monitorings/admin_lang.fields.physical_exploration') }}</label> 
+                                            <label class="text-primary" for="physical_exploration"> {{ trans('patient-monitorings/admin_lang.fields.physical_exploration') }}</label> 
                                         </a>
                                     </h4>
                                 </div>
@@ -159,7 +159,7 @@
                                 <div class="card-header">
                                     <h4 class="card-title m-0">
                                         <a class="accordion-toggle" data-bs-toggle="collapse" data-bs-parent="#accordion4" data-bs-target="#symptomsCollapse">
-                                            <label for="symptoms"> {{ trans('patient-monitorings/admin_lang.fields.symptoms') }}</label> 
+                                            <label class="text-primary" for="symptoms"> {{ trans('patient-monitorings/admin_lang.fields.symptoms') }}</label> 
                                         </a>
                                     </h4>
                                 </div>
@@ -173,7 +173,7 @@
                                 <div class="card-header">
                                     <h4 class="card-title m-0">
                                         <a class="accordion-toggle" data-bs-toggle="collapse" data-bs-parent="#accordion4" data-bs-target="#diagnosisCollapse">
-                                            <label for="diagnosis"> {{ trans('patient-monitorings/admin_lang.fields.diagnosis_id') }}</label> 
+                                            <label class="text-primary" for="diagnosis"> {{ trans('patient-monitorings/admin_lang.fields.diagnosis_id') }}</label> 
                                         </a>
                                     </h4>
                                 </div>
@@ -191,7 +191,7 @@
                                 <div class="card-header">
                                     <h4 class="card-title m-0">
                                         <a class="accordion-toggle" data-bs-toggle="collapse" data-bs-parent="#accordion4" data-bs-target="#commentCollapse">
-                                            <label for="comment"> {{ trans('patient-monitorings/admin_lang.fields.comment') }}</label> 
+                                            <label class="text-primary" for="comment"> {{ trans('patient-monitorings/admin_lang.fields.comment') }}</label> 
                                         </a>
                                     </h4>
                                 </div>
@@ -212,7 +212,7 @@
                 <div class="col-12  d-flex justify-content-between">
                     <a href="{{ route('admin.patients.monitorings',["patient_id"=>$patient->id]) }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
                     @if (empty( $disabled ))
-                        <button type="submit" id="saveData" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>                           
+                        <button type="submit" id="saveData" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>                           
                     @endif
                 </div>
             </div>

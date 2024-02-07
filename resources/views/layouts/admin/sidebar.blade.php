@@ -34,14 +34,20 @@
                             ) 
                                nav-active
                                nav-expanded
+                               nav-link-active-color
                             @endif">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link
+                            @if (Request::is('admin/users*') ||
+                                Request::is('admin/roles*')
+                            ) 
+                               nav-link-active-color
+                            @endif" href="#">
                                 <i class="fas fa-user" aria-hidden="true"></i>
                                 <span>{{ trans('users/admin_lang.users') }}</span>
                             </a>
                             <ul class="nav nav-children" style="">
                                 @if(Auth::user()->isAbleTo("admin-users"))
-                                    <li  @if (Request::is('admin/users*')) class="nav-active" @endif>                       
+                                    <li  @if (Request::is('admin/users*')) class="nav-active " @endif>                       
                                         <a class="nav-link" href="{{ url('admin/users') }}">
                                             <i class="fas fa-users" aria-hidden="true"></i>
                                             <span>{{ trans('users/admin_lang.users_management') }}</span>
@@ -76,8 +82,18 @@
                             ) 
                                nav-active
                                nav-expanded
+                               nav-link-active-color
                             @endif">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link
+                            @if (Request::is('admin/provinces*') ||
+                                Request::is('admin/municipios*') ||
+                                Request::is('admin/services*') ||
+                                Request::is('admin/medical-specializations*') ||
+                                Request::is('admin/insurance-carriers*') ||
+                                Request::is('admin/diagnosis*')
+                            ) 
+                            nav-link-active-color
+                            @endif" href="#">
                                 <i class="fas fa-table" aria-hidden="true"></i>
                                 <span>{{ trans('table_system/admin_lang.table_system')  }}</span>
                             </a>
@@ -139,7 +155,7 @@
                     @endif
                     @if(Auth::user()->isAbleTo("admin-centers")  )
                         <li class="@if (Request::is('admin/centers*') ) nav-active @endif">
-                            <a class="nav-link" @if (Request::is('admin/centers*')) style="color:{{ $activeColor }}" @endif  href="{{ url('/admin/centers') }}">
+                            <a class="nav-link @if (Request::is('admin/centers*')) nav-link-active-color @endif"   href="{{ url('/admin/centers') }}">
                                 <i class="fas fa-hospital" aria-hidden="true"></i>
                                 <span>{{ trans('centers/admin_lang.centers') }}</span>
                             </a>                        
@@ -156,7 +172,7 @@
                     
                     @if(Auth::user()->isAbleTo("admin-patients") && Auth::user()->hasSelectedCenter()  )
                         <li class="@if (Request::is('admin/patients*') ) nav-active @endif">
-                            <a class="nav-link" @if (Request::is('admin/patients*')) style="color:{{ $activeColor }}" @endif  href="{{ url('/admin/patients') }}">
+                            <a class="nav-link @if (Request::is('admin/patients*')) nav-link-active-color @endif"   href="{{ url('/admin/patients') }}">
                                 <i class="fas fa-user-injured" aria-hidden="true"></i>
                                 <span>{{ trans('patients/admin_lang.patients') }}</span>
                             </a>                        
@@ -164,7 +180,7 @@
                     @endif
                     @if(Auth::user()->isAbleTo("admin-appointments") && Auth::user()->hasSelectedCenter()  )
                         <li class="@if (Request::is('admin/calendar*') ) nav-active @endif">
-                            <a class="nav-link" @if (Request::is('admin/calendar*')) style="color:{{ $activeColor }}" @endif  href="{{ url('/admin/calendar') }}">
+                            <a class="nav-link  @if (Request::is('admin/calendar*')) nav-link-active-color @endif " href="{{ url('/admin/calendar') }}">
                                 <i class="fas fa-calendar-alt" aria-hidden="true"></i>
                                 <span>{{ trans('calendar/admin_lang.calendar') }}</span>
                             </a>                        
@@ -179,8 +195,17 @@
                             ) 
                                nav-active
                                nav-expanded
+                               nav-link-active-color
                             @endif">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link
+                            @if (
+                            // Request::is('admin/users*') ||
+                                Request::is('admin/appointments*') 
+                                
+                            ) 
+                               nav-link-active-color
+                            @endif
+                            " href="#">
                                 <i class="fas fa-calendar-check" aria-hidden="true"></i>
                                 <span>{{ trans('appointments/admin_lang.appointments') }}</span>
                             </a>
@@ -209,7 +234,7 @@
                     
                     @if(Auth::user()->isAbleTo("admin-settings")  )
                         <li class="@if (Request::is('admin/settings*') ) nav-active @endif">
-                            <a class="nav-link" @if (Request::is('admin/settings*')) style="color:{{ $activeColor }}" @endif  href="{{ url('/admin/settings') }}">
+                            <a class="nav-link @if (Request::is('admin/settings*')) nav-link-active-color @endif "  href="{{ url('/admin/settings') }}">
                                 <i class="fas fa-cog" aria-hidden="true"></i>
                                 <span>{{ trans('settings/admin_lang.settings') }}</span>
                             </a>                        

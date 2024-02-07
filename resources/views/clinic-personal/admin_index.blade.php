@@ -43,7 +43,7 @@
                     <div class="row">
                         <div class="col-12 ">                     
                             <div class="form-group">
-                                <label for="specialization_id" class="col-12" > {{ trans('clinic-personal/admin_lang.fields.specialization_id') }}</label>
+                                <label class="text-primary" for="specialization_id" class="col-12" > {{ trans('clinic-personal/admin_lang.fields.specialization_id') }}</label>
                                 <select class="form-control select2 col-12" style="width: 100%" name="specialization_id[]" multiple id="specialization_id">
                                     @foreach ($specializations as $specialization)
                                         <option value="{{ $specialization->id }}" @if (in_array($specialization->id,$filtSpecializationId)) selected @endif >{{ $specialization->name }}</option>
@@ -58,7 +58,7 @@
                 <div class="card-footer">  
                     <div class="row ">
                         <div class="col-12 col-md-6 d-flex justify-content-start">
-                            <button class="btn btn-success btn-xs " type="submit"> {!! trans('general/admin_lang.filter') !!}</button>
+                            <button class="btn btn-primary btn-xs " type="submit"> {!! trans('general/admin_lang.filter') !!}</button>
                             <a href="{{ url('admin/clinic-personal/remove-filter') }}" class="ms-2 btn btn-danger btn-xs">
                                 {!! trans('general/admin_lang.clean_filter') !!}
                             </a>

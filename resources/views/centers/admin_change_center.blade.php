@@ -17,7 +17,7 @@
               
               <div class="col-12 ">                     
                   <div class="form-group">
-                      <label for="center_id"> {{ trans('centers/admin_lang.centers') }}</label>
+                      <label class="text-primary" for="center_id"> {{ trans('centers/admin_lang.centers') }}</label>
                       <select class="form-control select2Center"  name="center_id" id="center_id">
                           <option value="">{{ trans('centers/admin_lang.fields.center_id_helper') }}</option>   
                           @foreach ($centers as $center)
@@ -38,7 +38,7 @@
 
           <div class="modal-footer ">
             <button type="button" class="btn btn-default" data-bs-dismiss="modal">{{ trans('general/admin_lang.close') }}</button>
-            <button class="btn btn-success" type="submit"  >{{ trans('general/admin_lang.save') }}</button>        
+            <button class="btn btn-primary" type="submit"  >{{ trans('general/admin_lang.save') }}</button>        
           </div>
         </form>
       </div>

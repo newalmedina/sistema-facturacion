@@ -80,7 +80,7 @@
                 <div class="col-12  d-flex justify-content-between">
                     <a href="{{ url('admin/patients') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
                     @if (empty( $disabled ))
-                        <button type="button" id="saveData" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>                           
+                        <button type="button" id="saveData" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>                           
                     @endif
                 </div>
             </div>

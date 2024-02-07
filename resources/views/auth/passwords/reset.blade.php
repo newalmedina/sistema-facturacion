@@ -50,7 +50,7 @@
                 @csrf
                 <div class="row">
                     <div class="form-group col">
-                        <label for="email" class="col-md-12 col-form-label text-start">Correo</label>
+                        <label class="text-primary" for="email" class="col-md-12 col-form-label text-start">Correo</label>
 
                         <div class="col-md-12">
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col">
-                        <label for="email" class="col-md-12 col-form-label text-start">Contraseña</label>
+                        <label class="text-primary" for="email" class="col-md-12 col-form-label text-start">Contraseña</label>
 
                         <div class="col-md-12">
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -82,7 +82,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col">
-                        <label for="email" class="col-md-12 col-form-label text-start">Confirmar contraseña</label>
+                        <label class="text-primary" for="email" class="col-md-12 col-form-label text-start">Confirmar contraseña</label>
 
                         <div class="col-md-12">
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
