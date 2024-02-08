@@ -60,6 +60,8 @@
 
 		<!-- Head Libs -->
 		<script src="{{ asset('assets/front/vendor/modernizr/modernizr.min.js')}}"></script>
+		
+		<link rel="stylesheet" href="{{ asset('assets/admin/vendor/toast/toast.min.css')}}">
     	@yield('head_page')
 	</head>
 	<body class="alternative-font-4 loading-overlay-showing img-background" data-plugin-page-transition data-loading-overlay data-plugin-options="{'hideDelay': 100}">
@@ -109,7 +111,7 @@
 
     <!-- Theme Initialization Files -->
     <script src="{{ asset('assets/front/js/theme.init.js')}}"></script>
-	
+	<script src="{{ asset('assets/admin/vendor/toast/toast.min.js')}}"></script>
 <script type="text/javascript" src="{{ asset("assets/admin/vendor/tinymce/tinymce.min.js") }}">       </script>
 	<script>
 		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

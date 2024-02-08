@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use ReCaptcha\ReCaptcha;
 
 class LoginController extends Controller
 {
@@ -63,6 +64,16 @@ class LoginController extends Controller
     }
     protected function login(Request $request)
     {
+        // Verifica el reCAPTCHA
+        $recaptcha = new ReCaptcha(env('GOOGLE_RECAPTCHA_SECRET'));
+        $response = $recaptcha->verify($request->input('g-recaptcha-response'), $request->ip());
+
+        if (!$response->isSuccess()) {
+            // El reCAPTCHA no se ha validado correctamente
+            return redirect()->back()->withErrors(['captcha' => 'El reCAPTCHA no se ha validado correctamente.']);
+        }
+
+
         $remember = $request->has('remember');
 
         if (auth()->attempt($this->credentials($request), $remember)) {

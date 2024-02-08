@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "barryvdh/laravel-dompdf": "^2.0",
         "fruitcake/laravel-cors": "^2.0",
+        "google/recaptcha": "~1.2",
         "guzzlehttp/guzzle": "^7.0.1",
         "kalnoy/nestedset": "^6.0",
         "laravel/framework": "^9.0",
