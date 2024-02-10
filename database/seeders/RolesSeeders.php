@@ -50,7 +50,7 @@ class RolesSeeders extends Seeder
         $userRole->description = 'Paciente';
         $userRole->can_delete = false;
 
-        $userRole->can_show = false;
+        $userRole->can_show = true;
         $userRole->active = true;
         $userRole->save();
 

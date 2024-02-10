@@ -37,16 +37,21 @@ return [
         'active' => '¿Activo?',
         'active_helper' => 'Introduce activo',
         'active_required' => 'El campo activo es obligatorio',
+        
+        'password_changed_at' => 'Contraseña modificada',
+        'permit_recieve_emails' => 'Permitir recepción de emails',
+        'email_verified_at' => 'Email verificado',
 
         'password' => 'Contraseña',
         'password_helper' => 'Introduce contraseña',
         'password_required' => 'El campo contraseña es obligatorio',
         'password_confirmed' => 'Las contraseñas no coinciden',
-        'password_min' => 'El campo contraseña debe tener almenos 8 carácteres',
+        'password_min' => 'El campo contraseña debe tener al menos 8 carácteres',
+        'password_regex' => 'El campo contraseña debe tener caracteres especiales, mayusculas y minusculas',
 
         'password_confirm' => 'Repetir contraseña',
-        'password_confirm_helper' => 'Introduce rçepetir contraseña',
-        'password_confirm_required' => 'El campo rçepetir contraseña es obligatorio',
+        'password_confirm_helper' => 'Introduce repetir contraseña',
+        'password_confirm_required' => 'El campo repetir contraseña es obligatorio',
 
         'identification' => 'Identificación',
         'identification_helper' => 'Introduce indentificación',
@@ -82,6 +87,7 @@ return [
 
         'centers' => 'Centros',
         'roles' => 'Roles',
+        'center_created' => 'Centro de Creación',
     ],
 
 ];

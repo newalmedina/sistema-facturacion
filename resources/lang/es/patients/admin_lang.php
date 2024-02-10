@@ -32,7 +32,8 @@ return [
         'created_by' => 'Creado por',
         'created_by_helper' => 'Introduce creado por',
         'created_by_required' => 'El campo creado por es obligatorio',
-
+        'center_created' => 'Centro de Creación',
+       
         'first_name' => 'Nombre',
         'first_name_helper' => 'Introduce nombre',
         'first_name_required' => 'El campo nombre es obligatorio',
@@ -53,7 +54,7 @@ return [
         'email_incorrect_format' => 'El campo email no es válido',
         'email_unique' => 'El email ya existe en nuestros registros',
         'password_confirmed' => 'Las contraseñas no coinciden',
-        'password_min' => 'El campo contraseña debe tener almenos 8 carácteres',
+        'password_min' => 'El campo contraseña debe tener al menos 8 carácteres',
 
         'profile_image' => 'Imagen de perfil',
         'search_image' => 'Seleccione imagen',

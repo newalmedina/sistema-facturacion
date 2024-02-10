@@ -3,8 +3,29 @@
 
 return [
     'appointments' => 'Citas',
-    'appointment' => 'Cita',
+
+    'todos' => 'Todas las citas',
+    'cita' => 'Cita',
+    'list' => 'Listado de citas',
+    'new' => 'Nueva cita',
+    'edit' => 'Editar cita',
+    'show' => 'Visualizar cita',
+    'general_info' => 'Información general',
+    'additional_info' => 'Información adicional',
+    'appointments_management' => 'Gestión de dentros',
+    'change_appointments' => 'Cambiar cita',
+    'created_at' => 'Creado el:',
+
+    'changed' => 'cita Cambiado Correctamente',
+    'quit_image' => 'Quitar imagen',
+    'facturar_question' => '¿Seguro que quieres facturar esta cita?',
+    'facturar' => 'Facturar',
+    'finalizar_question' => '¿Seguro que quieres finalizar esta cita?',
+    'finalizar' => 'Finalizar',
+
     'fields' => [
+        'state' => 'Estado',
+        'state_helper' => 'Seleccione estado',
         'id' => 'Id',
 
         'user_id' => 'Paciente',
@@ -15,6 +36,10 @@ return [
         'created_by_helper' => 'Introduce creador',
         'created_by_required' => 'El campo creador es obligatorio',
 
+        'applicaterd_insurance' => 'Seguro validado',
+        'applicaterd_insurance_helper' => 'IntroducesSeguro validado',
+        'applicaterd_insurance_required' => 'El campo seguro validado es obligatorio',
+
         'center_id' => 'Centro',
         'center_id_helper' => 'Introduce centro',
         'center_id_required' => 'El campo centro es obligatorio',
@@ -22,6 +47,18 @@ return [
         'start_at' => 'Fecha',
         'start_at_helper' => 'Introduce fecha',
         'start_at_required' => 'El campo fecha es obligatorio',
+
+        'start_at_ini' => 'Fecha inicial',
+        'start_at_ini_helper' => 'Introduce fecha inicial',
+        'start_at_ini_required' => 'El campo fecha inicial es obligatorio',
+
+        'service_id' => 'Servicio',
+        'service_id_helper' => 'Introduce servicio',
+        'service_id_required' => 'El campo servicio es obligatorio',
+
+        'start_at_end' => 'Fecha final',
+        'start_at_end_helper' => 'Introduce fecha final',
+        'start_at_end_required' => 'El campo fecha final es obligatorio',
 
         'hour' => 'Hora',
         'hour_helper' => 'Introduce hora',
@@ -68,6 +105,8 @@ return [
 
         'poliza' => 'Poliza',
         'created_by' => 'Creado por',
+
+
     ],
 
 ];

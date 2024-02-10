@@ -14,5 +14,8 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .sourceMaps();
-    mix.copy('vendor/proengsoft/laravel-jsvalidation/resources/views', 'resources/views/vendor/jsvalidation')
+mix.copy('vendor/proengsoft/laravel-jsvalidation/resources/views', 'resources/views/vendor/jsvalidation')
     .copy('vendor/proengsoft/laravel-jsvalidation/public', 'public/vendor/jsvalidation');
+
+mix.sass('resources/assets/admin/sass/default.scss', 'public/assets/admin/css/skins');
+mix.sass('resources/assets/admin/sass/theme.scss', 'public/assets/admin/css');

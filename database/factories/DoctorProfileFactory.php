@@ -49,6 +49,7 @@ class DoctorProfileFactory extends Factory
         $userProfile->phone = $this->faker->phoneNumber;
         $userProfile->mobile = $this->faker->phoneNumber;
         $userProfile->gender = $this->faker->randomElement(['male', 'female']);
+        $userProfile->created_center = 1;
         $userProfile->save();
 
 

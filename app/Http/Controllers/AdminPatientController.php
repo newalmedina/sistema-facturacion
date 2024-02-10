@@ -23,6 +23,9 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
+use App\Jobs\SendUserRegistrationEmailJob;
+use App\Services\SettingsServices;
+
 class AdminPatientController extends Controller
 {
     public $filtProvinceId;
@@ -153,14 +156,24 @@ class AdminPatientController extends Controller
         try {
             DB::beginTransaction();
             $patient = new User();
-            $patient->email = Str::random(8);
-            $patient->password =  Hash::make($patient->email);
+            $password = Str::random(7) . "*";
+            $patient->password =  Hash::make($password);
             $this->savePatients($patient, $request);
 
             $roles = Role::where("name", "patient")->pluck("id");
 
             $patient->syncRoles($roles);
             DB::commit();
+
+            $allowEmail = SettingsServices::allowEmails();
+
+
+            if ($allowEmail) {
+                //cambiar config del .env
+                $setConfiguration = SettingsServices::setSmtpConfiguration();
+                SendUserRegistrationEmailJob::dispatch($patient, $password);
+            }
+
             return redirect()->route('admin.patients.edit', [$patient->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
             dd($e);
@@ -251,6 +264,7 @@ class AdminPatientController extends Controller
             if (empty($patient->patientProfile)) {
                 $patientProfile = new PatientProfile();
                 $patientProfile->user_id = $patient->id;
+                $patientProfile->created_by = Auth::user()->id;
             } else {
                 $patientProfile = PatientProfile::where('user_id', $patient->id)->first();
             }
@@ -377,7 +391,7 @@ class AdminPatientController extends Controller
             [
                 'users.id',
                 'users.active',
-                'patient_profiles.email',
+                'users.email',
                 'user_profiles.phone',
                 'user_profiles.first_name',
                 DB::raw('CONCAT(user_profiles.first_name, " ", user_profiles.last_name) as patient'),
@@ -579,12 +593,13 @@ class AdminPatientController extends Controller
 
     private function savePatients($patient, $request)
     {
-
+        $patient->email = $request->input('patient_profile.email');
         $patient->active = $request->input('active', 0);
         $patient->save();
         if (empty($patient->userProfile)) {
             $userProfile = new UserProfile();
             $userProfile->user_id = $patient->id;
+            $userProfile->created_center = Auth::user()->hasSelectedCenter();
         } else {
             $userProfile = UserProfile::where('user_id', $patient->id)->first();
         }
@@ -625,7 +640,7 @@ class AdminPatientController extends Controller
             $patientProfile = PatientProfile::where('user_id', $patient->id)->first();
         }
 
-        $patientProfile->email = $request->input('patient_profile.email');
+        // $patientProfile->email = $request->input('patient_profile.email');
         $patientProfile->save();
     }
 }

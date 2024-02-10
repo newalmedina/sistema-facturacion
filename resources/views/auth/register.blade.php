@@ -1,4 +1,7 @@
 @extends('layouts.front.default')
+@section('title')
+    @parent {{ "Registrar" }}
+@stop
 @section('head_page')
     
 @stop
@@ -27,7 +30,7 @@
                 @csrf
                 <div class="row">
                     <div class="form-group col">
-                        <label for="first_name" class="col-md-12 col-form-label text-start">{{ trans('auth/register/front_lang.fields.first_name') }}</label>
+                        <label class='text-primary' for="first_name" class="col-md-12 col-form-label text-start">{{ trans('auth/register/front_lang.fields.first_name') }}</label>
 
                         <div class="col-md-12">
                             <input id="first_name" placeholder="{{ trans('auth/register/front_lang.fields.first_name_helper') }}" type="text" class="form-control @error('first_name') is-invalid @enderror" name="user_profile[first_name]" autofocus>
@@ -37,7 +40,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col">
-                        <label for="last_name" class="col-md-12 col-form-label text-start">{{ trans('auth/register/front_lang.fields.last_name') }}</label>
+                        <label class='text-primary' for="last_name" class="col-md-12 col-form-label text-start">{{ trans('auth/register/front_lang.fields.last_name') }}</label>
 
                         <div class="col-md-12">
                             <input id="last_name" placeholder="{{ trans('auth/register/front_lang.fields.last_name_helper') }}" type="text" class="form-control @error('last_name') is-invalid @enderror" name="user_profile[last_name]" >
@@ -47,7 +50,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col">
-                        <label for="email" class="col-md-12 col-form-label text-start">{{ trans('auth/register/front_lang.fields.email') }}</label>
+                        <label class='text-primary' for="email" class="col-md-12 col-form-label text-start">{{ trans('auth/register/front_lang.fields.email') }}</label>
 
                         <div class="col-md-12">
                             <input id="email" placeholder="{{ trans('auth/register/front_lang.fields.email_helper') }}" type="text" class="form-control @error('email') is-invalid @enderror" name="email" >
@@ -57,7 +60,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col">
-                        <label for="password" class="col-md-12 col-form-label text-start">{{ trans('auth/register/front_lang.fields.password') }}</label>
+                        <label class='text-primary' for="password" class="col-md-12 col-form-label text-start">{{ trans('auth/register/front_lang.fields.password') }}</label>
 
                         <div class="col-md-12">
                             <input id="password" placeholder="{{ trans('auth/register/front_lang.fields.password_helper') }}" type="password" class="form-control @error('password') is-invalid @enderror" name="password" >
@@ -67,7 +70,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col">
-                        <label for="password-confirm" class="col-md-12 col-form-label text-start">{{ trans('auth/register/front_lang.fields.password_confirm') }}</label>
+                        <label class='text-primary' for="password-confirm" class="col-md-12 col-form-label text-start">{{ trans('auth/register/front_lang.fields.password_confirm') }}</label>
 
                         <div class="col-md-12">
                             <input id="password-confirm" placeholder="{{ trans('auth/register/front_lang.fields.password_confirm_helper') }}" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">

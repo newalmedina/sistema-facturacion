@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('appointments', function (Blueprint $table) {
-            $table->dateTime("finish_at")->nullable()->after("color");
+            $table->enum('state', ['pendiente', 'facturado', 'finalizado'])->nullable()->after("id");
+            $table->text('delete_coment')->nullable()->after("deleted_at");
         });
     }
 
@@ -26,7 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('appointments', function (Blueprint $table) {
-            $table->dropColumn("finish_at");
+            $table->dropColumn('state');
+            $table->dropColumn('delete_coment');
         });
     }
 };

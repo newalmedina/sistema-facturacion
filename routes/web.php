@@ -20,8 +20,11 @@ use App\Http\Controllers\AdminSuplantacionController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminUserProfileController;
 use App\Http\Controllers\AdminAppointmentController;
+use App\Http\Controllers\AdminAppointmentsController;
+use App\Http\Controllers\AdminAppointmentsDeletedController;
 use App\Http\Controllers\Auth\FrontRegisterUserController;
 use App\Http\Controllers\AdminCalendarController;
+use App\Http\Controllers\FrontChangePasswordController;
 use App\Http\Controllers\FrontSettingsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocalizationController;
@@ -58,6 +61,10 @@ Route::get('/register/verify/{confirmation_code}', [FrontRegisterUserController:
 //     //   Route::resource('alarms', 'FrontAlarmsController');
 // });
 
+Route::get('/register', function () {
+    abort(404);
+});
+
 Route::get('/', function () {
     return redirect()->route('admin.dashboard');
 });
@@ -74,7 +81,19 @@ Route::group(array('prefix' => 'front', 'middleware' => []), function () {
 
     Route::get('/settings/get-image/{image}', [FrontSettingsController::class, 'getImage'])->name("front.settings-get-image");
 });
-Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active', 'avaible.site']), function () {
+
+Route::group(array('middleware' => []), function () {
+
+    Route::get('/settings/get-image/{image}', [FrontSettingsController::class, 'getImage'])->name("front.settings-get-image");
+});
+
+Route::group(array('middleware' => ['auth', 'verified', 'check.active', 'avaible.site']), function () {
+
+    Route::get('/change-password', [FrontChangePasswordController::class, 'index'])->name("front.change_password");
+    Route::post('/change-password', [FrontChangePasswordController::class, 'update'])->name("front.change_password_update");
+});
+
+Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active', 'change.password', 'avaible.site']), function () {
 
     Route::get('/profile/personal-info', [AdminUserProfileController::class, 'personalInfo']);
     Route::post('/profile/personal-info/update', [AdminUserProfileController::class, 'updatePersonalInfo'])->name("admin.updateProfilePersonalInfo");
@@ -88,13 +107,15 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
 });
 
 
-Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active', 'profile.complete', 'avaible.site'/* , 'selected.center' */]), function () {
+Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active', 'change.password', 'profile.complete', 'avaible.site'/* , 'selected.center' */]), function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name("admin.dashboard");
 
     Route::get('/settings', [AdminSettingsController::class, 'index'])->name("admin.settings");
     Route::patch('/settings', [AdminSettingsController::class, 'update'])->name("admin.settings.update");
     Route::delete('/settings/delete-image/{image}', [AdminSettingsController::class, 'deleteImage'])->name("admin.settings.deleteImage");
 
+    Route::get('/settings-smtp', [AdminSettingsController::class, 'indexSmtp'])->name("admin.settings.smtp");
+    Route::patch('/settings-smtp', [AdminSettingsController::class, 'updateSmtp'])->name("admin.settings.smtp-update");
     //Admin Profile
     Route::get('/profile', [AdminUserProfileController::class, 'edit']);
 
@@ -155,6 +176,7 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::post('/centers/save-filter', [AdminCenterController::class, 'saveFilter'])->name('admin.centers.saveFilter');
     Route::post('/centers/list', [AdminCenterController::class, 'getData'])->name('admin.centers.getData');
     Route::delete('/centers/{id}', [AdminCenterController::class, 'destroy'])->name('admin.centers.destroy');
+
 
     Route::get('/centers/aditional-info/{id}', [AdminCenterController::class, 'editAditionalInfo'])->name('admin.centers.editAditionalInfo');
     Route::get('/centers/aditional-info/{id}/show', [AdminCenterController::class, 'showAditionalInfo'])->name('admin.centers.showAditionalInfo');
@@ -236,6 +258,7 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
 
 
 
+
     //admin services
     Route::get('/services', [AdminServiceController::class, 'index']);
     Route::get('/services/create', [AdminServiceController::class, 'create'])->name('admin.services.create');
@@ -253,7 +276,7 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::get('/services/export-excel', [AdminServiceController::class, 'exportExcel'])->name("admin.services.exportExcel");
 });
 
-Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active', 'profile.complete', 'avaible.site', 'selected.center']), function () {
+Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'check.active', 'change.password', 'profile.complete', 'avaible.site', 'selected.center']), function () {
     //admin clinic-personal
     Route::get('/clinic-personal', [AdminClinicPersonalController::class, 'index']);
     Route::get('/clinic-personal/create', [AdminClinicPersonalController::class, 'create'])->name('admin.clinic-personal.create');
@@ -345,7 +368,33 @@ Route::group(array('prefix' => 'admin', 'middleware' => ['auth', 'verified', 'ch
     Route::post('/patients/{patient_id}/monitorings/list', [AdminPatientMonitoringController::class, 'getData'])->name('admin.patients.monitorings.getData');
     Route::delete('/patients/{patient_id}/monitorings/{id}', [AdminPatientMonitoringController::class, 'destroy'])->name('admin.patients.monitorings.destroy');
 
-    ///appointments
-    Route::get('/appointments', [AdminAppointmentController::class, 'index'])->name('admin.appointment');
+    //admin Appointments
+    Route::get('/appointments', [AdminAppointmentsController::class, 'index']);
+    Route::get('/appointments/create', [AdminAppointmentsController::class, 'create'])->name('admin.appointments.create');
+    Route::get('/appointments/{id}/edit', [AdminAppointmentsController::class, 'edit'])->name('admin.appointments.edit');
+    Route::get('/appointments/{id}/show', [AdminAppointmentsController::class, 'show'])->name('admin.appointments.show');
+    Route::get('/appointments/change-state/{id}', [AdminAppointmentsController::class, 'changeState'])->name('admin.appointments.changeState');
+    Route::patch('/appointments/{id}', [AdminAppointmentsController::class, 'update'])->name('admin.appointments.update');
+    Route::get('/appointments/remove-filter', [AdminAppointmentsController::class, 'removeFilter'])->name('admin.appointments.removeFilter');
+    Route::get('/appointments/get-insurances/{id}', [AdminAppointmentsController::class, 'getInsuraces'])->name('admin.appointments.getInsuraces');
+    Route::patch('/appointments/facturar/{id}', [AdminAppointmentsController::class, 'facturar'])->name('admin.appointments.facturar');
+    Route::patch('/appointments/finalizar/{id}', [AdminAppointmentsController::class, 'finalizar'])->name('admin.appointments.finalizar');
+    Route::get('/appointments/get-insurances-price/{user_id?}/{service?}/{insurance?}/', [AdminAppointmentsController::class, 'getInsurancesPrice'])->name('admin.appointments.getInsurancesPrice');
+    Route::post('/appointments/change-center', [AdminAppointmentsController::class, 'changeCenter'])->name('admin.appointments.getInsuraces');
+    Route::post('/appointments', [AdminAppointmentsController::class, 'store'])->name('admin.appointments.store');
+    Route::post('/appointments/save-filter', [AdminAppointmentsController::class, 'saveFilter'])->name('admin.appointments.saveFilter');
+    Route::post('/appointments/list', [AdminAppointmentsController::class, 'getData'])->name('admin.appointments.getData');
+    Route::delete('/appointments/{id}', [AdminAppointmentsController::class, 'destroy'])->name('admin.appointments.destroy');
+
+    Route::get('/appointments/export-excel', [AdminAppointmentsController::class, 'exportExcel'])->name("admin.appointments.exportExcel");
+
+
+    Route::get('/appointments-deleted', [AdminAppointmentsDeletedController::class, 'index']);
+    Route::get('/appointments-deleted/remove-filter', [AdminAppointmentsDeletedController::class, 'removeFilter'])->name('admin.appointments_deleted.removeFilter');
+    Route::patch('/appointments-deleted/restaurar/{id}', [AdminAppointmentsDeletedController::class, 'restaurar'])->name('admin.appointments_deleted.restaurar');
+    Route::post('/appointments-deleted/save-filter', [AdminAppointmentsDeletedController::class, 'saveFilter'])->name('admin.appointments_deleted.saveFilter');
+    Route::post('/appointments-deleted/list', [AdminAppointmentsDeletedController::class, 'getData'])->name('admin.appointments_deleted.getData');
+    Route::delete('/appointments-deleted/{id}', [AdminAppointmentsDeletedController::class, 'destroy'])->name('admin.appointments_deleted.destroy');
+
     Route::get('/calendar', [AdminCalendarController::class, 'index'])->name('admin.calendar');
 });

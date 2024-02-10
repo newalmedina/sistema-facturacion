@@ -32,15 +32,25 @@ class AdminSettingsPremissionSeeder  extends BaseSeeder
             ],
 
             [
-                'display_name' => 'Configuración - ver',
+                'display_name' => 'Configuración sitio web - ver',
                 'name' => Str::slug('admin-settings-show'),
-                'description' => 'Configuración - ver'
+                'description' => 'Configuración sitio web - ver'
             ],
             [
-                'display_name' => 'Configuración - actualizar',
+                'display_name' => 'Configuración sitio web - actualizar',
                 'name' => Str::slug('admin-settings-update'),
-                'description' => 'Configuración - actualizar'
-            ]
+                'description' => 'Configuración sitio web - actualizar'
+            ],
+            [
+                'display_name' => 'Configuración (Email - SMTP) - actualizar',
+                'name' => Str::slug('admin-settings-smtp-update'),
+                'description' => 'Configuración (Email - SMTP) - actualizar'
+            ],
+            [
+                'display_name' => 'Configuración (Email - SMTP) - ver',
+                'name' => Str::slug('admin-settings-smtp-show'),
+                'description' => 'Configuración (Email - SMTP) - ver'
+            ],
 
         ];
         $MenuChild = $this->insertPermissions($permissions, $this->childAdmin, $this->a_permission_admin);

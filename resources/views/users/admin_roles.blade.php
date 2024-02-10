@@ -98,7 +98,7 @@
             </div>
             
             <div class="card-footer text-end mt-2">
-                <button type="button" onclick="sendInfo()" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>
+                <button type="button" onclick="sendInfo()" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>
             </div>
         </form>
     </div>

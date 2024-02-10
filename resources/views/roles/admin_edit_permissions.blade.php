@@ -101,7 +101,7 @@
                 <div class="col-12  d-flex justify-content-between">
 
                     <a href="{{ url('admin/roles') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>    
-                    <button type="button" onclick="sendInfo()" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>
+                    <button type="button" onclick="sendInfo()" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>
                 </div>
             </div>
         </form>

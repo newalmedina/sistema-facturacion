@@ -28,9 +28,12 @@ return new class extends Migration
         });
 
         Schema::table('user_profiles', function (Blueprint $table) {
-
             $table->unsignedBigInteger('selected_center')->after("user_id")->nullable();
             $table->foreign('selected_center', "user_fk_selected_center")
+                ->references('id')->on('centers')
+                ->onDelete('cascade');
+            $table->unsignedBigInteger('created_center')->after("selected_center")->nullable();
+            $table->foreign('created_center', "user_fk_created_center")
                 ->references('id')->on('centers')
                 ->onDelete('cascade');
         });
@@ -48,6 +51,8 @@ return new class extends Migration
         Schema::table('user_profiles', function (Blueprint $table) {
             $table->dropForeign("user_fk_selected_center");
             $table->dropColumn("selected_center");
+            $table->dropForeign("user_fk_created_center");
+            $table->dropColumn("created_center");
         });
         Schema::enableForeignKeyConstraints();
     }

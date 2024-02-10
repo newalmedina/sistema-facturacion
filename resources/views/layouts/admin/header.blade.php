@@ -6,9 +6,9 @@
               $setting =\App\Services\SettingsServices::getGeneral();
         @endphp
         @if(!empty($setting->image))
-                <img src='{{ url('admin/settings/get-image/'.$setting->image) }}' class="" alt="Porto Admin" width="75" height="35">
+                <img src='{{ url('admin/settings/get-image/'.$setting->image) }}' class="rounded-circle shadow-4-strong" alt="Porto Admin" width="75" height="35">
             @else
-                <img src="{{ asset('assets/admin/img/logo.png')}}" alt="Porto Admin" width="75" height="35">
+                <img src="{{ asset('assets/admin/img/logo.png')}}"  class="rounded-circle shadow-4-strong" alt="Porto Admin" width="75" height="35">
             @endif
         </a>
         <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
@@ -36,7 +36,7 @@
        @if (!empty(auth()->user()->userProfile->center ))
        <div id="userbox" class="userbox">
      
-        <b class="text-success">
+        <b class="text-secondary">
             <i class="fas fa-hospital"></i>
                <i>
                   {{ auth()->user()->userProfile->center->name }}

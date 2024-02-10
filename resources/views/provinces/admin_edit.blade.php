@@ -50,7 +50,7 @@
                                 <div class="col-12">
                                  
                                     <div class="form-group">
-                                        <label for="name"> {{ trans('provinces/admin_lang.fields.name') }}<span class="text-danger">*</span></label>
+                                        <label class='text-primary' for="name"> {{ trans('provinces/admin_lang.fields.name') }}<span class="text-danger">*</span></label>
                                         <input  value="{{!empty($province->name) ? $province->name :null }}" type="text" {{ $disabled }} class="form-control" name="name"  placeholder="{{ trans('provinces/admin_lang.fields.name_helper') }}">
                                     </div>
                                 </div>      
@@ -59,7 +59,7 @@
                             <div class="row form-group mb-3">
                                 <div class="col-12 col-md-6">                     
                                     <div class="form-group">
-                                        <label for="active"> {{ trans('provinces/admin_lang.fields.active') }}</label>
+                                        <label class='text-primary' for="active"> {{ trans('provinces/admin_lang.fields.active') }}</label>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input toggle-switch" @if($province->active==1) checked @endif value="1"  {{ $disabled }} name="active" type="checkbox" id="active">
                                         </div>                           
@@ -73,7 +73,7 @@
             
                                 <a href="{{ url('admin/provinces') }}" class="btn btn-default">{{ trans('general/admin_lang.back') }}</a>
                                 @if (empty( $disabled ))
-                                    <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>   
+                                    <button type="submit" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>   
                                     
                                 @endif
                             </div>

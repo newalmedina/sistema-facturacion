@@ -11,6 +11,10 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Laratrust\Traits\LaratrustUserTrait;
+use App\Notifications\MyResetPassword;
+use App\Notifications\MyVerifyEmail;
+use App\Services\SettingsServices;
+use PhpOffice\PhpSpreadsheet\Writer\Ods\Settings;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -47,6 +51,31 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function sendPasswordResetNotification($token)
+    {
+        $allowEmail = SettingsServices::allowEmails();
+
+
+        if ($allowEmail) {
+            //cambiar config del .env
+            $setConfiguration = SettingsServices::setSmtpConfiguration();
+
+            $this->notify(new MyResetPassword($token));
+        }
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $allowEmail = SettingsServices::allowEmails();
+
+
+        if ($allowEmail) {
+            //cambiar config del .env
+            $setConfiguration = SettingsServices::setSmtpConfiguration();
+
+            $this->notify(new MyVerifyEmail($this));
+        }
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -119,8 +148,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeClinicPersonal($query)
     {
 
-        return $query->join("role_user", "users.id", "=", "role_user.user_id")
-            ->join("roles", "role_user.role_id", "=", "roles.id")
+        return $query->leftJoin("role_user", "users.id", "=", "role_user.user_id")
+            ->leftJoin("roles", "role_user.role_id", "=", "roles.id")
             ->whereIn("roles.name", ["doctor"]);
     }
     public function scopeNotPatients($query)
@@ -157,5 +186,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeActive($query)
     {
         return $query->where('users.active', 1);
+    }
+    public function scopeAllowRecieveEmails($query)
+    {
+        return $query->where('users.permit_recieve_emails', 1);
     }
 }

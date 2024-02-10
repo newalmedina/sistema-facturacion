@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
             $table->unsignedBigInteger('created_by');
-            $table->string("email")->nullable();
+           // $table->string("email")->nullable();
             $table->text("allergies")->nullable();
             $table->text("pathological_diseases")->nullable();
             $table->text("surgical_diseases")->nullable();

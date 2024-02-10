@@ -29,7 +29,7 @@ class Index extends Component
 
     public $filtersForm = [
         "doctor_id" => "",
-        "paid" => "",
+        "estado" => "",
         "patient_id" => ""
     ];
     public $appointmentForm;
@@ -37,7 +37,9 @@ class Index extends Component
 
     protected $listeners = [
         'clickCalendar' => 'clickCalendar',
-        'reloadCalendar' => 'reloadCalendar'
+        'reloadCalendar' => 'reloadCalendar',
+        'changePatient' => 'changePatient',
+        'calculatePrices' => 'calculatePrices'
     ];
 
 
@@ -83,6 +85,7 @@ class Index extends Component
 
     public function clickCalendar($data)
     {
+        $this->resetValidation();
         $time = $data[0];
         $id = $data[1];
         $this->resetFields();
@@ -90,38 +93,27 @@ class Index extends Component
 
         if (empty($id)) {
             if (!auth()->user()->isAbleTo("admin-appointments-create")) {
-                abort(403);
+                $this->emit('sinPermisos', "No tienes permisos para crear citas");
+                return false;
             }
+
             $this->appointment = new Appointment();
             $this->appointmentForm["start_at"] = $time;
             $this->modalTitle = "Nueva cita";
         } else {
             $this->appointment =  Appointment::find($id);
+
             $this->disabledForm = "disabled";
             if (
-                !auth()->user()->isAbleTo("admin-appointments-update-all") &&
-                !auth()->user()->isAbleTo("admin-appointments-read") &&
-                !auth()->user()->isAbleTo("admin-appointments-update")
+                !$this->appointment->canEdit()
+                && !$this->appointment->canShow()
             ) {
-                abort(403);
+                $this->emit('sinPermisos', "No tienes permisos para acceder a esta cita");
+                return false;
             }
-            if (auth()->user()->isAbleTo("admin-appointments-update-all") && empty($this->appointment->paid_at)) {
+
+            if ($this->appointment->canEdit() && $this->appointment->state == "pendiente") {
                 $this->disabledForm = "";
-            } else if (auth()->user()->isAbleTo("admin-appointments-update") && empty($this->appointment->paid_at) && $this->appointment->created_by == Auth::user()->id) {
-                $this->disabledForm = "";
-            }
-
-
-
-            if (auth()->user()->isAbleTo("admin-appointments-update") &&  $this->appointment->created_by != auth()->user()->id && auth()->user()->isAbleTo("admin-appointments-read")) {
-                $this->disabledForm = "disabled";
-            }
-            if (
-                !auth()->user()->isAbleTo("admin-appointments-update-all") &&
-                auth()->user()->isAbleTo("admin-appointments-read") &&
-                !auth()->user()->isAbleTo("admin-appointments-update")
-            ) {
-                $this->disabledForm = "disabled";
             }
 
 
@@ -138,7 +130,8 @@ class Index extends Component
                 "price_with_insurance" => 0,
                 "price" => 0,
                 "total" => 0,
-                "poliza" => ""
+                "poliza" => "",
+                "delete_coment" => $this->appointment->delete_coment
             ];
         }
 
@@ -164,7 +157,9 @@ class Index extends Component
 
     public function changePatient()
     {
+
         $this->appointmentForm["insurance_carrier_id"] = "";
+        $this->appointmentForm["poliza"] = "";
         $this->appointmentForm["applicated_insurance"] = 0;
         $this->getInsurance();
     }
@@ -178,12 +173,14 @@ class Index extends Component
         // dd($this->appointmentForm["user_id"]);
         if (!empty($this->appointmentForm["insurance_carrier_id"])) {
             $this->insuranceList = InsuranceCarrier::active()
+                ->select("insurance_carriers.id", "insurance_carriers.name")
                 ->join("patient_insurance_carriers", "insurance_carriers.id", "patient_insurance_carriers.insurance_carrier_id")
                 ->where("patient_insurance_carriers.user_id", $this->appointmentForm["user_id"])
                 ->where("patient_insurance_carriers.insurance_carrier_id", $this->appointmentForm["insurance_carrier_id"])
                 ->get();
         } else {
             $this->insuranceList = InsuranceCarrier::active()
+                ->select("insurance_carriers.id", "insurance_carriers.name")
                 ->join("patient_insurance_carriers", "insurance_carriers.id", "patient_insurance_carriers.insurance_carrier_id")
                 ->where("patient_insurance_carriers.user_id", $this->appointmentForm["user_id"])
                 ->get();
@@ -198,45 +195,53 @@ class Index extends Component
 
     public function calculatePrices()
     {
-        $this->appointmentForm["price_with_insurance"] = 0;
-        $this->appointmentForm["total"] = 0;
+        if (!empty($this->appointment->paid_at)) {
+            //si ya se ha facturado no se puede calcular nada
 
-        $this->selectedService = Service::find($this->appointmentForm["service_id"]);
+            $this->appointmentForm["price_with_insurance"] = $this->appointment->price_with_insurance;
+            $this->appointmentForm["total"] = $this->appointment->total;
+            $this->appointmentForm["price"] = $this->appointment->price;
+        } else {
+            $this->appointmentForm["price_with_insurance"] = 0;
+            $this->appointmentForm["total"] = 0;
 
-        $this->appointmentForm["price"] = !empty($this->selectedService->id) ? $this->selectedService->price : 0;
+            $this->selectedService = Service::find($this->appointmentForm["service_id"]);
 
-        $seguroPrecio = DB::table("service_insurance_carriers")
-            ->select("service_insurance_carriers.id", "service_insurance_carriers.price", "patient_insurance_carriers.poliza")
-            ->leftJoin("patient_insurance_carriers", "patient_insurance_carriers.insurance_carrier_id", "service_insurance_carriers.insurance_carrier_id")
-            ->where("service_insurance_carriers.insurance_carrier_id",  $this->appointmentForm["insurance_carrier_id"])
-            ->where("service_insurance_carriers.service_id",  $this->appointmentForm["service_id"])
-            ->where("patient_insurance_carriers.user_id",  $this->appointmentForm["user_id"])
-            ->first();
+            $this->appointmentForm["price"] = !empty($this->selectedService->id) ? $this->selectedService->price : 0;
 
-        // dd($this->appointmentForm["insurance_carrier_id"]);
-
-        $miPoliza = !empty($seguroPrecio->id) ? $seguroPrecio->poliza : "";
-
-        if (!empty($this->appointmentForm["insurance_carrier_id"])) {
-            $query = DB::table("patient_insurance_carriers")
-                ->where("patient_insurance_carriers.insurance_carrier_id", $this->appointmentForm["insurance_carrier_id"])
-                ->where("patient_insurance_carriers.user_id", $this->appointmentForm["user_id"])
+            $seguroPrecio = DB::table("service_insurance_carriers")
+                ->select("service_insurance_carriers.id", "service_insurance_carriers.price", "patient_insurance_carriers.poliza")
+                ->leftJoin("patient_insurance_carriers", "patient_insurance_carriers.insurance_carrier_id", "service_insurance_carriers.insurance_carrier_id")
+                ->where("service_insurance_carriers.insurance_carrier_id",  $this->appointmentForm["insurance_carrier_id"])
+                ->where("service_insurance_carriers.service_id",  $this->appointmentForm["service_id"])
+                ->where("patient_insurance_carriers.user_id",  $this->appointmentForm["user_id"])
                 ->first();
 
-            if (!empty($query->poliza)) {
+            // dd($this->appointmentForm["insurance_carrier_id"]);
 
-                $miPoliza = $query->poliza;
+            $miPoliza = !empty($seguroPrecio->id) ? $seguroPrecio->poliza : "";
+
+            if (!empty($this->appointmentForm["insurance_carrier_id"])) {
+                $query = DB::table("patient_insurance_carriers")
+                    ->where("patient_insurance_carriers.insurance_carrier_id", $this->appointmentForm["insurance_carrier_id"])
+                    ->where("patient_insurance_carriers.user_id", $this->appointmentForm["user_id"])
+                    ->first();
+
+                if (!empty($query->poliza)) {
+
+                    $miPoliza = $query->poliza;
+                }
             }
-        }
 
-        $this->appointmentForm["poliza"] = $miPoliza;
-        $this->appointmentForm["total"] = !empty($this->selectedService->id) ? $this->selectedService->price : 0;
-        // dd($seguroPrecio->id);
-        if (!empty($seguroPrecio->id)) {
-            $this->appointmentForm["price_with_insurance"] = $seguroPrecio->price;
+            $this->appointmentForm["poliza"] = $miPoliza;
+            $this->appointmentForm["total"] = !empty($this->selectedService->id) ? $this->selectedService->price : 0;
+            // dd($seguroPrecio->id);
+            if (!empty($seguroPrecio->id)) {
+                $this->appointmentForm["price_with_insurance"] = $seguroPrecio->price;
 
-            if (!empty($this->appointmentForm["applicated_insurance"])) {
-                $this->appointmentForm["total"] = $seguroPrecio->price;
+                if (!empty($this->appointmentForm["applicated_insurance"])) {
+                    $this->appointmentForm["total"] = $seguroPrecio->price;
+                }
             }
         }
     }
@@ -258,6 +263,7 @@ class Index extends Component
 
             $this->appointment = new Appointment();
             $this->appointment->created_by = Auth::user()->id;
+            $this->appointment->state = "pendiente";
             $this->appointment->center_id = Auth::user()->hasSelectedCenter();
         } else {
             if (!empty($this->disabledForm)) {
@@ -305,43 +311,46 @@ class Index extends Component
 
     public function getEvents()
     {
-        if (auth()->user()->isAbleTo('admin-appointments-list')) {
-            $events = Appointment::select('id', 'title', 'start_at as start', "end_at as end", 'color');
 
-            if (!empty($this->filtersForm["doctor_id"])) {
-                $events->where("doctor_id", $this->filtersForm["doctor_id"]);
-            }
-            if (!empty($this->filtersForm["patient_id"])) {
-                $events->where("user_id", $this->filtersForm["patient_id"]);
-            }
-            if ($this->filtersForm["paid"] || $this->filtersForm["paid"] == 0) {
-                $events->where("paid", $this->filtersForm["paid"]);
-            }
-            if (!empty($this->estado)) {
-                switch ($this->estado) {
-                    case "pend":
-                        $events
-                            ->whereNull("appointments.finish_at")
-                            ->whereNull("appointments.paid_at");
-                        break;
-                    case "fact":
-                        $events
-                            ->whereNull("appointments.finish_at")
-                            ->whereNotNull("appointments.paid_at");
-                        break;
-                    case "fin":
-                        $events
-                            ->whereNotNull("appointments.finish_at");
-                        # code...
-                        break;
+        $events = Appointment::canList()
+            ->select(
+                'appointments.id',
+                DB::raw("CONCAT(user_profiles.first_name, ' ', user_profiles.last_name,' / ',doctor.first_name, ' ', doctor.last_name ) as title"),
+                'start_at as start',
+                "end_at as end",
+                'color'
+            )
+            ->leftJoin("user_profiles", "user_profiles.user_id", "=", "appointments.user_id")
+            ->leftJoin("user_profiles as doctor", "doctor.user_id", "=", "appointments.doctor_id")
+            ->selectedCenter();
 
-                    default:
-                        # codsadsadsadsasadsade...
-                        break;
-                }
+        if (!empty($this->filtersForm["doctor_id"])) {
+            $events->where("appointments.doctor_id", $this->filtersForm["doctor_id"]);
+        }
+        if (!empty($this->filtersForm["patient_id"])) {
+            $events->where("appointments.user_id", $this->filtersForm["patient_id"]);
+        }
+
+        if (!empty($this->filtersForm["estado"])) {
+            switch ($this->filtersForm["estado"]) {
+                case "pend":
+                    $events
+                        ->where("appointments.state", "pendiente");
+                    break;
+                case "fact":
+                    $events
+                        ->where("appointments.state", "facturado");
+                    break;
+                case "fin":
+                    $events
+                        ->where("appointments.state", "finalizado");
+                    # code...
+                    break;
+
+                default:
+                    # codsadsadsadsasadsade...
+                    break;
             }
-        } else {
-            $events = Appointment::select('id', 'title', 'start_at as start', "end_at as end", 'color')->whereNull("id");
         }
 
 
@@ -364,48 +373,102 @@ class Index extends Component
 
     public function deleteItem()
     {
+        if (
+            !$this->appointment->canDelete()
+        ) {
+            $this->emit('sinPermisos', "No tienes permisos para eliminar esta cita");
+            return false;
+        }
+
+        if ($this->appointment->state != "pendiente") {
+            $this->validate(
+                [
+                    'appointmentForm.delete_coment' => 'required', // Puedes personalizar estas reglas según tus necesidades
+                ],
+                [
+                    'appointmentForm.delete_coment' => 'El comentario o motivo de la eliminación es obligatorio',
+                ]
+            );
+            $this->appointment->delete_coment = $this->appointmentForm["delete_coment"];
+        }
+        $this->appointment->deleted_at = Carbon::now();
+        $this->appointment->save();
+
         $this->appointment->delete();
         $this->emit('deteleModal');
         $this->emit('toggleModal');
         $this->emit('eventoEliminado');
+        $this->getEvents();
         $this->reloadCalendar();
     }
 
     public function facturarItem()
     {
+        if (
+            !$this->appointment->canFacturar()
+        ) {
+            $this->emit('sinPermisos', "No tienes permisos para facturar esta cita");
+            return false;
+        }
+
         $this->appointment->paid_at = Carbon::now();
+        $this->appointment->paid_by = Auth::user()->id;
+
         $this->appointment->color = "#ffc107";
+        $this->appointment->state = "facturado";
         $this->appointment->save();
+
         $this->emit('facturarModal');
         $this->emit('eventoFacturado');
+        $this->disabledForm = "disabled";
+        $this->reloadCalendar();
     }
     public function finalizarItem()
     {
+        if (
+            !$this->appointment->canFinalizar()
+        ) {
+            $this->emit('sinPermisos', "No tienes permisos para finalizar esta cita");
+            return false;
+        }
         $this->appointment->finish_at = Carbon::now();
+        $this->appointment->finish_by = Auth::user()->id;
         $this->appointment->color = "#28a745";
+
+        $this->appointment->state = "finalizado";
         $this->appointment->save();
         $this->emit('finalizarModal');
         $this->emit('eventoFinalizado');
+        $this->disabledForm = "disabled";
+        $this->reloadCalendar();
     }
 
     public function updateSelects()
     {
         $this->servicesList = Service::active()->get();
-        $this->patientList = User::active()
+        $this->patientList = User::select("users.*")
+            ->active()
             ->patients()
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
             ->get();
-        $this->patientListFilter = User::active()
+        $this->patientListFilter = User::select("users.*")
+            ->active()
             ->patients()
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
             ->get();
-        $this->doctorList = User::active()
+        $this->doctorList = User::select("users.*")
+            ->active()
             ->clinicPersonal()
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
+            ->leftJoin("user_centers", "user_centers.user_id", "=", "users.id")
+            ->where("user_centers.center_id", auth()->user()->userProfile->center->id)
             ->get();
-        $this->doctorListFilter = User::active()
+        $this->doctorListFilter = User::select("users.*")
+            ->active()
             ->clinicPersonal()
             ->leftJoin("user_profiles", "user_profiles.user_id", "=", "users.id")
+            ->leftJoin("user_centers", "user_centers.user_id", "=", "users.id")
+            ->where("user_centers.center_id", auth()->user()->userProfile->center->id)
             ->get();
     }
 
@@ -424,7 +487,8 @@ class Index extends Component
             "price_with_insurance" => 0,
             "price" => 0,
             "total" => 0,
-            "poliza" => ""
+            "poliza" => "",
+            "delete_coment" => ""
         ];
     }
 }

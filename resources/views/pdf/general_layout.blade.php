@@ -7,7 +7,7 @@
 }
 /** Define the margins of your page **/
     @page {
-    margin: 100px 80px;
+    margin: 80px 80px;
     page-break-inside: avoid;
     }
    
@@ -29,6 +29,11 @@
 
         /** Extra personal styles **/
         font-size: 8px;
+    }
+    .logo{
+        position:relative;
+        top:0px;
+        margin-bottom:-100px;
     }
     .clearfix::after {
         content: "";
@@ -75,17 +80,20 @@
     @endphp
 <!-- Define header and footer blocks before your content -->
     <header>
-       <div class="clearfix">
-            <div style="width: 30%;float:left; height: 120px;">
+       <div class="logo">
+            <div style="width:100px; height:80px;" >
                 @if(!empty($setting->image))
-                {{-- <img src='{{ url(' admin/settings/get-image/'.$setting->image) }}' class="" alt="Porto Admin" style="width:100%"> --}}
-                <img style=" border-top: 2px solid black;" src="{{ asset('storage/settings/'.$setting->image)}}" alt="{{ $setting->site_name }}" style="width:100%; height:100%; object-fit: fill;">
+                     {{-- <img src='{{ url(' admin/settings/get-image/'.$setting->image) }}' class="" alt="Porto Admin" style="width:100%"> --}}
+                    <img style="width:100%; height:100%; border-top: 2px solid black;" src="{{ asset('settings/'.$setting->image)}}" alt="{{ $setting->site_name }}" style="width:100%; height:100%; object-fit: fill;">
                 @else
-                <img src="{{ asset('assets/admin/img/logo.png')}}" alt="Porto Admin" style="width:100%; height:100%; object-fit: fill;">
+                    <img src="{{ asset('assets/admin/img/logo.png')}}" alt="Porto Admin" style="width:100%; height:100%; object-fit: fill;">
                 @endif
             </div>
-            <div style="width: 70%;float:right; text-align:center; padding-right:50px;" >
-                    <h2>{{ $setting->site_name }} </h2>
+           
+       </div>
+      <div style="text-align: center; margin-bottom:5px;">
+         <div>
+         <h2>{{ $setting->site_name }} </h2>
                     <h3 class=""style="margin-top: -15px;">{{ $center->name }}</h3>
                     <p style="font-size: 9px; margin-top: -15px;">
                             {{ $center->fullAddress }} <br>
@@ -93,12 +101,8 @@
                         <i>Email:</i> {{ $center->email }} <
                     </p>
                     <i>{{ $date }}</i>
-                    
-                    
-            </div>
-       </div>
-      <div style="text-align: center">
-        <label class="doctor-name" style="font-size:50px;">
+         </div>
+        <label class='text-primary' class="doctor-name" style="font-size:50px;">
             {{ $doctorInfo->userProfile->fullName }}
          
         </label>
@@ -160,10 +164,10 @@
             <div style="float: left; width:50%; text-align:left;">
 
                 <hr class="  margin: 10px 0;">
-                <label for="">  {{ $doctorInfo->userProfile->fullName }}</label>
+                <label class='text-primary' for="">  {{ $doctorInfo->userProfile->fullName }}</label>
             </div>
             <div style="float: right; width:50%;text-align: right;">
-                <label for="">    {{ $date }}</label>
+                <label class='text-primary' for="">    {{ $date }}</label>
               
             </div>
         </div>

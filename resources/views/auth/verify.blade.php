@@ -1,8 +1,12 @@
 @extends('layouts.front.simple')
+@section('title')
+    @parent {{ "Verificar correo" }}
+@stop
 @section('head_page')
     
 @stop
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-5" style="margin-top: 250px">
@@ -29,4 +33,9 @@
 </div>
 
 @section("foot_page")
+<script>
+    @if(!empty(Auth::user()->email_verified_at))
+        window.location.href = "{{url('/')}}"
+    @endif
+</script>
 @stop

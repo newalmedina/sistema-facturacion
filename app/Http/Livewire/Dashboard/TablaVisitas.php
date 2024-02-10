@@ -40,6 +40,7 @@ class TablaVisitas extends Component
     {
         $appointment = Appointment::find($id);
         $appointment->paid_at = Carbon::now();
+        $appointment->paid_by = Auth::user()->id;
         $appointment->color = "#ffc107";
         $appointment->save();
     }
@@ -48,6 +49,7 @@ class TablaVisitas extends Component
     {
         $appointment = Appointment::find($id);
         $appointment->finish_at = Carbon::now();
+        $appointment->finish_by = Auth::user()->id;
         $appointment->color = "#28a745";
         $appointment->save();
     }
@@ -64,7 +66,10 @@ class TablaVisitas extends Component
         $objeto->email = $appointment->patient->email;
         $objeto->seguro = !empty($appointment->insurance) ? $appointment->insurance->name : "";
         $objeto->poliza = "";
+ 
+        $objeto->photo = !empty( $appointment->patient->userProfile->photo)?url('admin/profile/getphoto/'.$appointment->patient->userProfile->photo):null;
 
+        
         if (!empty($appointment->insurance)) {
             $patientSeguro = DB::table("patient_insurance_carriers")
                 ->where("patient_insurance_carriers.insurance_carrier_id",  $appointment->insurance->id)
@@ -72,7 +77,7 @@ class TablaVisitas extends Component
                 ->first();
             $objeto->poliza = !empty($patientSeguro->poliza) ? $patientSeguro->poliza : null;
         }
-        dd($objeto);
+
 
 
         $this->emit('obtenerInformacionPaciente', $objeto);
@@ -89,7 +94,7 @@ class TablaVisitas extends Component
             ->when(data_get($this->filtros, 'precio_min'), fn ($q, $info) => $q->where('total', '>=', $info))
             ->when(data_get($this->filtros, 'precio_max'), fn ($q, $info) => $q->where('total', '<=', $info))
             // ->when(data_get($this->filtros, 'paciente'), fn ($q, $info) => $q->whereHas('patient.userProfile', fn ($q) => $q->where('first_name', $info)))
-            ->where("appointments.center_id", auth()->user()->userProfile->center->id)
+            ->selectedCenter()
             ->where("appointments.start_at", ">=", Carbon::now()->startOfDay()->format("Y-m-d H:i:s"))
             ->where("appointments.start_at", "<=", Carbon::now()->endOfDay()->format("Y-m-d H:i:s"));
 

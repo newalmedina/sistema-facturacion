@@ -25,7 +25,7 @@
                 <div class="row form-group mb-3">
                     <div class="col-12 col-md-6">                     
                         <div class="form-group">
-                            <label for="exequatur"> {{ trans('clinic-personal/admin_lang.fields.exequatur') }}</label>
+                            <label class='text-primary' for="exequatur"> {{ trans('clinic-personal/admin_lang.fields.exequatur') }}</label>
                             <input value="{{!empty($user->doctorProfile) ? $user->doctorProfile->exequatur :null }}" maxlength="20" type="text" class="form-control" name="doctor_profile[exequatur]"  placeholder="{{ trans('clinic-personal/admin_lang.fields.exequatur_helper') }}">
                         </div>
                     </div>            
@@ -33,7 +33,7 @@
                 <div class="row form-group mb-3">
                     <div class="col-12 ">                     
                         <div class="form-group">
-                            <label for="specialization_id" class="col-12"> {{ trans('clinic-personal/admin_lang.fields.specialization_id') }}</label>
+                            <label class='text-primary' for="specialization_id" class="col-12"> {{ trans('clinic-personal/admin_lang.fields.specialization_id') }}</label>
                             <select class="col-12 form-control select2" style="width:100%"  multiple name="doctor_profile[specialization_id][]" id="specialization_id">
                                 <option value="">{{ trans('clinic-personal/admin_lang.fields.specialization_id_helper') }}</option>   
                                 @foreach ($specializations as $specialization)
@@ -47,7 +47,7 @@
             
             </div>
             <div class="card-footer text-end">
-                <button type="submit" class="btn btn-success">{{ trans('general/admin_lang.save') }}</button>
+                <button type="submit" class="btn btn-primary">{{ trans('general/admin_lang.save') }}</button>
             </div>
         </form>
     </div>
