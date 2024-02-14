@@ -139,7 +139,7 @@ class AdminUserController extends Controller
 
             DB::commit();
 
-
+            SendUserRegistrationEmailJob::dispatch($user, $request->input('password'));
 
             return redirect()->route('admin.users.edit', [$user->id])->with('success', trans('general/admin_lang.save_ok'));
         } catch (\Exception $e) {
