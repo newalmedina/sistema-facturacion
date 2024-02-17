@@ -19,6 +19,15 @@ jobs:
       - name: Update Composer dependencies
         run: composer update --no-progress --no-suggest --no-interaction
 
+      - name: clear cache
+        run: php artisan cache:clear
+      - name: clear view
+        run: php artisan view:clear
+      - name: clear config
+        run: php artisan config:clear
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+
       - name: Clear Laravel cache
         run: php artisan optimize:clear
 
