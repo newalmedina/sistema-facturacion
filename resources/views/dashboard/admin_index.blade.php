@@ -16,8 +16,8 @@
       
     <!-- start: page -->
    <div class="mt-3">
-    <h2>Hola {{ Auth::user()->userProfile->fullName }}!</h2>
-    <br>
+    <h2>Hola {{ Auth::user()->userProfile->fullName }}, como te sientes?</h2>
+
     @include('layouts.admin.includes.errors')
    </div>
    <livewire:dashboard.visitas />
