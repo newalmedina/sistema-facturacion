@@ -23,4 +23,4 @@ jobs:
         run: php artisan optimize:clear
 
       - name: Run Laravel migrations
-        run: php artisan migrate --force
+        run: php artisan migrate
