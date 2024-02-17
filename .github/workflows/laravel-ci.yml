@@ -13,17 +13,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install SSH Client
-        run: sudo apt update && sudo apt install -y openssh-client
+      - name: Install Composer dependencies
+        run: composer install --no-progress --no-suggest --no-interaction
 
-      - name: Run PHP Artisan commands
-        run: |
-          ssh -tt root@http://192.168.1.210 "docker exec -it medical-system-apache bash -c 'cd /path/to/your/laravel && \
-          composer install --no-progress --no-suggest --no-interaction && \
-          composer update --no-progress --no-suggest --no-interaction && \
-          php artisan cache:clear && \
-          php artisan view:clear && \
-          php artisan config:clear && \
-          chmod -R 777 storage bootstrap/cache && \
-          php artisan optimize:clear && \
-          php artisan migrate --force --no-interaction'"
+      - name: Update Composer dependencies
+        run: composer update --no-progress --no-suggest --no-interaction
+
+      - name: clear cache
+        run: php artisan cache:clear
+      - name: clear view
+        run: php artisan view:clear
+      - name: clear config
+        run: php artisan config:clear
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+
+      - name: Clear Laravel cache
+        run: php artisan optimize:clear
+
+      - name: Run Laravel migrations
+        run: php artisan migrate --force --no-interaction
