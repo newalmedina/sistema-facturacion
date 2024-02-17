@@ -31,5 +31,5 @@ jobs:
       - name: Clear Laravel cache
         run: php artisan optimize:clear
 
-      - name: Run Laravel migrations
-        run: php artisan migrate --force --no-interaction
+      # - name: Run Laravel migrations
+      #   run: php artisan migrate --force --no-interaction
