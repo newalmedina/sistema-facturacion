@@ -19,6 +19,6 @@ class DatosPruebaSeeder extends Seeder
         \App\Models\PatientProfile::factory(10)->create();
         \App\Models\PatientMedicalStudies::factory(100)->create();
         \App\Models\PatientMonitoring::factory(400)->create();
-        // \App\Models\Appointment::factory(1000)->create();
+        \App\Models\Appointment::factory(1000)->create();
     }
 }
