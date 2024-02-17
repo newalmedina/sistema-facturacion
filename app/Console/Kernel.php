@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('inspire')->hourly();
-        $schedule->job(new EnviarCorreoJob())->everyMinute();
+        $schedule->job(new EnviarCorreoJob())->everyMinute()->appendOutputTo(storage_path('logs/cron.log'));
 
         $schedule->command(HelloCron::class, ['--no-ansi'])
             ->everyMinute()

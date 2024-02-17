@@ -23,5 +23,6 @@ class EnviarCorreoJob implements ShouldQueue
     {
         // Aquí enviamos el correo electrónico
         Mail::to('destinatario@example.com')->send(new CorreoPrueba());
+        return "mail job";
     }
 }
