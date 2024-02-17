@@ -21,10 +21,13 @@ jobs:
 
       - name: clear cache
         run: php artisan cache:clear
+
       - name: clear view
         run: php artisan view:clear
+
       - name: clear config
         run: php artisan config:clear
+
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
 
@@ -32,4 +35,4 @@ jobs:
         run: php artisan optimize:clear
 
       - name: Run Laravel migrations
-      run: php artisan migrate --force --no-interaction
+        run: php artisan migrate --force --no-interaction
