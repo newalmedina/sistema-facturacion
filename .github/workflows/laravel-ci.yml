@@ -1,0 +1,26 @@
+name: Laravel CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --no-suggest --no-interaction
+
+      - name: Update Composer dependencies
+        run: composer update --no-progress --no-suggest --no-interaction
+
+      - name: Clear Laravel cache
+        run: php artisan optimize:clear
+
+      - name: Run Laravel migrations
+        run: php artisan migrate --force
