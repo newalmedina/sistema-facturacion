@@ -85,7 +85,7 @@ if (isset($_SESSION["retroceso"])) {
             <input type="file" class="" id="foto" name="foto" accept="image/*" onchange=" validarImagen(this)">
           </div>
           <div class="col-md-3"><br>
-            <img class="img-fluid" id="mostrarFoto" src="" style="width: 200px; height:200px;" alt="">
+            <img class="img-fluid" id="mostrarFoto" src="" style="width: 200px; height:200px; display:none;" alt="">
           </div>
         </div>
       </div>

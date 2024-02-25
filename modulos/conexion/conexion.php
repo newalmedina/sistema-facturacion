@@ -4,7 +4,7 @@
 
 function conectar()
 {
-    $host = "localhost:3307";
+    $host = "localhost:3306";
     $user = "root";
     $password = "";
     $db = "facturingpos";

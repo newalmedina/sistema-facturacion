@@ -20,9 +20,11 @@ function validarImagen(obj) {
         });
         mostrarFoto.src = "";
         foto.value = "";
+		mostrarFoto.style.display = "none";
     } else {
         mostrarFoto.src = "";
         mostrarFoto.src = URL.createObjectURL(uploadFile);
+		mostrarFoto.style.display = "block";
     }
 }
 function Validar(idcampo, campoError, validador, tabladb) {
